@@ -33,7 +33,7 @@ function Chat() {
   } = useGetConversationNew()
 
   const params = useParams()
-  const socket = useRef(io('ws://localhost:8080', { autoConnect: false }))
+  const socket = useRef(io('ws://chatapp-api-lzps.onrender.com/', { autoConnect: false }))
   const windowWidth = useWindowSize()
 
   const navigate = useNavigate()
