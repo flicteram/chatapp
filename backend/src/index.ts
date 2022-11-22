@@ -3,15 +3,15 @@ import express from 'express';
 import connectDB from './db/index.js'
 import * as dotenv from 'dotenv'
 import cookieParser from 'cookie-parser'
-import registerRouter from './routes/register.js'
-import authRouter from './routes/auth.js'
-import usersRouter from './routes/users.js'
-import refreshRouter from './routes/refresh.js'
-import logoutRouter from './routes/logout.js'
+import registerRouter from './api/register.js'
+import authRouter from './api/auth.js'
+import usersRouter from './api/users.js'
+import refreshRouter from './api/refresh.js'
+import logoutRouter from './api/logout.js'
 import handleErrors from './middleware/handle-errors.js';
 import verifyJWT from './middleware/verifyJWT.js'
-import conversation from './routes/conversation.js'
-import conversations from './routes/conversations.js'
+import conversation from './api/conversation.js'
+import conversations from './api/conversations.js'
 import { updateUserDisconnect } from './controllers/users.js'
 import { Server } from 'socket.io';
 import cors from 'cors'
@@ -34,6 +34,9 @@ app.use(cors({
 app.use(express.json())
 app.use(cookieParser())
 // routes
+app.use('/', (req, res, next) => {
+  res.json({ plm: 'test' })
+})
 app.use('/api/register', registerRouter)
 app.use('/api/auth', authRouter)
 app.use('/api/logout', logoutRouter)
