@@ -16,14 +16,14 @@ import { updateUserDisconnect } from './controllers/users.js';
 import { Server } from 'socket.io';
 import cors from 'cors';
 import { createServer } from 'http';
-import handleCors from './middleware/handle-errors.js';
+// import handleCors from './middleware/handle-errors.js'
 dotenv.config();
 const PORT = process.env.PORT || 8080;
 const app = express();
 const httpServer = createServer(app);
 const io = new Server(httpServer, { cors: { origin: '*' } });
 // middleware
-app.use(handleCors);
+// app.use(handleCors)
 app.use(cors({
     credentials: true,
     origin: true
@@ -31,14 +31,14 @@ app.use(cors({
 app.use(express.json());
 app.use(cookieParser());
 // routes
-app.use('/register', registerRouter);
-app.use('/auth', authRouter);
-app.use('/logout', logoutRouter);
-app.use('/refresh', refreshRouter);
+app.use('/api/register', registerRouter);
+app.use('/api/auth', authRouter);
+app.use('/api/logout', logoutRouter);
+app.use('/api/refresh', refreshRouter);
 app.use(verifyJWT);
-app.use('/users', usersRouter);
-app.use('/conversation', conversation);
-app.use('/conversations', conversations);
+app.use('/api/users', usersRouter);
+app.use('/api/conversation', conversation);
+app.use('/api/conversations', conversations);
 app.use(handleErrors);
 // start
 let users = [];
