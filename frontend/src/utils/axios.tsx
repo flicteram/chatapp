@@ -1,6 +1,6 @@
 import axios from 'axios';
-// const URL = 'http://localhost:8080/api/'
-const URL = 'https://chatapp-pearl.vercel.app/api/'
+const URL = 'http://localhost:8080/api/'
+// const URL = 'https://chatapp-pearl.vercel.app/api/'
 
 export default axios.create({
   baseURL: URL,

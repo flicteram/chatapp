@@ -1,5 +1,6 @@
 {
   "compilerOptions": {
+    "esModuleInterop": true,
     "target": "ESNext",
     "module": "ESNext",
     "moduleResolution": "node",
@@ -11,7 +12,7 @@
       "./node_modules/@types"
     ],
     "rootDir": "src",
-    "outDir": "dist",
+    "outDir": "./dist",
     "strict": true,
     "alwaysStrict": true,
     "strictFunctionTypes": true,

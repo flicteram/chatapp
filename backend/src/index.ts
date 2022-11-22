@@ -34,9 +34,7 @@ app.use(cors({
 app.use(express.json())
 app.use(cookieParser())
 // routes
-app.use('/', (req, res, next) => {
-  res.json({ plm: 'test' })
-})
+
 app.use('/api/register', registerRouter)
 app.use('/api/auth', authRouter)
 app.use('/api/logout', logoutRouter)
