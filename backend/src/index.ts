@@ -28,7 +28,7 @@ const io = new Server(httpServer, { cors: { origin: '*' } })
 
 app.use(cors({
   credentials: true,
-  origin: true
+  origin: '*'
 }));
 app.use(express.json())
 app.use(cookieParser())
