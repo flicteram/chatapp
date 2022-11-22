@@ -16,12 +16,14 @@ import { updateUserDisconnect } from './controllers/users.js';
 import { Server } from 'socket.io';
 import cors from 'cors';
 import { createServer } from 'http';
+import handleCors from './middleware/handle-errors.js';
 dotenv.config();
 const PORT = process.env.PORT || 8080;
 const app = express();
 const httpServer = createServer(app);
 const io = new Server(httpServer, { cors: { origin: '*' } });
 // middleware
+app.use(handleCors);
 app.use(cors({
     credentials: true,
     origin: true
