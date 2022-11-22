@@ -1,0 +1,29 @@
+.container {
+  display: flex;
+  background-color: var(--gray);
+  padding: 1em;
+  gap: .5rem;
+  align-items: center;
+}
+
+.container>button {
+  background-color: transparent;
+  border: transparent;
+  color: var(--tealGreen);
+  cursor: pointer;
+}
+
+
+.container>div {
+  display: flex;
+  flex-direction: column;
+}
+
+.container>div>span:first-child {
+  font-size: 1.1rem;
+}
+
+.container>div>span:last-child {
+  font-size: .85em;
+  color: rgb(112, 112, 112)
+}

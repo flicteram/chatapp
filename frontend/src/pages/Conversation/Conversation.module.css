@@ -1,0 +1,44 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+}
+
+.scrollableDiv {
+  display: flex;
+  flex-direction: column-reverse;
+  height: 100%;
+  overflow: auto;
+  background-color: rgb(236, 226, 203);
+  padding-bottom: 1em;
+}
+
+.sendingMsg {
+  align-self: flex-end;
+  margin-top: -.5em;
+}
+
+@media(min-width:550px) {
+  .sendingMsg {
+    margin-right: .5em;
+  }
+}
+
+@media(min-width:1200px) {
+  .sendingMsg {
+    margin-right: 1.5em;
+  }
+}
+
+
+@media(min-width:1450px) {
+  .container {
+    height: 95vh;
+  }
+}
+
+@media(min-width:1700px) {
+  .sendingMsg {
+    margin-right: 3em;
+  }
+}

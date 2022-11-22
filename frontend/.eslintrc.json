@@ -1,0 +1,107 @@
+{
+  "parser": "@typescript-eslint/parser",
+  "parserOptions": {
+    "ecmaVersion": 12,
+    "sourceType": "module"
+  },
+  "plugins": [
+    "@typescript-eslint"
+  ],
+  "extends": [
+    "eslint:recommended",
+    "plugin:react/recommended",
+    "plugin:@typescript-eslint/recommended"
+  ],
+  "rules": {
+    "function-call-argument-newline": [
+      "error",
+      "consistent"
+    ],
+    "react/jsx-max-props-per-line": [
+      "error",
+      {
+        "maximum": 1
+      }
+    ],
+    "react/jsx-indent-props": [
+      "error",
+      2
+    ],
+    "react/jsx-first-prop-new-line": [
+      "error",
+      "multiline"
+    ],
+    "react/react-in-jsx-scope": "off",
+    "no-multiple-empty-lines": [
+      "error",
+      {
+        "max": 1
+      }
+    ],
+    "no-trailing-spaces": [
+      "error",
+      {
+        "skipBlankLines": false
+      }
+    ],
+    "key-spacing": [
+      "error",
+      {
+        "beforeColon": false
+      }
+    ],
+    "comma-spacing": [
+      "error",
+      {
+        "before": false,
+        "after": true
+      }
+    ],
+    "function-paren-newline": [
+      "error",
+      "consistent"
+    ],
+    "object-property-newline": [
+      "error",
+      {
+        "allowMultiplePropertiesPerLine": false
+      }
+    ],
+    "object-curly-newline": [
+      "error",
+      {
+        "ObjectExpression": {
+          "multiline": true,
+          "minProperties": 3
+        },
+        "ObjectPattern": {
+          "multiline": true,
+          "minProperties": 2,
+          "consistent": false
+        },
+        "ImportDeclaration": "never",
+        "ExportDeclaration": {
+          "multiline": true,
+          "minProperties": 3
+        }
+      }
+    ],
+    "@typescript-eslint/indent": [
+      "error",
+      2
+    ],
+    "linebreak-style": [
+      "error",
+      "windows"
+    ],
+    // to enforce using type for object type definitions, can be type or interface 
+    "@typescript-eslint/consistent-type-definitions": [
+      "error",
+      "interface"
+    ]
+  },
+  "env": {
+    "browser": true,
+    "es2021": true
+  }
+}
