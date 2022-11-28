@@ -24,7 +24,9 @@ const handleLogin = async (req, res) => {
         await currentUser.updateOne({ refreshToken });
         res.cookie('jwt', refreshToken, {
             httpOnly: true,
-            maxAge: 24 * 60 * 60 * 1000
+            maxAge: 24 * 60 * 60 * 1000,
+            secure: true,
+            sameSite: 'none',
         });
         return res.status(StatusCodes.OK).json({
             username: currentUser.username,

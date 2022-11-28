@@ -32,8 +32,10 @@ function Chat() {
     dataNewConversation, requestNewConversation
   } = useGetConversationNew()
 
+  const url = process.env.REACT_APP_WS_URL || 'ws://localhost:8080/'
+
   const params = useParams()
-  const socket = useRef(io('wss://chatapp-api-lzps.onrender.com/', { autoConnect: false }))
+  const socket = useRef(io(url, { autoConnect: false }))
   const windowWidth = useWindowSize()
 
   const navigate = useNavigate()
