@@ -13,7 +13,8 @@ function App() {
     <div
       style={{
         display: 'flex',
-        minHeight: '100vh'
+        // minHeight: '100vh',
+
       }}>
 
       <Routes>

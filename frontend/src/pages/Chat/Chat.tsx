@@ -218,11 +218,14 @@ function Chat() {
   const logout = useLogout()
 
   const handleWindowHeight = windowWidth > 750 ? {} : {height: windowHeight}
+  const handleWindowHeightlow = windowWidth < 750 ? {} : {height: windowHeight}
 
   if (isLoading) return <CustomLoader />
 
   return (
-    <div className={styles.outerContainer}>
+    <div
+      className={styles.outerContainer}
+      style={handleWindowHeightlow}>
       <div className={styles.styleBigScreen} />
       <div
         className={styles.container}
