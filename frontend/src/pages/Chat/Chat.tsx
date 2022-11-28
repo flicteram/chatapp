@@ -36,7 +36,9 @@ function Chat() {
 
   const params = useParams()
   const socket = useRef(io(url, { autoConnect: false }))
-  const windowWidth = useWindowSize()
+  const {
+    windowWidth, windowHeight
+  } = useWindowSize()
 
   const navigate = useNavigate()
   const currentUser = useUserSelector()
@@ -215,12 +217,16 @@ function Chat() {
 
   const logout = useLogout()
 
+  const handleWindowHeight = windowWidth > 750 ? {} : {height: windowHeight}
+
   if (isLoading) return <CustomLoader />
 
   return (
     <div className={styles.outerContainer}>
       <div className={styles.styleBigScreen} />
-      <div className={styles.container}>
+      <div
+        className={styles.container}
+        style={handleWindowHeight}>
         {(!params.id || windowWidth >= 750) &&
           <div
             className={styles.leftSideContainer}>
@@ -255,7 +261,8 @@ function Chat() {
             gotNewMessage,
             handleSeenLastMessage,
             addLastMessageAndSortConversations,
-            connectedUsers
+            connectedUsers,
+            handleWindowHeight
           }} />
       </div>
     </div>

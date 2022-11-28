@@ -22,13 +22,14 @@ interface OutletContext {
   connectedUsers: ConnectedUser[],
   gotNewMessage: GotNewMessage,
   handleSeenLastMessage: () => void,
-  addLastMessageAndSortConversations: (sendToId: string, message: SendMessage) => void
+  addLastMessageAndSortConversations: (sendToId: string, message: SendMessage) => void,
+  handleWindowHeight:{height?:number}
 }
 
 function Conversation() {
   const {
     socket, gotNewMessage, handleSeenLastMessage, addLastMessageAndSortConversations,
-    connectedUsers
+    connectedUsers, handleWindowHeight
   } = useOutletContext<OutletContext>()
   const [pendingMessages, setPendingMessages] = useState<SendMessage[]>([])
   const currentUser = useUserSelector()
@@ -103,7 +104,9 @@ function Conversation() {
   if (error) return <h2>{error}</h2>
   if (isLoading) return <CustomLoader />
   return (
-    <div className={styles.container}>
+    <div
+      className={styles.container}
+      style={handleWindowHeight}>
       <OtherUser
         otherUser={otherUser}
         isOnline={connectedUsers.find(u => u.userId === otherUser?._id) !== undefined ? true : false}
@@ -128,15 +131,6 @@ function Conversation() {
           <div
             ref={viewRef}>
           </div>
-          {/* {sendMessageLoading &&
-            <Skeleton
-              className={styles.sendingMsg}
-              variant="text"
-              width={100}
-              height={50}
-            />
-          } */}
-
           {data?.messages?.length === 0 ? <span
             style={{
               alignSelf: 'center',
