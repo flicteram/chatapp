@@ -14,7 +14,6 @@ import OtherUser from '../../components/OtherUser/OtherUser'
 import CustomLoader from "../../components/CustomLoader/CustomLoader";
 import styles from './Conversation.module.css'
 import MessageInput from '../../components/MessageInput/MessageInput'
-import Skeleton from '@mui/material/Skeleton'
 
 interface OutletContext {
   socket: {
