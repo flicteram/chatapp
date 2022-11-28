@@ -1,7 +1,6 @@
 .outerContainer {
   display: flex;
   width: 100%;
-  overflow: clip;
 }
 
 .styleBigScreen {
@@ -28,6 +27,7 @@
   flex-direction: column;
   width: 100%;
   height: 100%;
+  overflow: auto;
 }
 
 .actionsContainer {
