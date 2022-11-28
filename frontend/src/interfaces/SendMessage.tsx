@@ -5,5 +5,6 @@ export default interface SendMessage {
     _id: string
   },
   sentAt: number,
-  seen: boolean
+  seen: boolean,
+  pending?:boolean
 }

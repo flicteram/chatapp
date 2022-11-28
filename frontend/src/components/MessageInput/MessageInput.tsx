@@ -2,10 +2,13 @@ import { memo, useState, useRef, useEffect } from 'react'
 import styles from './MessageInput.module.css'
 import SendIcon from '@mui/icons-material/Send';
 interface Props {
-  handleSendMessage: (msg: string) => Promise<void>
+  handleSendMessage: (msg: string) => Promise<void>,
+  sendMessageLoading: boolean
 }
 
-function MessageInput({ handleSendMessage }: Props) {
+function MessageInput({
+  handleSendMessage, sendMessageLoading
+}: Props) {
   const [message, setMessage] = useState('')
   const inputRef = useRef<HTMLInputElement>(null)
   const handleMessageChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -21,15 +24,15 @@ function MessageInput({ handleSendMessage }: Props) {
   }
   useEffect(() => {
     inputRef.current?.focus()
-
-  }, [])
+  }, [sendMessageLoading])
   return (
     <form
       onSubmit={submit}
       className={styles.container}>
       <input
+        disabled={sendMessageLoading}
         ref={inputRef}
-        placeholder='Type a message'
+        placeholder={sendMessageLoading?"Sending message...":"Type a message"}
         value={message}
         onChange={handleMessageChange} />
       <button

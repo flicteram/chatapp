@@ -1,6 +1,6 @@
 import { useParams } from "react-router-dom"
 import { useGetConversation, useSendMessage } from './ConversationAPI'
-import { useEffect, useRef, memo } from "react"
+import { useEffect, useRef, useState, memo } from "react"
 import { useOutletContext } from "react-router-dom"
 import useUserSelector from '../../components/User/useUserSelector';
 import GotNewMessage from "../../interfaces/GotNewMeessage";
@@ -31,6 +31,7 @@ function Conversation() {
     socket, gotNewMessage, handleSeenLastMessage, addLastMessageAndSortConversations,
     connectedUsers
   } = useOutletContext<OutletContext>()
+  const [pendingMessages, setPendingMessages] = useState<SendMessage[]>([])
   const currentUser = useUserSelector()
   const viewRef = useRef<HTMLDivElement>(null)
   const convId = useParams()
@@ -54,6 +55,7 @@ function Conversation() {
       sentAt: dateNow.getTime(),
       seen: false,
     }
+    setPendingMessages(prevState=>[...prevState, newMessage])
     await sendMessageRequest(newMessage)
     socket.current.emit('sendMessage', {
       newMessage,
@@ -69,6 +71,7 @@ function Conversation() {
         ...prevState,
         messages: [sendMessageData, ...prevState.messages]
       } : null))
+      setPendingMessages(prevState=>prevState.slice(1))
     }
   }, [sendMessageData])
 
@@ -126,14 +129,14 @@ function Conversation() {
           <div
             ref={viewRef}>
           </div>
-          {sendMessageLoading &&
+          {/* {sendMessageLoading &&
             <Skeleton
               className={styles.sendingMsg}
               variant="text"
               width={100}
               height={50}
             />
-          }
+          } */}
 
           {data?.messages?.length === 0 ? <span
             style={{
@@ -147,11 +150,16 @@ function Conversation() {
               gotNewMessage={gotNewMessage}
               setNewMsg={setNewMsg}
               handleSeenLastMessage={handleSeenLastMessage}
+              pendingMessages={pendingMessages}
             />
           }
         </InfiniteScroll>
       </div>
-      <MessageInput handleSendMessage={handleSendMessage} />
+      <MessageInput
+        handleSendMessage={handleSendMessage}
+        sendMessageLoading={sendMessageLoading}
+
+      />
 
     </div >
 

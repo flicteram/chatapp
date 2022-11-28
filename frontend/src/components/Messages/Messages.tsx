@@ -9,6 +9,7 @@ import GotNewMessages from '../../interfaces/GotNewMeessage'
 import Conv from '../../interfaces/Conversation';
 import DoneAllIcon from '@mui/icons-material/DoneAll';
 import styles from './Messages.module.css'
+import CircularProgress from '@mui/material/CircularProgress';
 
 interface Props {
   socket: {
@@ -18,13 +19,14 @@ interface Props {
   sendMessageData: SendMessage | null,
   gotNewMessage: GotNewMessages,
   setNewMsg: Dispatch<SetStateAction<Conv | null>>,
-  handleSeenLastMessage: () => void
+  handleSeenLastMessage: () => void,
+  pendingMessages:SendMessage[]
 
 }
 
 export default function Messages(
   {
-    socket, data, setNewMsg, handleSeenLastMessage, gotNewMessage
+    socket, data, setNewMsg, handleSeenLastMessage, gotNewMessage, pendingMessages
   }: Props
 ) {
 
@@ -35,7 +37,7 @@ export default function Messages(
     [value: string]: number
   }>({})
   const { seenMessageRequest } = useSeenMessage()
-
+  console.log('pending', pendingMessages)
   useEffect(() => {
     socket.current.on('gotSeenMessages', (seenMsgData) => {
       if (seenMsgData.convId === convId.id) {
@@ -101,14 +103,28 @@ export default function Messages(
   }
   return (
     <>
+      {pendingMessages.map((m, index)=>(
+        <div
+          className={styles.container}
+          key={index}
+          style={{alignItems: 'flex-end'}}>
+          <div className={styles.messageData}>
+            <p>{m.message}</p>
+            <div>
+              <CircularProgress
+                disableShrink
+                color='primary'
+                style={{color: 'var(--tealGreen)'}}
+                size={15}/>
+            </div>
+          </div>
+        </div>
+      ))}
       {data?.messages?.map((m, index) => (
         <div
           className={styles.container}
           key={index}
-          style={{
-            alignItems: m.sentBy._id === currentUser._id ? 'flex-end' : 'flex-start',
-            // textAlign: m.sentBy._id === currentUser._id ? "right" : "left",
-          }}>
+          style={{alignItems: m.sentBy._id === currentUser._id ? 'flex-end' : 'flex-start'}}>
           {datesState[getDate(m.sentAt)] === index &&
             <span
               className={styles.date}>
