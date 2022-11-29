@@ -86,13 +86,15 @@ function Conversation() {
   }, [gotNewMessage])
 
   useEffect(() => {
-    const timeout = setTimeout(() => {
-      viewRef.current?.scrollIntoView({ behavior: 'smooth' })
-    }, 100)
-    return () => {
-      clearTimeout(timeout)
-    }
-  }, [gotNewMessage, sendMessageData])
+    viewRef.current?.scrollIntoView({ behavior: 'smooth' })
+
+    // const timeout = setTimeout(() => {
+    //   viewRef.current?.scrollIntoView({ behavior: 'smooth' })
+    // }, 100)
+    // return () => {
+    //   clearTimeout(timeout)
+    // }
+  }, [gotNewMessage, sendMessageData, sendMessageLoading])
   useEffect(() => {
     const controller = new AbortController()
     request(controller, 20)
@@ -129,8 +131,7 @@ function Conversation() {
           loader={<p>Loading...</p>}
         >
           <div
-            ref={viewRef}>
-          </div>
+            ref={viewRef}/>
           {data?.messages?.length === 0 ? <span
             style={{
               alignSelf: 'center',
