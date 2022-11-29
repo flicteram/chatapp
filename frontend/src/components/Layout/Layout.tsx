@@ -13,6 +13,7 @@ export default function Layout({children}: PropTypes){
         flexDirection: 'column',
         justifyContent: 'space-between',
         width: '100%',
+        minHeight: '100vh',
         gap: '2em'
       }}>
       <NavBar/>
