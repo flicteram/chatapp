@@ -18,8 +18,7 @@ const getUsers = async (req: Request, res: Response) => {
 
 const getOtherUser = async (req: Request, res: Response) => {
   const user = await User.findById(req.params.id, ['-refreshToken', '-password'])
-  console.log('fetch')
-  return res.send(user)
+  return res.json(user)
 }
 
 const updateUserDisconnect = async (disconnectedUser: ConnectedUser) => {

@@ -33,6 +33,7 @@
 .messageData>p,
 .messageDataLeft>p {
   font-size: .9rem;
+  word-break: break-all;
 }
 
 .messageData>div,
@@ -42,6 +43,7 @@
   align-self: flex-end;
   justify-content: flex-end;
   gap: .3em;
+
 }
 
 .messageData>div>span,

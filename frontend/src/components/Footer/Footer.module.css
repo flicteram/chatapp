@@ -1,0 +1,25 @@
+.container {
+  background-color: var(--tealGreen);
+  color: white;
+  text-align: center;
+  padding: 1em;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5em;
+}
+
+.container>div {
+  display: flex;
+  gap: 0.5em;
+  align-items: center;
+  justify-content: center;
+}
+
+.container>div>a {
+  color: white;
+}
+
+.container>div>a>svg {
+  font-size: 2rem;
+
+}

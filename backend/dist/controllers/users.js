@@ -14,8 +14,7 @@ const getUsers = async (req, res) => {
 };
 const getOtherUser = async (req, res) => {
     const user = await User.findById(req.params.id, ['-refreshToken', '-password']);
-    console.log('fetch');
-    return res.send(user);
+    return res.json(user);
 };
 const updateUserDisconnect = async (disconnectedUser) => {
     await User.findByIdAndUpdate(disconnectedUser.userId, { lastLoggedIn: Date.now() }, { returnDocument: "after" });

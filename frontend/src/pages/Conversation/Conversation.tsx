@@ -85,14 +85,14 @@ function Conversation() {
     }
   }, [gotNewMessage])
 
-  useEffect(() => {
-    const timeout = setTimeout(() => {
-      viewRef.current?.scrollIntoView({ behavior: 'smooth' })
-    }, 100)
-    return () => {
-      clearTimeout(timeout)
-    }
-  }, [gotNewMessage, sendMessageData, sendMessageLoading])
+  // useEffect(() => {
+  //   const timeout = setTimeout(() => {
+  //     viewRef.current?.scrollIntoView({ behavior: 'smooth' })
+  //   }, 100)
+  //   return () => {
+  //     clearTimeout(timeout)
+  //   }
+  // }, [gotNewMessage, sendMessageData, sendMessageLoading])
   useEffect(() => {
     const controller = new AbortController()
     request(controller, 20)
@@ -151,7 +151,6 @@ function Conversation() {
       <MessageInput
         handleSendMessage={handleSendMessage}
         sendMessageLoading={sendMessageLoading}
-
       />
 
     </div >

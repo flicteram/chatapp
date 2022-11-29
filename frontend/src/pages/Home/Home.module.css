@@ -1,0 +1,27 @@
+.homeContainer {
+  display: flex;
+  flex-direction: column;
+  gap: 2em;
+  align-items: center;
+  text-align: center;
+  min-height: 100vh;
+  justify-content: center;
+}
+
+.homeContainer>h1 {
+  color: var(--lightGreen)
+}
+
+.buttonsContainer {
+  display: flex;
+  gap: 1em;
+}
+
+.buttonsContainer>button {
+  padding: .5em;
+  border-radius: 5px;
+  background-color: var(--tealGreen);
+  border: 1px solid var(--tealGreen);
+  color: white;
+  font-size: 1.2rem;
+}

@@ -138,7 +138,11 @@ function Chat() {
               sx={{
                 width: '55px',
                 height: '55px'
-              }} />
+              }}
+              style={{background: 'var(--lightGreen)'}}
+            >
+              {participant?.slice(0, 2).toUpperCase()}
+            </Avatar>
             <div
               className={styles.statusProfile}
               style={{ display: isUserOnline ? "unset" : "none" }} />
@@ -234,7 +238,9 @@ function Chat() {
           <div
             className={styles.leftSideContainer}>
             <div className={styles.actionsContainer}>
-              <Avatar />
+              <Avatar style={{background: 'var(--tealGreen)'}}>
+                {currentUser.username.slice(0, 2).toLocaleUpperCase()}
+              </Avatar>
               <div>
                 <button onClick={() => setOpenModal(true)}><MessageIcon /></button>
                 <button onClick={logout}><LogoutIcon /></button>

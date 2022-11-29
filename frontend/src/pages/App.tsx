@@ -1,4 +1,4 @@
-import Home from "./Home";
+import Home from "./Home/Home";
 import Chat from "./Chat/Chat";
 import { Routes, Route } from 'react-router-dom'
 import HandlePrivateRoute from "../components/HandlePrivateRoute/HandlePrivateRoute";
@@ -10,13 +10,7 @@ import HandleAuthRoute from "../components/HandleAuthRoute/HandleAuthRoute";
 function App() {
 
   return (
-    <div
-      style={{
-        display: 'flex',
-        // minHeight: '100vh',
-
-      }}>
-
+    <div style={{display: 'flex'}}>
       <Routes>
         <Route
           path='/'

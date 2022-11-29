@@ -7,6 +7,7 @@ import { useFormik } from 'formik'
 import hadleHelperText from '../../utils/hadleHelperText'
 import { useLogin } from './LoginAPI'
 import { useEffect } from 'react'
+import Layout from '../../components/Layout/Layout'
 
 interface InitialValues {
   username: string,
@@ -49,41 +50,43 @@ export default function Login() {
   })
 
   return (
-    <div className={styles.container}>
-      <div className={styles.containerInner}>
-        <h1>Login to your account</h1>
-        <Box
-          component="form"
-          className={styles.formContainer}
-          onSubmit={formik.handleSubmit}>
-          <TextField
-            label="Username"
-            helperText={hadleHelperText(formik.errors.username, formik.touched.username)}
-            name='username'
-            value={formik.values.username}
-            onChange={formik.handleChange}
-            onBlur={formik.handleBlur}
-            error={formik.errors.username !== undefined && formik.touched.username}
-          />
-          <TextField
-            type="password"
-            label="Password"
-            helperText={hadleHelperText(formik.errors.password, formik.touched.password)}
-            name='password'
-            value={formik.values.password}
-            onChange={formik.handleChange}
-            onBlur={formik.handleBlur}
-            error={formik.errors.password !== undefined && formik.touched.password}
-          />
-          <Button
-            type='submit'
-            variant='contained'>
+    <Layout>
+      <div className={styles.container}>
+        <div className={styles.containerInner}>
+          <h1>Login to your account</h1>
+          <Box
+            component="form"
+            className={styles.formContainer}
+            onSubmit={formik.handleSubmit}>
+            <TextField
+              label="Username"
+              helperText={hadleHelperText(formik.errors.username, formik.touched.username)}
+              name='username'
+              value={formik.values.username}
+              onChange={formik.handleChange}
+              onBlur={formik.handleBlur}
+              error={formik.errors.username !== undefined && formik.touched.username}
+            />
+            <TextField
+              type="password"
+              label="Password"
+              helperText={hadleHelperText(formik.errors.password, formik.touched.password)}
+              name='password'
+              value={formik.values.password}
+              onChange={formik.handleChange}
+              onBlur={formik.handleBlur}
+              error={formik.errors.password !== undefined && formik.touched.password}
+            />
+            <Button
+              type='submit'
+              variant='contained'>
             Login
-          </Button>
-        </Box>
-        <p>{`You don't have an account?`}</p>
-        <Link to='/register'>Create one now!</Link>
+            </Button>
+          </Box>
+          <p>{`You don't have an account?`}</p>
+          <Link to='/register'>Create one now!</Link>
+        </div>
       </div>
-    </div>
+    </Layout>
   )
 }

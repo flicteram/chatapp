@@ -5,7 +5,6 @@ const handleErrors = (
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   error: Error, _req: Request, res: Response, _next: NextFunction
 ) => {
-  console.log(error)
   if (error instanceof CustomError) {
     return res.status(error.statusCode).json({ message: error.message })
   }

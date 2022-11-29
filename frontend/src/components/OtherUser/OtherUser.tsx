@@ -53,7 +53,9 @@ function OtherUser({
       <button onClick={handleGoBack}>
         <ArrowBackIosIcon />
       </button>
-      <Avatar />
+      <Avatar style={{background: 'var(--lightGreen)'}}>
+        {otherUser?.username.slice(0, 2).toLocaleUpperCase()}
+      </Avatar>
       <div>
         <span>
           {otherUser?.username}
