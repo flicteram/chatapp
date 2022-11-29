@@ -86,14 +86,12 @@ function Conversation() {
   }, [gotNewMessage])
 
   useEffect(() => {
-    viewRef.current?.scrollIntoView({ behavior: 'smooth' })
-
-    // const timeout = setTimeout(() => {
-    //   viewRef.current?.scrollIntoView({ behavior: 'smooth' })
-    // }, 100)
-    // return () => {
-    //   clearTimeout(timeout)
-    // }
+    const timeout = setTimeout(() => {
+      viewRef.current?.scrollIntoView({ behavior: 'smooth' })
+    }, 200)
+    return () => {
+      clearTimeout(timeout)
+    }
   }, [gotNewMessage, sendMessageData, sendMessageLoading])
   useEffect(() => {
     const controller = new AbortController()
