@@ -23,13 +23,14 @@ interface OutletContext {
   gotNewMessage: GotNewMessage,
   handleSeenLastMessage: () => void,
   addLastMessageAndSortConversations: (sendToId: string, message: SendMessage) => void,
-  handleWindowHeight:{height?:number}
+  handleWindowHeight:{height?:number},
+  windowHeight:number
 }
 
 function Conversation() {
   const {
     socket, gotNewMessage, handleSeenLastMessage, addLastMessageAndSortConversations,
-    connectedUsers, handleWindowHeight
+    connectedUsers, handleWindowHeight, windowHeight
   } = useOutletContext<OutletContext>()
   const [pendingMessages, setPendingMessages] = useState<SendMessage[]>([])
   const currentUser = useUserSelector()
@@ -92,7 +93,7 @@ function Conversation() {
     return () => {
       clearTimeout(timeout)
     }
-  }, [gotNewMessage, sendMessageData, sendMessageLoading])
+  }, [gotNewMessage, sendMessageData, sendMessageLoading, windowHeight])
   useEffect(() => {
     const controller = new AbortController()
     request(controller, 20)

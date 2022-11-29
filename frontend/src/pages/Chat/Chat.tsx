@@ -271,7 +271,8 @@ function Chat() {
             handleSeenLastMessage,
             addLastMessageAndSortConversations,
             connectedUsers,
-            handleWindowHeight
+            handleWindowHeight,
+            windowHeight
           }} />
       </div>
     </div>
