@@ -103,7 +103,7 @@ export default function Register() {
             <Button
               type='submit'
               variant='contained'>
-            Register
+              Register
             </Button>
           </Box>
           <p>{`Already have an account ?`}</p>

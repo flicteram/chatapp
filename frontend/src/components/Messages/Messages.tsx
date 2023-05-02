@@ -20,13 +20,12 @@ interface Props {
   gotNewMessage: GotNewMessages,
   setNewMsg: Dispatch<SetStateAction<Conv | null>>,
   handleSeenLastMessage: () => void,
-  pendingMessages:SendMessage[]
-
+  pendingMessage: SendMessage | null
 }
 
 export default function Messages(
   {
-    socket, data, setNewMsg, handleSeenLastMessage, gotNewMessage, pendingMessages
+    socket, data, setNewMsg, handleSeenLastMessage, gotNewMessage, pendingMessage
   }: Props
 ) {
 
@@ -37,7 +36,6 @@ export default function Messages(
     [value: string]: number
   }>({})
   const { seenMessageRequest } = useSeenMessage()
-  console.log('pending', pendingMessages)
   useEffect(() => {
     socket.current.on('gotSeenMessages', (seenMsgData) => {
       if (seenMsgData.convId === convId.id) {
@@ -103,13 +101,12 @@ export default function Messages(
   }
   return (
     <>
-      {pendingMessages.map((m, index)=>(
+      {pendingMessage &&
         <div
           className={styles.container}
-          key={index}
           style={{alignItems: 'flex-end'}}>
           <div className={styles.messageData}>
-            <p>{m.message}</p>
+            <p>{pendingMessage.message}</p>
             <div>
               <CircularProgress
                 disableShrink
@@ -119,7 +116,7 @@ export default function Messages(
             </div>
           </div>
         </div>
-      ))}
+      }
       {data?.messages?.map((m, index) => (
         <div
           className={styles.container}

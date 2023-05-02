@@ -21,7 +21,6 @@ function useRegister() {
     try {
       const response = await axios.post(`/register`, { data: userCredentials })
       dispatch(authUser(response.data))
-      console.log(response.data)
     } catch (e: unknown) {
       const err = e as CustomAxiosError
       setError(err.response.data.message)

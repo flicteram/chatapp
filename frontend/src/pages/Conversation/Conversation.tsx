@@ -32,7 +32,7 @@ function Conversation() {
     socket, gotNewMessage, handleSeenLastMessage, addLastMessageAndSortConversations,
     connectedUsers, handleWindowHeight, windowHeight
   } = useOutletContext<OutletContext>()
-  const [pendingMessages, setPendingMessages] = useState<SendMessage[]>([])
+  const [pendingMessage, setPendingMessage] = useState<SendMessage | null>(null)
   const currentUser = useUserSelector()
   const viewRef = useRef<HTMLDivElement>(null)
   const convId = useParams()
@@ -56,7 +56,7 @@ function Conversation() {
       sentAt: dateNow.getTime(),
       seen: false,
     }
-    setPendingMessages(prevState=>[...prevState, newMessage])
+    setPendingMessage(newMessage)
     await sendMessageRequest(newMessage)
     socket.current.emit('sendMessage', {
       newMessage,
@@ -72,7 +72,7 @@ function Conversation() {
         ...prevState,
         messages: [sendMessageData, ...prevState.messages]
       } : null))
-      setPendingMessages(prevState=>prevState.slice(1))
+      setPendingMessage(null)
     }
   }, [sendMessageData])
 
@@ -143,7 +143,7 @@ function Conversation() {
               gotNewMessage={gotNewMessage}
               setNewMsg={setNewMsg}
               handleSeenLastMessage={handleSeenLastMessage}
-              pendingMessages={pendingMessages}
+              pendingMessage={pendingMessage}
             />
           }
         </InfiniteScroll>

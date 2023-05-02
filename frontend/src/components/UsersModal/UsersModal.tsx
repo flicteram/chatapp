@@ -38,7 +38,10 @@ function UsersModal({
       onClose={onCloseModal}>
       {loadingUsers ? (
         <CircularProgress
-          style={{ color: 'var(--lightGreen)' }}
+          style={{
+            color: 'var(--lightGreen)',
+            margin: '2em'
+          }}
           thickness={5} />
       ) : (
         <div className={styles.usersContainer}>
@@ -53,7 +56,6 @@ function UsersModal({
             </button>
           ))}
         </div>
-
       )
       }
     </Dialog>

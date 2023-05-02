@@ -2,16 +2,10 @@ import 'express-async-errors';
 import express from 'express';
 import connectDB from './db/index.js'
 import * as dotenv from 'dotenv'
+import publicRoutes from './routes/publicRoutes.js';
+import privateRoutes from './routes/privateRoutes.js';
 import cookieParser from 'cookie-parser'
-import registerRouter from './api/register.js'
-import authRouter from './api/auth.js'
-import usersRouter from './api/users.js'
-import refreshRouter from './api/refresh.js'
-import logoutRouter from './api/logout.js'
 import handleErrors from './middleware/handle-errors.js';
-import verifyJWT from './middleware/verifyJWT.js'
-import conversation from './api/conversation.js'
-import conversations from './api/conversations.js'
 import { updateUserDisconnect } from './controllers/users.js'
 import { Server } from 'socket.io';
 import cors from 'cors'
@@ -35,15 +29,8 @@ app.use(express.json())
 app.use(cookieParser())
 // routes
 
-app.use('/api/register', registerRouter)
-app.use('/api/auth', authRouter)
-app.use('/api/logout', logoutRouter)
-app.use('/api/refresh', refreshRouter)
-
-app.use(verifyJWT)
-app.use('/api/users', usersRouter)
-app.use('/api/conversation', conversation)
-app.use('/api/conversations', conversations)
+publicRoutes(app)
+privateRoutes(app)
 
 app.use(handleErrors)
 

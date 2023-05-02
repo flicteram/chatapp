@@ -13,8 +13,9 @@ function NavBar(){
           style={{color: 'white'}}
           fontSize="large"/>
       </Link>
-
-      <button onClick={() => navigate('/login')}><LoginIcon style={{color: 'white'}}/></button>
+      <button onClick={() => navigate('/login')}>
+        <LoginIcon style={{color: 'white'}}/>
+      </button>
     </nav>
   )
 }

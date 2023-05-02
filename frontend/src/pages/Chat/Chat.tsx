@@ -18,6 +18,8 @@ import LogoutIcon from '@mui/icons-material/Logout';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import CustomLoader from "../../components/CustomLoader/CustomLoader";
 
+const url = process.env.REACT_APP_WS_URL || 'ws://localhost:8080/'
+
 function Chat() {
 
   const useGetConversationsMemo = useCallback(() => useGetConversations(), [])
@@ -31,8 +33,6 @@ function Chat() {
   const {
     dataNewConversation, requestNewConversation
   } = useGetConversationNew()
-
-  const url = process.env.REACT_APP_WS_URL || 'ws://localhost:8080/'
 
   const params = useParams()
   const socket = useRef(io(url, { autoConnect: false }))
@@ -113,7 +113,11 @@ function Chat() {
   }
   const handleDisplayConversations = () => {
     if (!dataConversations.length) {
-      return <h3>No conversations</h3>
+      return <h3
+        style={{
+          textAlign: 'center',
+          marginTop: "1em"
+        }}>No conversations</h3>
     }
     const handleClickConversation = (convId: string) => {
       return () => {

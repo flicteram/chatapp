@@ -42,6 +42,13 @@ function OtherUser({
     })}`
   }
 
+  const handleIsOnline = (isOnline:boolean) =>(
+    isOnline ?
+      "Active now"
+      :
+      handleLastSeen(getOtherUserData?.lastLoggedIn || 0)
+  )
+
   const navigate = useNavigate()
 
   const handleGoBack = () => {
@@ -64,13 +71,10 @@ function OtherUser({
           getOtherUserLoading ?
             <Skeleton
               variant='text'
-              width={100} /> :
+              width={100} />
+            :
             <span>
-              {isOnline ?
-                "Active now "
-                :
-                handleLastSeen(getOtherUserData?.lastLoggedIn || 0)
-              }
+              {handleIsOnline(isOnline)}
             </span>
         }
       </div>
