@@ -131,11 +131,14 @@ function Conversation() {
         >
           <div
             ref={viewRef}/>
-          {data?.messages?.length === 0 ? <span
-            style={{
-              alignSelf: 'center',
-              marginTop: '1em'
-            }}>Be the first to send a message</span> :
+          {data?.messages?.length === 0 ?
+            <span
+              style={{
+                alignSelf: 'center',
+                marginTop: '1em'
+              }}>
+                Be the first to send a message
+            </span> :
             <Messages
               socket={socket}
               data={data}
