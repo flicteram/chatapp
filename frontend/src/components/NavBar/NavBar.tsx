@@ -10,11 +10,11 @@ function NavBar(){
     <nav className={styles.container}>
       <Link to='/'>
         <WhatsAppIcon
-          style={{color: 'white'}}
+          style={{ color: 'white' }}
           fontSize="large"/>
       </Link>
       <button onClick={() => navigate('/login')}>
-        <LoginIcon style={{color: 'white'}}/>
+        <LoginIcon style={{ color: 'white' }}/>
       </button>
     </nav>
   )

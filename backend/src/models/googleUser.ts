@@ -1,20 +1,25 @@
 import { Schema, model } from 'mongoose'
 
-interface IUser {
+interface IUserGoogle {
   username: string,
-  password: string,
+  email: string,
+  picture: string,
   lastLoggedIn: number,
   conversations:[Map<string, string>],
   refreshToken?: string,
 }
 
-const userSchema = new Schema<IUser>({
+const googleUserSchema = new Schema<IUserGoogle>({
   username: {
     type: String,
     required: true,
     maxlength: 20,
   },
-  password: {
+  email: {
+    type: String,
+    required: true
+  },
+  picture: {
     type: String,
     required: true
   },
@@ -32,4 +37,4 @@ const userSchema = new Schema<IUser>({
   }
 })
 
-export default model('User', userSchema)
+export default model('GoogleUser', googleUserSchema)

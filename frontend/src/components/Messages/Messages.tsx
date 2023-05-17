@@ -104,14 +104,14 @@ export default function Messages(
       {pendingMessage &&
         <div
           className={styles.container}
-          style={{alignItems: 'flex-end'}}>
+          style={{ alignItems: 'flex-end' }}>
           <div className={styles.messageData}>
             <p>{pendingMessage.message}</p>
             <div>
               <CircularProgress
                 disableShrink
                 color='primary'
-                style={{color: 'var(--tealGreen)'}}
+                style={{ color: 'var(--tealGreen)' }}
                 size={15}/>
             </div>
           </div>
@@ -121,7 +121,7 @@ export default function Messages(
         <div
           className={styles.container}
           key={index}
-          style={{alignItems: m.sentBy._id === currentUser._id ? 'flex-end' : 'flex-start'}}>
+          style={{ alignItems: m.sentBy._id === currentUser._id ? 'flex-end' : 'flex-start' }}>
           {datesState[getDate(m.sentAt)] === index &&
             <span
               className={styles.date}>

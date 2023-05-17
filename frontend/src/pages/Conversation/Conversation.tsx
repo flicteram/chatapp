@@ -44,7 +44,6 @@ function Conversation() {
   } = useSendMessage()
 
   const otherUser = data?.participants.find(u => u._id !== currentUser._id)
-
   const handleSendMessage = async (msg: string) => {
     const dateNow = new Date()
     const newMessage = {
@@ -102,7 +101,11 @@ function Conversation() {
     }
   }, [convId.id])
 
-  if (error) return <h2>{error}</h2>
+  if (error) return <h2
+    style={{
+      textAlign: 'center',
+      alignSelf: 'center'
+    }}>{error}</h2>
   if (isLoading) return <CustomLoader />
   return (
     <div
@@ -155,8 +158,7 @@ function Conversation() {
         handleSendMessage={handleSendMessage}
         sendMessageLoading={sendMessageLoading}
       />
-
-    </div >
+    </div>
 
   )
 }

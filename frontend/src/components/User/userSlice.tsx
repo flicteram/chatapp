@@ -5,7 +5,7 @@ const initialState: IUser = {
   user: {
     accessToken: '',
     username: '',
-    _id: ''
+    _id: '',
   }
 }
 

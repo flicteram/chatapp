@@ -29,6 +29,12 @@ const handleRegister = async (req, res) => {
         username,
         _id: user._id
     }, process.env.SECRET_ACCESS_TOKEN, { expiresIn: "5m" });
+    res.cookie('jwt', refreshToken, {
+        httpOnly: true,
+        maxAge: 24 * 60 * 60 * 1000,
+        secure: true,
+        sameSite: 'none',
+    });
     res.status(StatusCodes.OK).json({
         accessToken,
         username: user.username,

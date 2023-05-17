@@ -1,4 +1,5 @@
 import User from '../models/user.js';
+import GoogleUser from "../models/googleUser.js";
 import Conversation from '../models/conversation.js';
 const getUsers = async (req, res) => {
     // Check for existing conversations
@@ -9,15 +10,27 @@ const getUsers = async (req, res) => {
         currentUserConversations.map(conv => conv.participants.map(i => excludeUsers.add(i.get('username'))));
     }
     excludeUsers.add(req.currentUser.username);
-    const allUsers = await User.find({ username: { $nin: [...excludeUsers] } }, ['-refreshToken', '-password']);
-    return res.json(allUsers);
+    const [normalUser, googleUser] = await Promise.all([
+        User.find({ username: { $nin: [...excludeUsers] } }, ['-refreshToken', '-password']),
+        GoogleUser.find({ username: { $nin: [...excludeUsers] } }, '-refreshToken')
+    ]);
+    return res.json([
+        ...normalUser,
+        ...googleUser
+    ]);
 };
 const getOtherUser = async (req, res) => {
-    const user = await User.findById(req.params.id, ['-refreshToken', '-password']);
-    return res.json(user);
+    const [normalUser, googleUser] = await Promise.all([
+        User.findById(req.params.id, ['-refreshToken', '-password']),
+        GoogleUser.findById(req.params.id, '-refreshToken')
+    ]);
+    return res.json(normalUser || googleUser);
 };
 const updateUserDisconnect = async (disconnectedUser) => {
-    await User.findByIdAndUpdate(disconnectedUser.userId, { lastLoggedIn: Date.now() }, { returnDocument: "after" });
+    await Promise.all([
+        GoogleUser.findByIdAndUpdate(disconnectedUser.userId, { lastLoggedIn: Date.now() }, { returnDocument: "after" }),
+        User.findByIdAndUpdate(disconnectedUser.userId, { lastLoggedIn: Date.now() }, { returnDocument: "after" })
+    ]);
     return "Disconnected!";
 };
 export { getUsers, updateUserDisconnect, getOtherUser };

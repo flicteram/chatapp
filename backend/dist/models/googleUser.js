@@ -1,11 +1,15 @@
 import { Schema, model } from 'mongoose';
-const userSchema = new Schema({
+const googleUserSchema = new Schema({
     username: {
         type: String,
         required: true,
         maxlength: 20,
     },
-    password: {
+    email: {
+        type: String,
+        required: true
+    },
+    picture: {
         type: String,
         required: true
     },
@@ -22,4 +26,4 @@ const userSchema = new Schema({
         required: true,
     }
 });
-export default model('User', userSchema);
+export default model('GoogleUser', googleUserSchema);

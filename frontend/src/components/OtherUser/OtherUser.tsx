@@ -1,15 +1,15 @@
 import { useGetOtherUser } from './OtherUserApi'
 import { useEffect, memo } from 'react'
-import Avatar from '@mui/material/Avatar';
 import styles from './OtherUser.module.css'
 import Skeleton from '@mui/material/Skeleton'
 import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
 import { useNavigate } from 'react-router-dom'
-
+import UserAvatar from "../UserAvatar"
 interface Props {
   otherUser: {
     username: string,
-    _id: string
+    _id: string,
+    picture?:string,
   } | undefined,
   isOnline: boolean
 }
@@ -17,6 +17,7 @@ interface Props {
 function OtherUser({
   otherUser, isOnline
 }: Props) {
+
   const {
     getOtherUserRequest, getOtherUserData, getOtherUserLoading
   } = useGetOtherUser()
@@ -55,14 +56,19 @@ function OtherUser({
     navigate('/chat')
   }
 
+  const hasProfilePicture = !!getOtherUserData?.picture
+  const pictureToShow = getOtherUserData?.picture || otherUser?.username.slice(0, 2).toLocaleUpperCase()
+
   return (
     <div className={styles.container}>
       <button onClick={handleGoBack}>
         <ArrowBackIosIcon />
       </button>
-      <Avatar style={{background: 'var(--lightGreen)'}}>
-        {otherUser?.username.slice(0, 2).toLocaleUpperCase()}
-      </Avatar>
+      <UserAvatar
+        hasProfilePicture={hasProfilePicture}
+        pictureToShow={pictureToShow}
+        isLoading={getOtherUserLoading}
+      />
       <div>
         <span>
           {otherUser?.username}

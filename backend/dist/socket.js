@@ -3,10 +3,11 @@ export default function handleWebSocket(io) {
     let users = [];
     io.on("connection", (socket) => {
         socket.on("userConnected", (args) => {
-            users.push({
+            const user = {
                 ...args,
                 socketId: socket.id
-            });
+            };
+            users.push(user);
             io.emit("connectedUsers", users);
         });
         socket.on('sendMessage', (message) => {
@@ -22,11 +23,20 @@ export default function handleWebSocket(io) {
             }
         });
         socket.on("disconnect", async () => {
-            const disconnectedUser = users?.find(user => user.socketId === socket.id);
-            users = users.filter(user => user.socketId !== socket.id);
+            let disconnectedUser = {};
+            const connectedUsers = [];
+            users.forEach((user) => {
+                if (user.socketId === socket.id) {
+                    disconnectedUser = user;
+                }
+                else {
+                    connectedUsers.push(user);
+                }
+            });
             if (disconnectedUser !== undefined) {
                 await updateUserDisconnect(disconnectedUser);
             }
+            users = connectedUsers;
             io.emit("connectedUsers", users);
         });
     });

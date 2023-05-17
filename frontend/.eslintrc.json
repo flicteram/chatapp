@@ -13,6 +13,7 @@
     "plugin:@typescript-eslint/recommended"
   ],
   "rules": {
+    "object-curly-spacing": ["error", "always"],
     "function-call-argument-newline": [
       "error",
       "consistent"
@@ -47,7 +48,8 @@
     "key-spacing": [
       "error",
       {
-        "beforeColon": false
+        "beforeColon": false,
+        "afterColon": true
       }
     ],
     "comma-spacing": [

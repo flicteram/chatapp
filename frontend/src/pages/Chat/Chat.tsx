@@ -1,23 +1,22 @@
 import useLogout from "../../hooks/useLogout";
 import { memo, useState, useEffect, useRef, useCallback } from 'react'
 import UsersModal from "../../components/UsersModal/UsersModal";
-import { Outlet, useNavigate, useParams } from 'react-router-dom'
+import { Outlet, useParams } from 'react-router-dom'
 import { useGetConversations, useCreateConversation, useGetConversationNew } from "./ChatAPI";
 import useUserSelector from '../../components/User/useUserSelector'
-import Conv from '../../interfaces/Conversation'
 import { io } from 'socket.io-client'
 import ConnectedUser from "../../interfaces/ConnectedUser";
 import GotNewMessage from "../../interfaces/GotNewMeessage";
-import { User } from '../../interfaces/User'
 import SendMessage from '../../interfaces/SendMessage'
 import useWindowSize from "../../hooks/useWindowSize";
 import styles from './Chat.module.css'
-import Avatar from '@mui/material/Avatar';
 import MessageIcon from '@mui/icons-material/Message';
 import LogoutIcon from '@mui/icons-material/Logout';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import CustomLoader from "../../components/CustomLoader/CustomLoader";
-
+import UserAvatar from "../../components/UserAvatar";
+import OtherUser from "../../interfaces/OtherUser";
+import Conversations from "../../components/Conversations";
 const url = process.env.REACT_APP_WS_URL || 'ws://localhost:8080/'
 
 function Chat() {
@@ -40,14 +39,11 @@ function Chat() {
     windowWidth, windowHeight
   } = useWindowSize()
 
-  const navigate = useNavigate()
   const currentUser = useUserSelector()
   const [connectedUsers, setConnectedUsers] = useState<ConnectedUser[]>([])
   const [openModal, setOpenModal] = useState(false)
   const [gotNewMessage, setGotNewMessage] = useState<GotNewMessage | null>(null)
-  const handleOnCloseModal = () => {
-    setOpenModal(false)
-  }
+  const handleOnCloseModal = () => setOpenModal(false)
   const handleSeenLastMessage = () => {
     const hasLastMessageSeen = dataConversations.find(conv => conv._id === params.id)
     if (
@@ -73,7 +69,7 @@ function Chat() {
       }))
     }
   }
-  const addLastMessageAndSortConversations = (sendToId: string, message: SendMessage) => {
+  const addLastMessageAndSortConversations = useCallback((sendToId: string, message: SendMessage) => {
     setAddConversation(prevState => prevState.map(conv => {
       if (conv._id === sendToId) {
         return {
@@ -82,9 +78,9 @@ function Chat() {
         }
       }
       return conv
-    }).sort((a, b) => b?.lastMessage?.sentAt - a?.lastMessage?.sentAt))
-  }
-  const handleCreateConv = (user: User) => {
+    }).sort((a, b) => (b?.lastMessage?.sentAt || -Infinity) - (a?.lastMessage?.sentAt || -Infinity)))
+  }, [])
+  const handleCreateConv = (user: OtherUser) => {
     return async () => {
       const sendUser = {
         otherUser: {
@@ -95,90 +91,6 @@ function Chat() {
       await requestCreateConv(sendUser)
       handleOnCloseModal()
     }
-  }
-
-  const handleDate = (sentAt: number) => {
-    const date = new Date(sentAt)
-    const today = new Date()
-    if (date.toDateString() === today.toDateString()) {
-      return date.toLocaleTimeString('en-GB', {
-        hour: 'numeric',
-        minute: 'numeric'
-      })
-    }
-    if (date.toLocaleDateString('en-GB') === "Invalid Date") {
-      return ''
-    }
-    return date.toLocaleDateString('en-GB')
-  }
-  const handleDisplayConversations = () => {
-    if (!dataConversations.length) {
-      return <h3
-        style={{
-          textAlign: 'center',
-          marginTop: "1em"
-        }}>No conversations</h3>
-    }
-    const handleClickConversation = (convId: string) => {
-      return () => {
-        navigate(convId)
-      }
-    }
-
-    const conversations: JSX.Element[] = [];
-
-    dataConversations.forEach((conv: Conv) => {
-      const participant = conv.participants.find(i => i.username !== currentUser.username)?.username
-      const isUserOnline = connectedUsers.some(u => u?.username === participant)
-      conversations.push(
-        <button
-          className={styles.convContainer}
-          key={conv._id}
-          onClick={handleClickConversation(conv._id)}
-          style={conv._id === params.id ? { background: 'var(--gray)' } : {}}
-        >
-          <div className={styles.profilePicContainer}>
-            <Avatar
-              sx={{
-                width: '55px',
-                height: '55px'
-              }}
-              style={{background: 'var(--lightGreen)'}}
-            >
-              {participant?.slice(0, 2).toUpperCase()}
-            </Avatar>
-            <div
-              className={styles.statusProfile}
-              style={{ display: isUserOnline ? "unset" : "none" }} />
-          </div>
-          <div className={styles.convLeftContainer}>
-            <div className={styles.convLeft}>
-              <div className={styles.convLeftInfo}>
-                <h3>{participant}</h3>
-                {conv?.lastMessage.sentBy &&
-                  <span>
-                    {conv.lastMessage.message}
-                  </span>
-                }
-              </div>
-              <div className={styles.convRight}>
-                <span>{handleDate(conv.lastMessage.sentAt)}</span>
-                <span
-                  className={styles.newMessage}
-                  style={(conv?.lastMessage?.sentBy?.username !== currentUser.username)
-                    &&
-                    conv?.lastMessage?.seen === false ? { display: "unset" } : { display: 'none' }
-                  }
-                />
-              </div>
-            </div>
-          </div>
-
-        </button>
-      )
-    })
-
-    return conversations
   }
 
   useEffect(() => {
@@ -225,9 +137,8 @@ function Chat() {
 
   const logout = useLogout()
 
-  const handleWindowHeight = windowWidth > 750 ? {} : {height: windowHeight}
-  const handleWindowHeightlow = windowWidth < 750 ? {} : {height: windowHeight}
-
+  const handleWindowHeight = windowWidth > 750 ? {} : { height: windowHeight }
+  const handleWindowHeightlow = windowWidth < 750 ? {} : { height: windowHeight }
   if (isLoading) return <CustomLoader />
 
   return (
@@ -242,17 +153,20 @@ function Chat() {
           <div
             className={styles.leftSideContainer}>
             <div className={styles.actionsContainer}>
-              <Avatar style={{background: 'var(--tealGreen)'}}>
-                {currentUser.username.slice(0, 2).toLocaleUpperCase()}
-              </Avatar>
+              <UserAvatar
+                hasProfilePicture={!!currentUser.picture}
+                pictureToShow={currentUser.picture || currentUser.username.slice(0, 2).toLocaleUpperCase()}
+                isLoading={false}
+              />
               <div>
                 <button onClick={() => setOpenModal(true)}><MessageIcon /></button>
                 <button onClick={logout}><LogoutIcon /></button>
               </div>
             </div>
-            <div className={styles.convsContainer}>
-              {handleDisplayConversations()}
-            </div>
+            <Conversations
+              connectedUsers={connectedUsers}
+              dataConversations={dataConversations}
+            />
             {openModal &&
               <UsersModal
                 handleCreateConv={handleCreateConv}

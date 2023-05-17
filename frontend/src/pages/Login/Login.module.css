@@ -31,6 +31,8 @@
 .formContainer>button {
   background-color: var(--tealGreen);
   letter-spacing: .1em;
+  color:white;
+  text-transform: none;
 }
 
 .formContainer>button:hover {

@@ -22,6 +22,7 @@ function MessageInput({
       inputRef.current?.focus()
     }
   }
+  const placeholder = sendMessageLoading ? "Sending message..." : "Type a message"
   useEffect(() => {
     inputRef.current?.focus()
   }, [sendMessageLoading])
@@ -32,7 +33,7 @@ function MessageInput({
       <input
         disabled={sendMessageLoading}
         ref={inputRef}
-        placeholder={sendMessageLoading?"Sending message...":"Type a message"}
+        placeholder={placeholder}
         value={message}
         onChange={handleMessageChange} />
       <button

@@ -23,12 +23,13 @@
 /// <reference types="mongoose/types/virtuals" />
 /// <reference types="mongoose/types/inferschematype" />
 import { Schema } from 'mongoose';
-interface IUser {
+interface IUserGoogle {
     username: string;
-    password: string;
+    email: string;
+    picture: string;
     lastLoggedIn: number;
     conversations: [Map<string, string>];
     refreshToken?: string;
 }
-declare const _default: import("mongoose").Model<IUser, {}, {}, {}, Schema<IUser, import("mongoose").Model<IUser, any, any, any, any>, {}, {}, {}, {}, "type", IUser>>;
+declare const _default: import("mongoose").Model<IUserGoogle, {}, {}, {}, Schema<IUserGoogle, import("mongoose").Model<IUserGoogle, any, any, any, any>, {}, {}, {}, {}, "type", IUserGoogle>>;
 export default _default;

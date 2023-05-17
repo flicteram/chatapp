@@ -1,15 +1,15 @@
 import { memo, useEffect } from 'react'
 import Dialog from '@mui/material/Dialog'
 import { useGetUsers } from "./UsersModalAPI";
-import { User } from '../../interfaces/User'
-import Avatar from '@mui/material/Avatar'
+import OtherUser from '../../interfaces/OtherUser'
 import styles from './UsersModal.module.css'
 import CircularProgress from '@mui/material/CircularProgress'
+import UserAvatar from '../UserAvatar';
 
 interface Props {
   openModal: boolean,
   onCloseModal: () => void,
-  handleCreateConv: (user: User) => () => Promise<void>,
+  handleCreateConv: (user: OtherUser) => () => Promise<void>,
 }
 
 function UsersModal({
@@ -21,11 +21,9 @@ function UsersModal({
     // errorUsers,
     requestUsers
   } = useGetUsers()
-
   useEffect(() => {
     const controller = new AbortController();
     requestUsers(controller)
-
     return () => {
       controller.abort()
     }
@@ -44,18 +42,27 @@ function UsersModal({
           }}
           thickness={5} />
       ) : (
-        <div className={styles.usersContainer}>
-          {dataUsers.map((user: User) => (
-            <button
-              key={user._id}
-              onClick={handleCreateConv(user)}
-              className={styles.user}
-            >
-              <Avatar />
-              {user.username}
-            </button>
-          ))}
-        </div>
+        dataUsers.length > 0 ?
+          <div className={styles.usersContainer}>
+            {dataUsers.map((user: OtherUser) => (
+              <button
+                key={user._id}
+                onClick={handleCreateConv(user)}
+                className={styles.user}
+              >
+                <UserAvatar
+                  hasProfilePicture={!!user.picture}
+                  pictureToShow={user.picture || user.username.slice(0, 2).toUpperCase()}
+                  isLoading={false}
+                />
+                {user.username}
+              </button>
+            ))}
+          </div>
+          :
+          <h2 style={{ textAlign: 'center' }}>
+            No users available
+          </h2>
       )
       }
     </Dialog>

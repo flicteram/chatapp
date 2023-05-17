@@ -8,6 +8,7 @@ import { Link } from 'react-router-dom'
 import { useRegister } from './RegisterAPI'
 import { useEffect } from 'react'
 import Layout from '../../components/Layout/Layout'
+import GoogleLogin from "../../components/GoogleLogin/GoogleLogin"
 
 interface InitialValues {
   username: string,
@@ -15,35 +16,35 @@ interface InitialValues {
   confirmPassword: string,
 }
 
+const handleValidate = (values: InitialValues) => {
+  const errors = {} as InitialValues
+
+  if (!values.username) {
+    errors.username = 'Required'
+  } else if (values.username.length < 6) {
+    errors.username = 'Must have at least 6 chars'
+  } else if (values.username.length > 20) {
+    errors.username = 'Username max length 20'
+  }
+  if (!values.password) {
+    errors.password = 'Required'
+  } else if (values.password.length < 6) {
+    errors.password = 'Must have at least 6 chars'
+  }
+  if (!values.confirmPassword) {
+    errors.confirmPassword = 'Required'
+  }
+  if (values.password !== values.confirmPassword) {
+    errors.confirmPassword = 'Passwords does not match'
+  }
+  return errors
+}
+
 export default function Register() {
 
   const {
     registerRequest, registerError
   } = useRegister()
-
-  const handleValidate = (values: InitialValues) => {
-    const errors = {} as InitialValues
-
-    if (!values.username) {
-      errors.username = 'Required'
-    } else if (values.username.length < 6) {
-      errors.username = 'Must have at least 6 chars'
-    } else if (values.username.length > 20) {
-      errors.username = 'Username max length 20'
-    }
-    if (!values.password) {
-      errors.password = 'Required'
-    } else if (values.password.length < 6) {
-      errors.password = 'Must have at least 6 chars'
-    }
-    if (!values.confirmPassword) {
-      errors.confirmPassword = 'Required'
-    }
-    if (values.password !== values.confirmPassword) {
-      errors.confirmPassword = 'Passwords does not match'
-    }
-    return errors
-  }
 
   const formik = useFormik({
     initialValues: {
@@ -105,6 +106,8 @@ export default function Register() {
               variant='contained'>
               Register
             </Button>
+            <span style={{ textAlign: 'center' }}>or</span>
+            <GoogleLogin/>
           </Box>
           <p>{`Already have an account ?`}</p>
           <Link to='/login'>Login with existing account</Link>

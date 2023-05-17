@@ -1,9 +1,10 @@
 import { useState } from 'react'
 import useInterceptor from '../../hooks/useInterceptor'
+import OtherUser from '../../interfaces/OtherUser';
 
 export function useGetUsers() {
   const [isLoading, setIsLoading] = useState(true);
-  const [data, setData] = useState([]);
+  const [data, setData] = useState<OtherUser[] | []>([]);
   const [error, setError] = useState('');
   const axios = useInterceptor();
 

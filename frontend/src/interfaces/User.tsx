@@ -3,7 +3,8 @@ export default interface IUser {
   user: {
     accessToken: string,
     username: string,
-    _id: string
+    _id: string,
+    picture?:string
   }
 }
 

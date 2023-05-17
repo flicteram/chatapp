@@ -1,5 +1,6 @@
 import Conversation from '../models/conversation.js';
 import User from '../models/user.js';
+import GoogleUser from "../models/googleUser.js";
 import CustomError from '../errors/customError.js';
 import { StatusCodes } from 'http-status-codes';
 import mongoose from 'mongoose';
@@ -7,11 +8,41 @@ const newConversation = async (req, res) => {
     if (!req?.body?.data?.otherUser._id || !req?.body?.data?.otherUser.username) {
         throw new CustomError("Please provide both _id and username", StatusCodes.BAD_REQUEST);
     }
-    const otherUser = await User.findById(req.body.data.otherUser._id);
+    const [otherUserNormal, otherUserGoogle] = await Promise.all([
+        User.findById(req.body.data.otherUser._id),
+        GoogleUser.findById(req.body.data.otherUser._id)
+    ]);
+    const otherUser = otherUserNormal || otherUserGoogle;
     if (!otherUser || req.currentUser._id === req.body.data.otherUser._id) {
         throw new CustomError("Can not create conversation", StatusCodes.BAD_REQUEST);
     }
     const newConv = new Conversation({ participants: [req.currentUser, req.body.data.otherUser] });
+    await Promise.all([
+        otherUser.updateOne({
+            $push: {
+                conversations: {
+                    id: newConv._id,
+                    otherUserId: req.currentUser._id
+                }
+            }
+        }),
+        User.findByIdAndUpdate(req.currentUser._id, {
+            $push: {
+                conversations: {
+                    id: newConv._id,
+                    otherUserId: otherUser._id
+                }
+            }
+        }),
+        GoogleUser.findByIdAndUpdate(req.currentUser._id, {
+            $push: {
+                conversations: {
+                    id: newConv._id,
+                    otherUserId: otherUser._id
+                }
+            }
+        })
+    ]);
     await newConv.save();
     res.status(StatusCodes.CREATED).json(newConv);
 };

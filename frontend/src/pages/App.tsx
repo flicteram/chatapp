@@ -10,7 +10,7 @@ import HandleAuthRoute from "../components/HandleAuthRoute/HandleAuthRoute";
 function App() {
 
   return (
-    <div style={{display: 'flex'}}>
+    <div style={{ display: 'flex' }}>
       <Routes>
         <Route
           path='/'

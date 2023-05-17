@@ -8,7 +8,7 @@ import hadleHelperText from '../../utils/hadleHelperText'
 import { useLogin } from './LoginAPI'
 import { useEffect } from 'react'
 import Layout from '../../components/Layout/Layout'
-
+import GoogleLogin from "../../components/GoogleLogin/GoogleLogin"
 interface InitialValues {
   username: string,
   password: string,
@@ -48,7 +48,6 @@ export default function Login() {
     validate: handleValidate,
     onSubmit: (values) => loginRequest(values)
   })
-
   return (
     <Layout>
       <div className={styles.container}>
@@ -82,6 +81,8 @@ export default function Login() {
               variant='contained'>
             Login
             </Button>
+            <span style={{ textAlign: 'center' }}>or</span>
+            <GoogleLogin/>
           </Box>
           <p>{`You don't have an account?`}</p>
           <Link to='/register'>Create one now!</Link>

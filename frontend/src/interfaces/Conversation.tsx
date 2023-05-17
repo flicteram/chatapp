@@ -1,12 +1,10 @@
 import SendMessage from './SendMessage'
+import OtherUser from './OtherUser'
 
 interface Conv {
   lastMessage: SendMessage
   messages: SendMessage[],
-  participants: {
-    username: string,
-    _id: string
-  }[],
+  participants: OtherUser[],
   _id: string
 
 }
