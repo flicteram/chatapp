@@ -29,13 +29,11 @@ const getConversations = async (req, res) => {
     const returnedConvs = myConvs.map(conv => {
         const participants = [];
         conv.participants.forEach(p => {
-            const currentParticipant = users.get(p.get('_id'));
-            if (!currentParticipant) {
+            if (p.get('_id') === currentUser?._id.toString()) {
                 return;
             }
-            if (currentParticipant?._id !== currentUser?._id) {
-                participants.push(currentParticipant);
-            }
+            const currentParticipant = users.get(p.get('_id'));
+            participants.push(currentParticipant);
         });
         return {
             ...conv.toJSON(),

@@ -4,12 +4,16 @@ import User from '../models/user.js'
 import GoogleUser from "../models/googleUser.js"
 import CustomError from '../errors/customError.js'
 import { StatusCodes } from 'http-status-codes'
-import mongoose from 'mongoose'
+import mongoose, {  } from 'mongoose'
 
 interface ParticipantUser {
   username: string,
   _id: string
 }
+const addConvId = (convId:string, userId:string) =>({
+  id: convId,
+  otherUserId: userId
+})
 
 const newConversation = async (req: Request, res: Response) => {
 
@@ -26,31 +30,11 @@ const newConversation = async (req: Request, res: Response) => {
   }
   const newConv = new Conversation({ participants: [req.currentUser, req.body.data.otherUser] })
   await Promise.all([
-    otherUser.updateOne({
-      $push: {
-        conversations: {
-          id: newConv._id,
-          otherUserId: req.currentUser._id
-        }
-      }
-    }),
-    User.findByIdAndUpdate(req.currentUser._id, {
-      $push: {
-        conversations: {
-          id: newConv._id,
-          otherUserId: otherUser._id
-        }
-      }
-    }),
-    GoogleUser.findByIdAndUpdate(req.currentUser._id, {
-      $push: {
-        conversations: {
-          id: newConv._id,
-          otherUserId: otherUser._id
-        }
-      }
-    })
+    otherUser.updateOne({ $push: { conversations: addConvId(newConv._id.toString(), req.currentUser._id) } }),
+    User.findByIdAndUpdate(req.currentUser._id, { $push: { conversations: addConvId(newConv._id.toString(), otherUser._id.toString()) } }),
+    GoogleUser.findByIdAndUpdate(req.currentUser._id, { $push: { conversations: addConvId(newConv._id.toString(), otherUser._id.toString()) } })
   ])
+  newConv.participants[1].set("picture", otherUserGoogle?.picture || "")
   await newConv.save()
   res.status(StatusCodes.CREATED).json(newConv)
 }

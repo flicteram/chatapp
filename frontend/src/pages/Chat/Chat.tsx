@@ -95,6 +95,7 @@ function Chat() {
 
   useEffect(() => {
     if (dataCreateConv !== null) {
+      console.log(dataCreateConv)
       setAddConversation(prevState => ([...prevState, dataCreateConv]))
     }
   }, [dataCreateConv])
