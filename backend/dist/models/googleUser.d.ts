@@ -23,7 +23,7 @@
 /// <reference types="mongoose/types/virtuals" />
 /// <reference types="mongoose/types/inferschematype" />
 import { Schema } from 'mongoose';
-interface IUserGoogle {
+export interface IUserGoogle {
     username: string;
     email: string;
     picture: string;
