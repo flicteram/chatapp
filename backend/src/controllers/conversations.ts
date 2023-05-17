@@ -1,8 +1,8 @@
 import { Request, Response } from 'express'
 import Conversation from '../models/conversation.js'
 import { StatusCodes } from 'http-status-codes'
-import User from '../models/user.js'
-import GoogleUser from '../models/googleUser.js'
+import User, { IUser } from '../models/user.js'
+import GoogleUser, { IUserGoogle } from '../models/googleUser.js'
 
 const getConversations = async (req: Request, res: Response) => {
 
@@ -31,10 +31,18 @@ const getConversations = async (req: Request, res: Response) => {
   dbUsers.flat().forEach((user)=>{
     users.set(user._id.toString(), user)
   })
-
   // Add user data based on id to each
   const returnedConvs = myConvs.map(conv=>{
-    const participants = conv.participants.map(p=>users.get(p.get('_id')))
+    const participants: IUser | IUserGoogle[] = [];
+    conv.participants.forEach(p=>{
+      const currentParticipant = users.get(p.get('_id'))
+      if(!currentParticipant){
+        return
+      }
+      if(currentParticipant?._id !== currentUser?._id){
+        participants.push(currentParticipant)
+      }
+    })
     return{
       ...conv.toJSON(),
       participants

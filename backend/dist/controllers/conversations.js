@@ -27,7 +27,16 @@ const getConversations = async (req, res) => {
     });
     // Add user data based on id to each
     const returnedConvs = myConvs.map(conv => {
-        const participants = conv.participants.map(p => users.get(p.get('_id')));
+        const participants = [];
+        conv.participants.forEach(p => {
+            const currentParticipant = users.get(p.get('_id'));
+            if (!currentParticipant) {
+                return;
+            }
+            if (currentParticipant?._id !== currentUser?._id) {
+                participants.push(currentParticipant);
+            }
+        });
         return {
             ...conv.toJSON(),
             participants

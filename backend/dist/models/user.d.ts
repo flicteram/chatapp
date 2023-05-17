@@ -23,7 +23,7 @@
 /// <reference types="mongoose/types/virtuals" />
 /// <reference types="mongoose/types/inferschematype" />
 import { Schema } from 'mongoose';
-interface IUser {
+export interface IUser {
     username: string;
     password: string;
     lastLoggedIn: number;
