@@ -5,8 +5,7 @@
     "sourceType": "module"
   },
   "plugins": [
-    "@typescript-eslint",
-    "destructuring-newline"
+    "@typescript-eslint"
   ],
   "extends": [
     "eslint:recommended",
@@ -14,7 +13,6 @@
     "plugin:@typescript-eslint/recommended"
   ],
   "rules": {
-    "destructuring-newline/object-property-newline": 2,
     "object-curly-spacing": ["error", "always"],
     "function-call-argument-newline": [
       "error",
