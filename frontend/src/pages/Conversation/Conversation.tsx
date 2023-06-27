@@ -1,17 +1,19 @@
-import { useEffect, useRef, memo, useMemo } from "react"
+import { useParams } from "react-router-dom"
+import { useGetConversation, useSendMessage } from './ConversationAPI'
+import { useEffect, useRef, useState, memo } from "react"
 import { useOutletContext } from "react-router-dom"
+import useUserSelector from '../../components/User/useUserSelector';
 import GotNewMessage from "../../interfaces/GotNewMeessage";
 // import Conv from '../../interfaces/Conversation'
 import InfiniteScroll from 'react-infinite-scroll-component';
 import { Socket } from 'socket.io-client'
-import Messages from '../../components/Messages'
+import Messages from '../../components/Messages/Messages'
 import SendMessage from '../../interfaces/SendMessage'
 import ConnectedUser from "../../interfaces/ConnectedUser";
 import OtherUser from '../../components/OtherUser/OtherUser'
 import CustomLoader from "../../components/CustomLoader/CustomLoader";
 import styles from './Conversation.module.css'
 import MessageInput from '../../components/MessageInput/MessageInput'
-import useConversation from "./hooks/useConversation";
 
 interface OutletContext {
   socket: {
@@ -35,19 +37,58 @@ function Conversation() {
     handleWindowHeight,
     windowHeight
   } = useOutletContext<OutletContext>()
+  const [pendingMessage, setPendingMessage] = useState<SendMessage | null>(null)
+  const currentUser = useUserSelector()
   const viewRef = useRef<HTMLDivElement>(null)
+  const convId = useParams()
   const {
-    errorConversation,
-    getConversation,
-    handleSendMessage,
-    hasMoreMessages,
-    isConversationLoading,
-    pendingMessage,
-    sendMessageLoading,
-    otherUser,
-    conversationData,
-    makeMessagesSeen
-  } = useConversation(addLastMessageAndSortConversations, socket, gotNewMessage)
+    request, data, isLoading, setNewMsg, hasMore, error,
+  } = useGetConversation()
+  const {
+    sendMessageData, sendMessageLoading, sendMessageRequest
+  } = useSendMessage()
+
+  const otherUser = data?.participants.find(u => u._id !== currentUser._id)
+  const handleSendMessage = async (msg: string) => {
+    const dateNow = new Date()
+    const newMessage = {
+      message: msg,
+      sentBy: {
+        username: currentUser.username,
+        _id: currentUser._id
+      },
+      sentAt: dateNow.getTime(),
+      seen: false,
+    }
+    setPendingMessage(newMessage)
+    await sendMessageRequest(newMessage)
+    socket.current.emit('sendMessage', {
+      newMessage,
+      sentToId: otherUser?._id,
+      convId: convId.id
+    })
+    convId.id && addLastMessageAndSortConversations(convId.id, newMessage)
+  }
+
+  useEffect(() => {
+    if (sendMessageData !== null) {
+      setNewMsg(prevState => (prevState ? {
+        ...prevState,
+        messages: [sendMessageData, ...prevState.messages]
+      } : null))
+      setPendingMessage(null)
+    }
+  }, [sendMessageData])
+
+  useEffect(() => {
+    if (gotNewMessage !== null && gotNewMessage.convId === convId.id) {
+      setNewMsg(prevState => (prevState ? {
+        ...prevState,
+        lastMessage: gotNewMessage.newMessage,
+        messages: [gotNewMessage.newMessage, ...prevState.messages]
+      } : null))
+    }
+  }, [gotNewMessage])
 
   useEffect(() => {
     const timeout = setTimeout(() => {
@@ -56,16 +97,21 @@ function Conversation() {
     return () => {
       clearTimeout(timeout)
     }
-  }, [gotNewMessage, sendMessageLoading, windowHeight])
+  }, [gotNewMessage, sendMessageData, sendMessageLoading, windowHeight])
+  useEffect(() => {
+    const controller = new AbortController()
+    request(controller, 20)
+    return () => {
+      controller.abort()
+    }
+  }, [convId.id])
 
-  const conversationHasMessages = useMemo(()=>!!conversationData?.messages.length, [conversationData?.messages.length])
-
-  if (errorConversation) return <h2
+  if (error) return <h2
     style={{
       textAlign: 'center',
       alignSelf: 'center'
-    }}>{errorConversation}</h2>
-  if (isConversationLoading) return <CustomLoader />
+    }}>{error}</h2>
+  if (isLoading) return <CustomLoader />
   return (
     <div
       className={styles.container}
@@ -76,24 +122,24 @@ function Conversation() {
       />
       <div
         className={styles.scrollableDiv}
-        style={{ flexDirection: conversationHasMessages ? 'column-reverse' : 'column' }}
+        style={{ flexDirection: data?.messages.length ? 'column-reverse' : 'column' }}
         id="scrollableDiv"
       >
         <InfiniteScroll
           scrollableTarget="scrollableDiv"
           style={{
             display: 'flex',
-            flexDirection: conversationHasMessages ? 'column-reverse' : 'column'
+            flexDirection: data?.messages.length ? 'column-reverse' : 'column'
           }}
-          hasMore={hasMoreMessages}
-          dataLength={conversationData?.messages.length || 0}
+          hasMore={hasMore}
+          dataLength={data?.messages.length || 0}
           inverse={true}
-          next={() => getConversation(undefined, 0)}
+          next={() => request(undefined, 0)}
           loader={<p>Loading...</p>}
         >
           <div
             ref={viewRef}/>
-          {!conversationHasMessages ?
+          {data?.messages?.length === 0 ?
             <span
               style={{
                 alignSelf: 'center',
@@ -103,10 +149,10 @@ function Conversation() {
             </span> :
             <Messages
               socket={socket}
-              otherUser={otherUser}
-              data={conversationData}
+              data={data}
+              sendMessageData={sendMessageData}
               gotNewMessage={gotNewMessage}
-              makeMessagesSeen={makeMessagesSeen}
+              setNewMsg={setNewMsg}
               handleSeenLastMessage={handleSeenLastMessage}
               pendingMessage={pendingMessage}
             />
