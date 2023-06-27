@@ -1,15 +1,20 @@
-import { useState } from 'react'
+import { useState, useCallback } from 'react'
 import useInterceptor from '../../hooks/useInterceptor'
 import Conv from '../../interfaces/Conversation';
 import { useNavigate } from 'react-router-dom';
 import CustomAxiosError from '../../interfaces/CustomAxiosError';
+import SendMessage from '../../interfaces/SendMessage';
 import Conversation from '../../interfaces/Conversation';
+import useUserSelector from '../../components/User/useUserSelector';
+import { useParams } from 'react-router-dom';
 
 function useGetConversations() {
   const [isLoading, setIsLoading] = useState(true);
   const [data, setData] = useState<Conv[]>([]);
   const [error, setError] = useState('');
   const axios = useInterceptor();
+  const currentUser = useUserSelector()
+  const params = useParams()
 
   async function request(controller?: AbortController) {
     setIsLoading(true)
@@ -27,12 +32,55 @@ function useGetConversations() {
     }
   }
 
+  const handleAddCreatedConversation = (convData:Conv) => {
+    setData(prevState => ([...prevState, convData]))
+  }
+
+  const addLastMessageAndSortConversations = useCallback((sendToId: string, message: SendMessage) => {
+    setData(prevState => prevState.map(conv => {
+      if (conv._id === sendToId) {
+        return {
+          ...conv,
+          lastMessage: message
+        }
+      }
+      return conv
+    }).sort((a, b) => (b?.lastMessage?.sentAt || -Infinity) - (a?.lastMessage?.sentAt || -Infinity)))
+  }, [])
+
+  const handleAddNewConversation =(dataNewConversation:Conv) =>{
+    setData(prevState => ([dataNewConversation, ...prevState]))
+  }
+
+  const handleMakeMessagesSeen = ()=>{
+    setData(prevState => prevState.map(conv => {
+      if (conv._id === params.id
+        &&
+        conv.lastMessage.seen === false
+        &&
+        conv.lastMessage.sentBy.username !== currentUser.username) {
+        return {
+          ...conv,
+          lastMessage: {
+            ...conv.lastMessage,
+            seen: true
+          }
+        }
+      }
+      return conv
+    }))
+  }
+
   return {
     isLoading,
     dataConversations: data,
     error,
     request,
-    setAddConversation: setData
+    handleAddCreatedConversation,
+    addLastMessageAndSortConversations,
+    handleAddNewConversation,
+    setAddConversation: setData,
+    handleMakeMessagesSeen
   }
 }
 

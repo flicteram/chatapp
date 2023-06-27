@@ -4,6 +4,8 @@ import { useParams } from "react-router-dom"
 import Conversation from '../../interfaces/Conversation';
 import SendMessage from "../../interfaces/SendMessage";
 import CustomAxiosError from '../../interfaces/CustomAxiosError';
+import GotNewMessage from "../../interfaces/GotNewMeessage";
+import useUserSelector from '../../components/User/useUserSelector';
 
 function useGetConversation() {
   const [isLoading, setIsLoading] = useState(true);
@@ -12,6 +14,7 @@ function useGetConversation() {
   const [hasMore, setHasMore] = useState(false);
   const [msgCount, setMsgCount] = useState(20)
   const axios = useInterceptor();
+  const currentUser = useUserSelector()
 
   const param = useParams();
 
@@ -19,7 +22,6 @@ function useGetConversation() {
     setIsLoading(true)
     setData(null)
   }, [param.id])
-
   async function request(controller?: AbortController, initialCount = 0) {
     setError(null)
     try {
@@ -40,12 +42,44 @@ function useGetConversation() {
     }
   }
 
+  const addNewMessage = (messageData:SendMessage) =>{
+    setData(prevState => (prevState ? {
+      ...prevState,
+      messages: [messageData, ...prevState.messages]
+    } : null))
+  }
+
+  const addGotNewMessage = (gotNewMessage:GotNewMessage)=>{
+    setData(prevState => (prevState ? {
+      ...prevState,
+      lastMessage: gotNewMessage.newMessage,
+      messages: [gotNewMessage.newMessage, ...prevState.messages]
+    } : null))
+  }
+
+  const makeMessagesSeen = () =>{
+    setData(prevState => (prevState ? {
+      ...prevState,
+      messages: prevState.messages.map((message) => {
+        if (message.sentBy.username === currentUser.username) {
+          return {
+            ...message,
+            seen: true
+          }
+        }
+        return message
+      })
+    } : null))
+  }
   return {
     hasMore,
     isLoading,
     data,
     error,
     request,
+    addNewMessage,
+    addGotNewMessage,
+    makeMessagesSeen,
     setNewMsg: setData,
   }
 }

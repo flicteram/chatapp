@@ -1,7 +1,6 @@
 import useRefresh from "./useRefresh";
 import { axiosPrivate } from '../utils/axios'
 import { useEffect } from "react";
-import { AxiosRequestConfig } from 'axios'
 import useUserSelector from "../components/User/useUserSelector";
 
 export default function useInterceptor() {
@@ -9,7 +8,7 @@ export default function useInterceptor() {
   const currentUser = useUserSelector();
 
   useEffect(() => {
-    const request = axiosPrivate.interceptors.request.use((config: AxiosRequestConfig) => {
+    const request = axiosPrivate.interceptors.request.use((config) => {
       config.headers = config.headers ?? {};
       if (!config?.headers['Authorization']) {
         config.headers['Authorization'] = `Bearer ${currentUser?.accessToken}`;
