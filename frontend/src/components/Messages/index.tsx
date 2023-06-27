@@ -24,11 +24,17 @@ interface Props {
 
 export default function Messages(
   {
-    socket, data, handleSeenLastMessage, gotNewMessage, pendingMessage, makeMessagesSeen, otherUser
+    socket,
+    data,
+    handleSeenLastMessage,
+    gotNewMessage,
+    pendingMessage,
+    makeMessagesSeen,
+    otherUser
   }: Props
 ) {
   const currentUser = useUserSelector()
-  const convId = useParams()
+  const { id: convId } = useParams()
   const [seenMsg, setSeenMsg] = useState(null);
   const [datesState, setDatesState] = useState<{
     [value: string]: number
@@ -36,7 +42,7 @@ export default function Messages(
   const { seenMessageRequest } = useSeenMessage()
   useEffect(() => {
     socket.current.on('gotSeenMessages', (seenMsgData) => {
-      if (seenMsgData.convId === convId.id) {
+      if (seenMsgData.convId === convId) {
         setSeenMsg(seenMsgData)
       }
     })
@@ -57,7 +63,7 @@ export default function Messages(
       socket.current.emit("seenMessages", {
         seenBy: currentUser._id,
         seenToId: otherUser?._id,
-        convId: convId.id
+        convId: convId
       })
       handleSeenLastMessage()
     }

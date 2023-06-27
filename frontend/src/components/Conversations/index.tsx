@@ -12,7 +12,8 @@ interface Props{
 }
 
 function Conversations({
-  dataConversations, connectedUsers
+  dataConversations,
+  connectedUsers
 }:Props){
   const navigate = useNavigate()
   const currentUser = useUserSelector()

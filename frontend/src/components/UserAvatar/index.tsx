@@ -13,7 +13,10 @@ interface Props {
 }
 
 function UserAvatar({
-  hasProfilePicture, pictureToShow, isLoading, sx
+  hasProfilePicture,
+  pictureToShow,
+  isLoading,
+  sx
 }:Props){
   const [profileImgError, setProfileImgError] = useState(false)
   const shouldUseBackgroundColor = (!hasProfilePicture && !profileImgError) ? { backgroundColor: 'var(--tealGreen)' } : {}

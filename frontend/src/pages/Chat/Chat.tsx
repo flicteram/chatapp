@@ -22,7 +22,8 @@ function Chat() {
   const params = useParams()
   const socket = useRef(io(url, { autoConnect: false }))
   const {
-    windowWidth, windowHeight
+    windowWidth,
+    windowHeight
   } = useWindowSize()
 
   const currentUser = useUserSelector()

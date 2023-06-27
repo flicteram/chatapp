@@ -43,7 +43,8 @@ const handleValidate = (values: InitialValues) => {
 export default function Register() {
 
   const {
-    registerRequest, registerError
+    registerRequest,
+    registerError
   } = useRegister()
 
   const formik = useFormik({

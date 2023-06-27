@@ -2,7 +2,6 @@ import CustomError from "../errors/customError.js";
 const handleErrors = (
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 error, _req, res, _next) => {
-    console.log('err', error);
     if (error instanceof CustomError) {
         return res.status(error.statusCode).json({ message: error.message });
     }

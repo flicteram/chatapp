@@ -14,7 +14,6 @@ export function useGoogleLoginRequest() {
     setError('')
     try {
       const response = await axios.post(`/googleAuth`, { data: googleToken })
-      console.log('data', response.data)
       dispatch(authUser(response.data))
     } catch (e: unknown) {
       const err = e as CustomAxiosError

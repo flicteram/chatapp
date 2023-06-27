@@ -15,11 +15,14 @@ interface Props {
 }
 
 function OtherUser({
-  otherUser, isOnline
+  otherUser,
+  isOnline
 }: Props) {
 
   const {
-    getOtherUserRequest, getOtherUserData, getOtherUserLoading
+    getOtherUserRequest,
+    getOtherUserData,
+    getOtherUserLoading
   } = useGetOtherUser()
 
   useEffect(() => {

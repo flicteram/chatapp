@@ -26,7 +26,9 @@ export const userSlice = createSlice({
 })
 
 export const {
-  authUser, logoutUser, refreshUser
+  authUser,
+  logoutUser,
+  refreshUser
 } = userSlice.actions
 
 export default userSlice.reducer

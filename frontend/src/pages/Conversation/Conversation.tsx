@@ -27,8 +27,13 @@ interface OutletContext {
 
 function Conversation() {
   const {
-    socket, gotNewMessage, handleSeenLastMessage, addLastMessageAndSortConversations,
-    connectedUsers, handleWindowHeight, windowHeight
+    socket,
+    gotNewMessage,
+    handleSeenLastMessage,
+    addLastMessageAndSortConversations,
+    connectedUsers,
+    handleWindowHeight,
+    windowHeight
   } = useOutletContext<OutletContext>()
   const viewRef = useRef<HTMLDivElement>(null)
   const {

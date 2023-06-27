@@ -13,7 +13,9 @@ interface Props {
 }
 
 function UsersModal({
-  openModal, onCloseModal, handleCreateConv
+  openModal,
+  onCloseModal,
+  handleCreateConv
 }: Props) {
   const {
     loadingUsers,

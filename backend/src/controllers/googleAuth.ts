@@ -53,7 +53,6 @@ const handleGoogleLogin = async (req: Request, res: Response) => {
     secure: true,
     sameSite: 'none',
   })
-  console.log('gg', googleUser)
   return res.status(StatusCodes.OK).json({
     username: googleUser.username,
     _id: googleUser._id,

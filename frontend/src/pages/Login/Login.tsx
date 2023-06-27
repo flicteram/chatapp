@@ -16,7 +16,8 @@ interface InitialValues {
 
 export default function Login() {
   const {
-    loginRequest, loginError
+    loginRequest,
+    loginError
   } = useLogin()
 
   useEffect(() => {

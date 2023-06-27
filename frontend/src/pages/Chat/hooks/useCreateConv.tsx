@@ -8,7 +8,8 @@ export default function useCreateConv(
   handleAddCreatedConversation:(convData:Conv)=>void
 ){
   const {
-    dataCreateConv, requestCreateConv
+    dataCreateConv,
+    requestCreateConv
   } = useCreateConversation()
 
   const handleCreateConv = (user: OtherUser) => {

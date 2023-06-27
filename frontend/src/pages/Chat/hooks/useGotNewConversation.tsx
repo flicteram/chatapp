@@ -9,7 +9,8 @@ export default function useGotNewConversation(
   dataConversations:Conv[]
 ){
   const {
-    dataNewConversation, requestNewConversation
+    dataNewConversation,
+    requestNewConversation
   } = useGetConversationNew()
 
   useEffect(() => {

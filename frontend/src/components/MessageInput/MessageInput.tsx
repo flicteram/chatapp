@@ -7,7 +7,8 @@ interface Props {
 }
 
 function MessageInput({
-  handleSendMessage, sendMessageLoading
+  handleSendMessage,
+  sendMessageLoading
 }: Props) {
   const [message, setMessage] = useState('')
   const inputRef = useRef<HTMLInputElement>(null)

@@ -27,7 +27,10 @@ export default function useConversation(
     makeMessagesSeen
   } = useGetConversation()
   const {
-    sendMessageData, sendMessageError, sendMessageLoading, sendMessageRequest
+    sendMessageData,
+    sendMessageError,
+    sendMessageLoading,
+    sendMessageRequest
   } = useSendMessage()
   const [pendingMessage, setPendingMessage] = useState<SendMessage | null>(null)
   const handlePendingMessage = (message?:SendMessage)=>{

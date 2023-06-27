@@ -13,7 +13,9 @@ interface Props{
 }
 
 export default function Message({
-  message, messagePosition, datesState
+  message,
+  messagePosition,
+  datesState
 }: Props){
   const currentUser = useUserSelector()
   const handleDisplayTime = useCallback((dateMilSeconds: number) => {
