@@ -71,6 +71,7 @@
   flex-direction: column;
   align-items: flex-start;
   text-align: left;
+  /* flex: 1; */
 }
 
 .convLeftInfo>h3 {
@@ -78,7 +79,8 @@
   font-weight: 400;
 }
 
-.convLeftInfo>span {
+.convLeftInfo>span,
+.convLeftInfo>h3  {
   width: 100px;
   overflow: hidden;
   white-space: nowrap;
@@ -105,6 +107,9 @@
 @media(min-width:400px) {
   .convLeftInfo>span {
     width: 200px;
+  }
+  .convLeftInfo>h3{
+    width: 150px;
   }
 }
 
@@ -150,6 +155,9 @@
   .selectOrCreateConv>svg {
     font-size: 2rem;
   }
+  .convLeftInfo>h3{
+    width: 200px;
+  }
 }
 
 @media(min-width:1450px) {
@@ -164,6 +172,9 @@
 
   .leftSideContainer {
     height: 95vh;
+  }
+  .convLeftInfo>h3{
+    width: 300px;
   }
 }
 

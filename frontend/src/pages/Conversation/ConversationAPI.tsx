@@ -6,70 +6,73 @@ import SendMessage from "../../interfaces/SendMessage";
 import CustomAxiosError from '../../interfaces/CustomAxiosError';
 import GotNewMessage from "../../interfaces/GotNewMeessage";
 import useUserSelector from '../../components/User/useUserSelector';
+import GotSeenMessage from '../../interfaces/GotSeenMessage';
 
 function useGetConversation() {
-  const [isLoading, setIsLoading] = useState(true);
-  const [data, setData] = useState<Conversation | null>(null);
-  const [error, setError] = useState<string | null>(null);
-  const [hasMore, setHasMore] = useState(false);
-  const [msgCount, setMsgCount] = useState(20)
+  const [isLoading, setIsLoading] = useState( true );
+  const [data, setData] = useState<Conversation | null>( null );
+  const [error, setError] = useState<string | null>( null );
+  const [hasMore, setHasMore] = useState( false );
+  const [msgCount, setMsgCount] = useState( 20 )
   const axios = useInterceptor();
   const currentUser = useUserSelector()
 
   const param = useParams();
 
-  useEffect(() => {
-    setIsLoading(true)
-    setData(null)
+  useEffect( () => {
+    setIsLoading( true )
+    setData( null )
   }, [param.id])
-  async function request(controller?: AbortController, initialCount = 0) {
-    setError(null)
+  async function request( controller?: AbortController, initialCount = 0 ) {
+    setError( null )
     try {
-      const response = await axios.get(`/conversation/${param.id}?messagesCount=${initialCount || msgCount}`,
+      const response = await axios.get( `/conversation/${param.id}?messagesCount=${initialCount || msgCount}`,
         { signal: controller?.signal })
-      if (response.data.totalMsgs > response.data.messages.length) {
-        setHasMore(true)
+      if ( response.data.totalMsgs > response.data.messages.length ) {
+        setHasMore( true )
       } else {
-        setHasMore(false)
+        setHasMore( false )
       }
-      setMsgCount(response.data.messages.length + 20)
-      setData(response.data)
-    } catch (e: unknown) {
+      setMsgCount( response.data.messages.length + 20 )
+      setData( response.data )
+    } catch ( e: unknown ) {
       const err = e as CustomAxiosError
-      setError(err.response.data.message)
+      if( err?.response?.data?.message ){
+        setError( err.response.data.message )
+      }
     } finally {
-      setIsLoading(false)
+      setIsLoading( false )
     }
   }
 
-  const addNewMessage = (messageData:SendMessage) =>{
-    setData(prevState => (prevState ? {
+  const addNewMessage = ( messageData:SendMessage ) =>{
+    setData( prevState => ( prevState ? {
       ...prevState,
       messages: [messageData, ...prevState.messages]
-    } : null))
+    } : null ) )
   }
 
-  const addGotNewMessage = (gotNewMessage:GotNewMessage)=>{
-    setData(prevState => (prevState ? {
+  const addGotNewMessage = ( gotNewMessage:GotNewMessage )=>{
+    setData( prevState => ( prevState ? {
       ...prevState,
       lastMessage: gotNewMessage.newMessage,
       messages: [gotNewMessage.newMessage, ...prevState.messages]
-    } : null))
+    } : null ) )
   }
 
-  const makeMessagesSeen = () =>{
-    setData(prevState => (prevState ? {
+  const makeMessagesSeen = ( seenMessage:GotSeenMessage ) =>{
+    setData( prevState => ( prevState ? {
       ...prevState,
-      messages: prevState.messages.map((message) => {
-        if (message.sentBy.username === currentUser.username) {
+      messages: prevState.messages.map( ( message ) => {
+        if ( message.sentBy.username === currentUser.username && !message.seenBy.includes( seenMessage.seenBy ) ) {
           return {
             ...message,
-            seen: true
+            seenBy: [...message.seenBy, seenMessage.seenBy]
           }
         }
         return message
       })
-    } : null))
+    } : null ) )
   }
   return {
     hasMore,
@@ -85,26 +88,26 @@ function useGetConversation() {
 }
 
 function useSendMessage() {
-  const [isLoading, setIsLoading] = useState(false);
-  const [data, setData] = useState<SendMessage | null>(null);
-  const [error, setError] = useState('');
+  const [isLoading, setIsLoading] = useState( false );
+  const [data, setData] = useState<SendMessage | null>( null );
+  const [error, setError] = useState( '' );
   const axios = useInterceptor();
   const param = useParams();
 
-  async function request(newMessage: SendMessage) {
-    setIsLoading(true)
-    setError('')
-    setData(null)
+  async function request( newMessage: SendMessage ) {
+    setIsLoading( true )
+    setError( '' )
+    setData( null )
 
     try {
-      const response = await axios.post(`/conversation/${param.id}`, { data: newMessage })
-      setData(response.data)
-    } catch (e: unknown) {
-      if (e instanceof Error) {
-        setError(e?.message)
+      const response = await axios.post( `/conversation/${param.id}`, { data: newMessage })
+      setData( response.data )
+    } catch ( e: unknown ) {
+      if ( e instanceof Error ) {
+        setError( e?.message )
       }
     } finally {
-      setIsLoading(false)
+      setIsLoading( false )
     }
   }
 

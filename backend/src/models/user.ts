@@ -4,7 +4,7 @@ export interface IUser {
   username: string,
   password: string,
   lastLoggedIn: number,
-  conversations:[Map<string, string>],
+  conversations:[Map<string, string|string[]>],
   refreshToken?: string,
 }
 
@@ -32,4 +32,4 @@ const userSchema = new Schema<IUser>({
   }
 })
 
-export default model('User', userSchema)
+export default model( 'User', userSchema )

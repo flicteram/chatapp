@@ -20,25 +20,28 @@ export default function useConversations(
     handleMakeMessagesSeen
   } = useGetConversations()
 
-  const handleCreateConv = useCreateConv(handleToggleModal, handleAddCreatedConversation)
-  useGotNewConversation(gotNewMessage, handleAddNewConversation, dataConversations)
+  const handleCreateConv = useCreateConv( handleToggleModal, handleAddCreatedConversation )
+  useGotNewConversation( gotNewMessage, handleAddNewConversation, dataConversations )
 
   const params = useParams()
 
   const currentUser = useUserSelector()
 
   const handleSeenLastMessage = () => {
-    const hasLastMessageSeen = dataConversations.find(conv => conv._id === params.id)
+    const hasLastMessageSeen = dataConversations.find( conv => conv._id === params.id )
     if (
-      hasLastMessageSeen?.lastMessage.seen === false
+      hasLastMessageSeen?.lastMessage.sentBy.username !== currentUser.username
       &&
-      hasLastMessageSeen.lastMessage.sentBy.username !== currentUser.username
+      !hasLastMessageSeen?.lastMessage.seenBy.includes( currentUser.username )
     ) {
+      console.log( 'seeeeeeeeen' )
       handleMakeMessagesSeen()
     }
   }
 
-  useEffect(()=>{
+  console.log( 'dataConversationsdataConversations', dataConversations )
+
+  useEffect( ()=>{
     request()
   }, [])
 

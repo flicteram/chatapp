@@ -11,15 +11,25 @@ export default function handleWebSocket(io) {
             io.emit("connectedUsers", users);
         });
         socket.on('sendMessage', (message) => {
-            const sentToUser = users.find(u => u.userId === message.sentToId);
-            if (sentToUser) {
-                io.to(sentToUser.socketId).emit('gotNewMessage', message);
+            const sentToUsers = users.reduce((acc, currentVal) => {
+                if (message.sentToIds.includes(currentVal.userId)) {
+                    return [...acc, currentVal.socketId];
+                }
+                return acc;
+            }, []);
+            if (sentToUsers.length) {
+                io.to(sentToUsers).emit('gotNewMessage', message);
             }
         });
         socket.on("seenMessages", (data) => {
-            const seenToUser = users.find(u => u.userId === data.seenToId);
-            if (seenToUser) {
-                io.to(seenToUser.socketId).emit('gotSeenMessages', data);
+            const seenToIds = users.reduce((acc, currentVal) => {
+                if (data.seenToId.includes(currentVal.userId)) {
+                    return [...acc, currentVal.socketId];
+                }
+                return acc;
+            }, []);
+            if (seenToIds.length) {
+                io.to(seenToIds).emit('gotSeenMessages', data);
             }
         });
         socket.on("disconnect", async () => {

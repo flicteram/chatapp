@@ -5,7 +5,7 @@ export interface IUserGoogle {
   email: string,
   picture: string,
   lastLoggedIn: number,
-  conversations:[Map<string, string>],
+  conversations:[Map<string, string|string[]>],
   refreshToken?: string,
 }
 
@@ -37,4 +37,4 @@ const googleUserSchema = new Schema<IUserGoogle>({
   }
 })
 
-export default model('GoogleUser', googleUserSchema)
+export default model( 'GoogleUser', googleUserSchema )

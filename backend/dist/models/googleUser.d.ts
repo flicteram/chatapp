@@ -28,7 +28,7 @@ export interface IUserGoogle {
     email: string;
     picture: string;
     lastLoggedIn: number;
-    conversations: [Map<string, string>];
+    conversations: [Map<string, string | string[]>];
     refreshToken?: string;
 }
 declare const _default: import("mongoose").Model<IUserGoogle, {}, {}, {}, Schema<IUserGoogle, import("mongoose").Model<IUserGoogle, any, any, any, any>, {}, {}, {}, {}, "type", IUserGoogle>>;

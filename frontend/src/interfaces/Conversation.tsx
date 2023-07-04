@@ -1,12 +1,7 @@
-import SendMessage from './SendMessage'
-import OtherUser from './OtherUser'
+import MultipleConvs from './MulltipleConvs'
 
-interface Conv {
-  lastMessage: SendMessage
-  messages: SendMessage[],
-  participants: OtherUser[],
-  _id: string
-
+interface Conv extends Omit<MultipleConvs, 'participants'>{
+  participants:string[]
 }
 
 export default Conv

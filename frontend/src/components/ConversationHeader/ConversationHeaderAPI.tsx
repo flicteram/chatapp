@@ -1,21 +1,18 @@
 import { useState } from 'react';
 import useInterceptor from '../../hooks/useInterceptor';
-import { useParams } from "react-router-dom"
+import OtherUser from '../../interfaces/OtherUser';
 
-function useSeenMessage() {
+export function useConversationUsers() {
   const [isLoading, setIsLoading] = useState( false );
-  const [data, setData] = useState<null>( null );
+  const [data, setData] = useState<OtherUser[]>([]);
   const [error, setError] = useState( '' );
   const axios = useInterceptor();
-  const param = useParams();
 
-  async function request() {
+  async function request( usersIds: string[] | undefined ) {
     setIsLoading( true )
     setError( '' )
-    setData( null )
-
     try {
-      const response = await axios.post( `/conversation/seen/${param.id}` )
+      const response = await axios.post( `/users/conversation`, { data: usersIds })
       setData( response.data )
     } catch ( e: unknown ) {
       if ( e instanceof Error ) {
@@ -27,11 +24,9 @@ function useSeenMessage() {
   }
 
   return {
-    seenMessageLoading: isLoading,
-    seenMessageData: data,
-    seenMessageError: error,
-    seenMessageRequest: request
+    convUsersLoading: isLoading,
+    convUsersData: data,
+    convUsersError: error,
+    getConvUsers: request
   }
 }
-
-export { useSeenMessage }

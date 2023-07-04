@@ -8,7 +8,8 @@ import SendMessage from '../../interfaces/SendMessage'
 import GotNewMessages from '../../interfaces/GotNewMeessage'
 import PendingMessage from '../PendingMessage';
 import Message from './Message';
-import OtherUser from '../../interfaces/OtherUser';
+import useDates from './hooks/useDates';
+import GotSeenMessage from '../../interfaces/GotSeenMessage';
 
 interface Props {
   socket: {
@@ -16,10 +17,10 @@ interface Props {
   }
   data: Conversation | null,
   gotNewMessage: GotNewMessages,
-  makeMessagesSeen: ()=>void,
+  makeMessagesSeen: ( seenMessage:GotSeenMessage )=>void,
   handleSeenLastMessage: () => void,
   pendingMessage: SendMessage | null,
-  otherUser: OtherUser | undefined
+  otherUsersIds: string[] | undefined
 }
 
 export default function Messages(
@@ -30,69 +31,58 @@ export default function Messages(
     gotNewMessage,
     pendingMessage,
     makeMessagesSeen,
-    otherUser
+    otherUsersIds
   }: Props
 ) {
   const currentUser = useUserSelector()
   const { id: convId } = useParams()
-  const [seenMsg, setSeenMsg] = useState(null);
-  const [datesState, setDatesState] = useState<{
-    [value: string]: number
-  }>({})
+  const [seenMsg, setSeenMsg] = useState( null );
+
   const { seenMessageRequest } = useSeenMessage()
-  useEffect(() => {
-    socket.current.on('gotSeenMessages', (seenMsgData) => {
-      if (seenMsgData.convId === convId) {
-        setSeenMsg(seenMsgData)
+  const datesState = useDates( data )
+  useEffect( () => {
+    socket.current.on( 'gotSeenMessages', ( seenMsgData ) => {
+      if ( seenMsgData.convId === convId ) {
+        setSeenMsg( seenMsgData )
       }
     })
     return () => {
-      socket.current.off("gotSeenMessages")
+      socket.current.off( "gotSeenMessages" )
     }
   }, [])
 
-  useEffect(() => {
-    if (seenMsg !== null) {
-      makeMessagesSeen()
+  useEffect( () => {
+    if ( seenMsg !== null ) {
+      makeMessagesSeen( seenMsg )
     }
   }, [seenMsg])
 
-  useEffect(() => {
-    if (data?.messages.length) {
+  useEffect( () => {
+    if ( data?.messages.length ) {
       seenMessageRequest()
-      socket.current.emit("seenMessages", {
-        seenBy: currentUser._id,
-        seenToId: otherUser?._id,
+      socket.current.emit( "seenMessages", {
+        seenBy: currentUser.username,
+        seenToId: otherUsersIds,
         convId: convId
       })
       handleSeenLastMessage()
     }
     return () => {
-      socket.current.off("seenMessages")
+      socket.current.off( "seenMessages" )
     }
   }, [gotNewMessage])
-
-  useEffect(() => {
-    const dates: {
-      [value: string]: number
-    } = {}
-    data?.messages.forEach((m, index) => {
-      const date = new Date(m.sentAt).toLocaleDateString('en-GB')
-      dates[date] = index
-    })
-    setDatesState(dates)
-  }, [data?.messages])
 
   return (
     <>
       <PendingMessage pendingMessage={pendingMessage}/>
-      {data?.messages?.map((m, index) => (
+      {data?.messages?.map( ( m, index ) => (
         <Message
+          participantsNumber={data.participants.length-1}
           datesState={datesState}
           message={m}
           messagePosition={index}
           key={m.sentAt}/>
-      ))}
+      ) )}
     </>
   )
 }

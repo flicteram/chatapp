@@ -13,29 +13,29 @@ interface GoogleAccount {
 
 dotenv.config()
 
-const handleGoogleLogin = async (req: Request, res: Response) => {
+const handleGoogleLogin = async ( req: Request, res: Response ) => {
   const googleToken = req.body.data;
-  if (!googleToken) {
-    throw new CustomError("No token provided", StatusCodes.NOT_ACCEPTABLE)
+  if ( !googleToken ) {
+    throw new CustomError( "No token provided", StatusCodes.NOT_ACCEPTABLE )
   }
-  const googleAccountInfo = await axios.get(`https://www.googleapis.com/oauth2/v3/userinfo?access_token=${googleToken}`)
-  if (!googleAccountInfo){
-    throw new CustomError("Invalid token!", StatusCodes.FORBIDDEN)
+  const googleAccountInfo = await axios.get( `https://www.googleapis.com/oauth2/v3/userinfo?access_token=${googleToken}` )
+  if ( !googleAccountInfo ){
+    throw new CustomError( "Invalid token!", StatusCodes.FORBIDDEN )
   }
   const {
     email, picture
   } = googleAccountInfo.data as GoogleAccount
 
-  const username = email.split("@")[0]
+  const username = email.split( "@" )[0]
   let googleUser = await GoogleUser.findOne({ username })
   const refreshToken = jwt.sign({ username },
     process.env.SECRET_REFRESH_TOKEN as string,
     { expiresIn: "1d" })
 
-  if (!googleUser){
+  if ( !googleUser ){
     googleUser = await GoogleUser.create({
       lastLoggedIn: Date.now(),
-      username: email.split("@")[0],
+      username,
       email,
       picture,
       refreshToken
@@ -47,13 +47,13 @@ const handleGoogleLogin = async (req: Request, res: Response) => {
   }, process.env.SECRET_ACCESS_TOKEN as string, { expiresIn: "5m" })
 
   await googleUser.updateOne({ refreshToken })
-  res.cookie('jwt', refreshToken, {
+  res.cookie( 'jwt', refreshToken, {
     httpOnly: true,
     maxAge: 24 * 60 * 60 * 1000,
     secure: true,
     sameSite: 'none',
   })
-  return res.status(StatusCodes.OK).json({
+  return res.status( StatusCodes.OK ).json({
     username: googleUser.username,
     _id: googleUser._id,
     accessToken,

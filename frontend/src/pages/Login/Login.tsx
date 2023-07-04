@@ -20,22 +20,22 @@ export default function Login() {
     loginError
   } = useLogin()
 
-  useEffect(() => {
-    if (loginError.toLocaleLowerCase().includes('user')) {
-      formik.setFieldError('username', loginError)
+  useEffect( () => {
+    if ( loginError.toLocaleLowerCase().includes( 'user' ) ) {
+      formik.setFieldError( 'username', loginError )
     }
-    if (loginError.toLocaleLowerCase().includes('password')) {
-      formik.setFieldError('password', loginError)
+    if ( loginError.toLocaleLowerCase().includes( 'password' ) ) {
+      formik.setFieldError( 'password', loginError )
     }
   }, [loginError])
 
-  const handleValidate = (values: InitialValues) => {
+  const handleValidate = ( values: InitialValues ) => {
     const errors = {} as InitialValues
 
-    if (!values.username) {
+    if ( !values.username ) {
       errors.username = 'Required'
     }
-    if (!values.password) {
+    if ( !values.password ) {
       errors.password = 'Required'
     }
     return errors
@@ -47,7 +47,7 @@ export default function Login() {
       password: '',
     },
     validate: handleValidate,
-    onSubmit: (values) => loginRequest(values)
+    onSubmit: ( values ) => loginRequest( values )
   })
   return (
     <Layout>
@@ -60,7 +60,7 @@ export default function Login() {
             onSubmit={formik.handleSubmit}>
             <TextField
               label="Username"
-              helperText={hadleHelperText(formik.errors.username, formik.touched.username)}
+              helperText={hadleHelperText( formik.errors.username, formik.touched.username )}
               name='username'
               value={formik.values.username}
               onChange={formik.handleChange}
@@ -70,7 +70,7 @@ export default function Login() {
             <TextField
               type="password"
               label="Password"
-              helperText={hadleHelperText(formik.errors.password, formik.touched.password)}
+              helperText={hadleHelperText( formik.errors.password, formik.touched.password )}
               name='password'
               value={formik.values.password}
               onChange={formik.handleChange}

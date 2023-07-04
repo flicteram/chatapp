@@ -21,7 +21,7 @@ const handleGoogleLogin = async (req, res) => {
     if (!googleUser) {
         googleUser = await GoogleUser.create({
             lastLoggedIn: Date.now(),
-            username: email.split("@")[0],
+            username,
             email,
             picture,
             refreshToken

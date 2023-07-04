@@ -25,8 +25,9 @@
 import { Types } from 'mongoose';
 interface Conversation {
     messages: Types.Array<Map<string, string>>;
-    participants: Types.Array<Map<string, string>>;
+    participants: string[];
     lastMessage: Map<string, string>;
+    groupName: string;
 }
 declare const _default: import("mongoose").Model<Conversation, {}, {}, {}, any>;
 export default _default;

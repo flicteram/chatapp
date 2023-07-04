@@ -13,6 +13,7 @@
     "plugin:@typescript-eslint/recommended"
   ],
   "rules": {
+    "space-in-parens": ["error", "always", { "exceptions": ["empty", "{}", "[]"] }],
     "object-curly-spacing": ["error", "always"],
     "function-call-argument-newline": [
       "error",

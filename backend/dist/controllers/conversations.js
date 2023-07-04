@@ -10,7 +10,7 @@ const getConversations = async (req, res) => {
     const currentUser = normalUser || googleUser;
     const participantsId = [];
     const conversationsIds = currentUser?.conversations.map(c => {
-        participantsId.push(c.get('otherUserId'));
+        participantsId.push(...c.get('otherUsersIds'));
         return c.get('id');
     });
     const myConvs = await Conversation.find({ _id: { $in: conversationsIds } }, '-messages').sort("-lastMessage.sentAt");
@@ -28,11 +28,11 @@ const getConversations = async (req, res) => {
     // Add user data based on id to each
     const returnedConvs = myConvs.map(conv => {
         const participants = [];
-        conv.participants.forEach(p => {
-            if (p.get('_id') === currentUser?._id.toString()) {
+        conv.participants.forEach(partId => {
+            if (partId === currentUser?._id.toString()) {
                 return;
             }
-            const currentParticipant = users.get(p.get('_id'));
+            const currentParticipant = users.get(partId);
             participants.push(currentParticipant);
         });
         return {

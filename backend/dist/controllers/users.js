@@ -1,14 +1,13 @@
 import User from '../models/user.js';
 import GoogleUser from "../models/googleUser.js";
-import Conversation from '../models/conversation.js';
 const getUsers = async (req, res) => {
     // Check for existing conversations
-    const currentUserConversations = await Conversation.find({ participants: { $elemMatch: { _id: req?.currentUser._id } } });
+    // const currentUserConversations = await Conversation.find({ participants: { $elemMatch: { _id: req?.currentUser._id } } })
     const excludeUsers = new Set();
-    if (currentUserConversations.length) {
-        // if there are any existing conversations exclude users that already have a conversation with
-        currentUserConversations.map(conv => conv.participants.map(i => excludeUsers.add(i.get('username'))));
-    }
+    // if (currentUserConversations.length) {
+    // if there are any existing conversations exclude users that already have a conversation with
+    // currentUserConversations.map(conv => conv.participants.map(i => excludeUsers.add(i.get('username'))))
+    // }
     excludeUsers.add(req.currentUser.username);
     const [normalUser, googleUser] = await Promise.all([
         User.find({ username: { $nin: [...excludeUsers] } }, ['-refreshToken', '-password']),
@@ -20,11 +19,11 @@ const getUsers = async (req, res) => {
     ]);
 };
 const getOtherUser = async (req, res) => {
-    const [normalUser, googleUser] = await Promise.all([
-        User.findById(req.params.id, ['-refreshToken', '-password']),
-        GoogleUser.findById(req.params.id, '-refreshToken')
+    const dbUsers = await Promise.all([
+        User.find({ _id: req.body.data }, ['-password', '-refreshToken', '-conversations']),
+        GoogleUser.find({ _id: req.body.data }, ['-refreshToken', '-conversations'])
     ]);
-    return res.json(normalUser || googleUser);
+    return res.json(dbUsers.flat(1));
 };
 const updateUserDisconnect = async (disconnectedUser) => {
     await Promise.all([

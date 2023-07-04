@@ -8,7 +8,7 @@ import { Socket } from 'socket.io-client'
 import { useGotNewMessage, useNewMessageSent } from './useMessages'
 
 export default function useConversation(
-  addLastMessageAndSortConversations: (sendToId: string, message: SendMessage) => void,
+  addLastMessageAndSortConversations: ( sendToId: string, message: SendMessage ) => void,
   socket: {
     current: Socket
   },
@@ -32,17 +32,17 @@ export default function useConversation(
     sendMessageLoading,
     sendMessageRequest
   } = useSendMessage()
-  const [pendingMessage, setPendingMessage] = useState<SendMessage | null>(null)
-  const handlePendingMessage = (message?:SendMessage)=>{
-    if(message){
-      setPendingMessage(message)
+  const [pendingMessage, setPendingMessage] = useState<SendMessage | null>( null )
+  const handlePendingMessage = ( message?:SendMessage )=>{
+    if( message ){
+      setPendingMessage( message )
     }else{
-      setPendingMessage(null)
+      setPendingMessage( null )
     }
   }
-  const otherUser = useMemo(()=>data?.participants.find(u => u._id !== currentUser._id), [data?._id])
+  const otherUsersIds = useMemo( ()=>data?.participants.filter( ( uId:string ) => uId !== currentUser._id ), [data?._id])
 
-  const handleSendMessage = useCallback(async (msg: string) => {
+  const handleSendMessage = useCallback( async ( msg: string ) => {
     const dateNow = new Date()
     const newMessage = {
       message: msg,
@@ -50,32 +50,32 @@ export default function useConversation(
         username: currentUser.username,
         _id: currentUser._id
       },
-      sentAt: dateNow.getTime(),
-      seen: false,
+      seenBy: [],
+      sentAt: dateNow.getTime()
     }
-    handlePendingMessage(newMessage)
-    await sendMessageRequest(newMessage)
-    socket.current.emit('sendMessage', {
+    handlePendingMessage( newMessage )
+    await sendMessageRequest( newMessage )
+    socket.current.emit( 'sendMessage', {
       newMessage,
-      sentToId: otherUser?._id,
+      sentToIds: otherUsersIds,
       convId: convId.id
     })
-    convId.id && addLastMessageAndSortConversations(convId.id, newMessage)
-  }, [otherUser?._id])
+    convId.id && addLastMessageAndSortConversations( convId.id, newMessage )
+  }, [otherUsersIds])
 
-  useEffect(() => {
+  useEffect( () => {
     const controller = new AbortController()
-    request(controller, 20)
+    request( controller, 20 )
     return () => {
       controller.abort()
     }
   }, [convId.id])
 
-  useNewMessageSent(addNewMessage, handlePendingMessage, sendMessageData)
-  useGotNewMessage(addGotNewMessage, gotNewMessage)
+  useNewMessageSent( addNewMessage, handlePendingMessage, sendMessageData )
+  useGotNewMessage( addGotNewMessage, gotNewMessage )
 
   return {
-    otherUser,
+    otherUsersIds,
     handleSendMessage,
     pendingMessage,
     sendMessageLoading,

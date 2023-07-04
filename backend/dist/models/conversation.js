@@ -5,12 +5,16 @@ const conversationSchema = new Schema({
         default: Array
     },
     participants: {
-        type: [Map],
+        type: [String],
         required: [true, "No participants sent"],
     },
     lastMessage: {
         type: Map,
         default: {}
+    },
+    groupName: {
+        type: String,
+        default: ""
     }
 });
 export default model('Conversation', conversationSchema);

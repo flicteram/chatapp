@@ -27,7 +27,7 @@ export interface IUser {
     username: string;
     password: string;
     lastLoggedIn: number;
-    conversations: [Map<string, string>];
+    conversations: [Map<string, string | string[]>];
     refreshToken?: string;
 }
 declare const _default: import("mongoose").Model<IUser, {}, {}, {}, Schema<IUser, import("mongoose").Model<IUser, any, any, any, any>, {}, {}, {}, {}, "type", IUser>>;

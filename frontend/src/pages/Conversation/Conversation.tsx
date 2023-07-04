@@ -7,11 +7,11 @@ import { Socket } from 'socket.io-client'
 import Messages from '../../components/Messages'
 import SendMessage from '../../interfaces/SendMessage'
 import ConnectedUser from "../../interfaces/ConnectedUser";
-import OtherUser from '../../components/OtherUser/OtherUser'
 import CustomLoader from "../../components/CustomLoader/CustomLoader";
 import styles from './Conversation.module.css'
 import MessageInput from '../../components/MessageInput/MessageInput'
 import useConversation from "./hooks/useConversation";
+import ConversationHeader from "../../components/ConversationHeader";
 
 interface OutletContext {
   socket: {
@@ -20,7 +20,7 @@ interface OutletContext {
   connectedUsers: ConnectedUser[],
   gotNewMessage: GotNewMessage,
   handleSeenLastMessage: () => void,
-  addLastMessageAndSortConversations: (sendToId: string, message: SendMessage) => void,
+  addLastMessageAndSortConversations: ( sendToId: string, message: SendMessage ) => void,
   handleWindowHeight:{height?:number},
   windowHeight:number
 }
@@ -34,7 +34,7 @@ function Conversation() {
     handleWindowHeight,
     windowHeight
   } = useOutletContext<OutletContext>()
-  const viewRef = useRef<HTMLDivElement>(null)
+  const viewRef = useRef<HTMLDivElement>( null )
   const {
     errorConversation,
     getConversation,
@@ -43,36 +43,36 @@ function Conversation() {
     isConversationLoading,
     pendingMessage,
     sendMessageLoading,
-    otherUser,
     conversationData,
-    makeMessagesSeen
-  } = useConversation(addLastMessageAndSortConversations, socket, gotNewMessage)
+    makeMessagesSeen,
+    otherUsersIds
+  } = useConversation( addLastMessageAndSortConversations, socket, gotNewMessage )
 
-  useEffect(() => {
-    const timeout = setTimeout(() => {
+  useEffect( () => {
+    const timeout = setTimeout( () => {
       viewRef.current?.scrollIntoView({ behavior: 'smooth' })
-    }, 200)
+    }, 200 )
     return () => {
-      clearTimeout(timeout)
+      clearTimeout( timeout )
     }
   }, [gotNewMessage, sendMessageLoading, windowHeight])
 
-  const conversationHasMessages = useMemo(()=>!!conversationData?.messages.length, [conversationData?.messages.length])
+  const conversationHasMessages = useMemo( ()=>!!conversationData?.messages.length, [conversationData?.messages.length])
 
-  if (errorConversation) return <h2
+  if ( errorConversation ) return <h2
     style={{
       textAlign: 'center',
       alignSelf: 'center'
     }}>{errorConversation}</h2>
-  if (isConversationLoading) return <CustomLoader />
+  if ( isConversationLoading ) return <CustomLoader />
   return (
     <div
       className={styles.container}
       style={handleWindowHeight}>
-      <OtherUser
-        otherUser={otherUser}
-        isOnline={connectedUsers.find(u => u.userId === otherUser?._id) !== undefined ? true : false}
-      />
+      <ConversationHeader
+        groupName={conversationData?.groupName || ""}
+        connectedUsers={connectedUsers}
+        otherUsersIds={otherUsersIds}/>
       <div
         className={styles.scrollableDiv}
         style={{ flexDirection: conversationHasMessages ? 'column-reverse' : 'column' }}
@@ -87,7 +87,7 @@ function Conversation() {
           hasMore={hasMoreMessages}
           dataLength={conversationData?.messages.length || 0}
           inverse={true}
-          next={() => getConversation(undefined, 0)}
+          next={() => getConversation( undefined, 0 )}
           loader={<p>Loading...</p>}
         >
           <div
@@ -102,7 +102,7 @@ function Conversation() {
             </span> :
             <Messages
               socket={socket}
-              otherUser={otherUser}
+              otherUsersIds={otherUsersIds}
               data={conversationData}
               gotNewMessage={gotNewMessage}
               makeMessagesSeen={makeMessagesSeen}
@@ -119,4 +119,4 @@ function Conversation() {
     </div>
   )
 }
-export default memo(Conversation)
+export default memo( Conversation )

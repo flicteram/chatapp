@@ -8,19 +8,19 @@ import * as dotenv from 'dotenv'
 
 dotenv.config()
 
-const handleLogin = async (req: Request, res: Response) => {
+const handleLogin = async ( req: Request, res: Response ) => {
   const {
     username, password
   } = req.body.data;
-  if (!username || !password) {
-    throw new CustomError("All fields are required!", StatusCodes.NOT_ACCEPTABLE)
+  if ( !username || !password ) {
+    throw new CustomError( "All fields are required!", StatusCodes.NOT_ACCEPTABLE )
   }
   const currentUser = await User.findOne({ username })
-  if (!currentUser) {
-    throw new CustomError("Invalid user!", StatusCodes.NOT_FOUND)
+  if ( !currentUser ) {
+    throw new CustomError( "Invalid user!", StatusCodes.NOT_FOUND )
   }
-  const comparePasswords = await bcrypt.compare(password, currentUser.password)
-  if (comparePasswords) {
+  const comparePasswords = await bcrypt.compare( password, currentUser.password )
+  if ( comparePasswords ) {
 
     const accessToken = jwt.sign({
       username,
@@ -32,19 +32,19 @@ const handleLogin = async (req: Request, res: Response) => {
       { expiresIn: "1d" })
 
     await currentUser.updateOne({ refreshToken })
-    res.cookie('jwt', refreshToken, {
+    res.cookie( 'jwt', refreshToken, {
       httpOnly: true,
       maxAge: 24 * 60 * 60 * 1000,
       secure: true,
       sameSite: 'none',
     })
-    return res.status(StatusCodes.OK).json({
+    return res.status( StatusCodes.OK ).json({
       username: currentUser.username,
       _id: currentUser._id,
       accessToken
     })
   } else {
-    throw new CustomError("Wrong password!", StatusCodes.NOT_FOUND)
+    throw new CustomError( "Wrong password!", StatusCodes.NOT_FOUND )
   }
 }
 

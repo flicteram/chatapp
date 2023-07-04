@@ -3,9 +3,9 @@ import { newConversation, newMessage, getConversation, getConversationNew, seenM
 
 const router = Router();
 
-router.route('/').post(newConversation)
-router.route('/:id').get(getConversation).post(newMessage)
-router.route('/new/:id').get(getConversationNew)
-router.route('/seen/:id').post(seenMessages)
+router.route( '/' ).post( newConversation )
+router.route( '/:id' ).get( getConversation ).post( newMessage )
+router.route( '/new/:id' ).get( getConversationNew )
+router.route( '/seen/:id' ).post( seenMessages )
 
 export default router
