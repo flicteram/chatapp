@@ -21,7 +21,6 @@ const updateUserConversation = ( convId:string, data:string[], currentUserId:str
 }
 
 const newConversation = async ( req: Request, res: Response ) => {
-  console.log( req.body.data )
   if ( !req.body.data.usersIds.length ) {
     throw new CustomError( "Please provide users ids", StatusCodes.BAD_REQUEST )
   }
@@ -118,7 +117,6 @@ const getConversationNew = async ( req: Request, res: Response ) => {
 }
 
 const seenMessages = async ( req: Request, res: Response ) => {
-  console.log( 'seen' )
   await Conversation.findOneAndUpdate({
     _id: req.params.id,
     "lastMessage.sentBy.username": { $ne: req.currentUser.username }

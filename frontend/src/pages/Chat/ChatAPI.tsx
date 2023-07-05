@@ -129,7 +129,6 @@ function useGetConversationNew() {
     try {
       const response = await axios.get( `/conversation/new/${convId}`,
         { signal: controller?.signal })
-      console.log( 'respssss', response.data )
       setData( response.data )
     } catch ( e: unknown ) {
       const err = e as CustomAxiosError

@@ -13,7 +13,6 @@ const updateUserConversation = (convId, data, currentUserId) => {
     return addConvId(convId, idsExceptSelf(data, currentUserId));
 };
 const newConversation = async (req, res) => {
-    console.log(req.body.data);
     if (!req.body.data.usersIds.length) {
         throw new CustomError("Please provide users ids", StatusCodes.BAD_REQUEST);
     }
@@ -98,7 +97,6 @@ const getConversationNew = async (req, res) => {
     res.status(StatusCodes.OK).json(convWithUsersData);
 };
 const seenMessages = async (req, res) => {
-    console.log('seen');
     await Conversation.findOneAndUpdate({
         _id: req.params.id,
         "lastMessage.sentBy.username": { $ne: req.currentUser.username }

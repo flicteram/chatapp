@@ -24,7 +24,6 @@ export function useGotNewMessage(
 ){
   const convId = useParams()
   useEffect( () => {
-    console.log( 'gotNewMessage', gotNewMessage )
     if ( gotNewMessage !== null && gotNewMessage.convId === convId.id ) {
       addGotNewMessage( gotNewMessage )
     }

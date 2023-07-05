@@ -34,12 +34,9 @@ export default function useConversations(
       &&
       !hasLastMessageSeen?.lastMessage.seenBy.includes( currentUser.username )
     ) {
-      console.log( 'seeeeeeeeen' )
       handleMakeMessagesSeen()
     }
   }
-
-  console.log( 'dataConversationsdataConversations', dataConversations )
 
   useEffect( ()=>{
     request()

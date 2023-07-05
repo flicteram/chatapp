@@ -7,10 +7,10 @@ export default function useLogout() {
 
   const handleLogout = async () => {
     try {
-      await axios.get('/logout')
-      dispatch(logoutUser())
-    } catch (e) {
-      console.log(e)
+      await axios.get( '/logout' )
+      dispatch( logoutUser() )
+    } catch ( e ) {
+      console.log( e )
     }
   }
 

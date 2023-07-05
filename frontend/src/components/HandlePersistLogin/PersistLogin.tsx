@@ -7,23 +7,23 @@ import CustomLoader from "../CustomLoader/CustomLoader";
 function PersistLogin() {
   const refresh = useRefresh();
   const currentUser = useUserSelector()
-  const [loading, setLoading] = useState(true)
+  const [loading, setLoading] = useState( true )
 
-  useEffect(() => {
+  useEffect( () => {
     const getNewToken = async () => {
       try {
         await refresh()
-      } catch (err) {
-        console.log('e', err)
+      } catch ( err ) {
+        console.log( 'e', err )
       }
       finally {
-        setLoading(false)
+        setLoading( false )
       }
     }
-    currentUser?.accessToken ? setLoading(false) : getNewToken()
+    currentUser?.accessToken ? setLoading( false ) : getNewToken()
   }, [refresh, currentUser?.accessToken])
 
-  if (loading) return <CustomLoader />
+  if ( loading ) return <CustomLoader />
   return (
     <Outlet />
   )

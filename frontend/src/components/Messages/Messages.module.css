@@ -16,7 +16,7 @@
   background-color: #DCF8C6;
   border-radius: 10px;
   border-bottom-right-radius: 0px;
-  padding: .5em;
+  padding: .3em;
   max-width: 90%;
   margin-top: 0.2em;
 
@@ -52,6 +52,8 @@
 
 .messageUsername{
   font-size: .9rem;
+  font-weight: 600;
+  color:rgb(0, 0, 133);
 }
 
 

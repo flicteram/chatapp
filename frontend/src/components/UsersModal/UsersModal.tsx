@@ -124,8 +124,8 @@ function UsersModal({
             onSubmit={formik.handleSubmit}
             className={styles.container}
           >
-            {usersIds.length>1&&
             <TextField
+              disabled={usersIds.length<2}
               label="Group Name"
               helperText={handleHelperText( formik.errors.groupName, formik.touched.groupName )}
               name='groupName'
@@ -134,7 +134,6 @@ function UsersModal({
               onBlur={formik.handleBlur}
               error={formik.errors.groupName !== undefined && formik.touched.groupName}
             />
-            }
             <div className={styles.usersContainer}>
               {dataUsers.map( ( user: OtherUser ) => (
                 <button
@@ -153,17 +152,18 @@ function UsersModal({
                 </button>
               ) )}
             </div>
-            {!!usersIds.length &&
-              <Button
-                type='submit'
-              >
-                {existingConversation._id ?
-                  "Go to conversation"
-                  :
-                  "Create conversation"
-                }
-              </Button>
-            }
+            <Button
+              type='submit'
+              variant='contained'
+              disabled={usersIds.length<1}
+              style={{ margin: '0' }}
+            >
+              {existingConversation._id ?
+                "Go to conversation"
+                :
+                "Create conversation"
+              }
+            </Button>
           </Box>
           :
           <h2 style={{ textAlign: 'center' }}>

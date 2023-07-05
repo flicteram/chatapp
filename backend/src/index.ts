@@ -15,31 +15,31 @@ dotenv.config()
 const PORT = process.env.PORT || 8080;
 
 const app = express();
-const httpServer = createServer(app)
-const io = new Server(httpServer, { cors: { origin: '*' } })
+const httpServer = createServer( app )
+const io = new Server( httpServer, { cors: { origin: '*' } })
 // middleware
-app.use(cors({
+app.use( cors({
   credentials: true,
   origin: true
-}));
-app.use(express.json())
-app.use(cookieParser())
+}) );
+app.use( express.json() )
+app.use( cookieParser() )
 // routes
 
-publicRoutes(app)
-privateRoutes(app)
+publicRoutes( app )
+privateRoutes( app )
 
-app.use(handleErrors)
+app.use( handleErrors )
 
 // start
 const start = async () => {
   try {
-    await connectDB(process.env.MONGO_URI as string);
-    console.log('DB CONNECTED!');
-    httpServer.listen(PORT, () => console.log(`Server is up and runnning on port ${PORT}`));
-  } catch (e) {
-    console.log(e)
+    await connectDB( process.env.MONGO_URI as string );
+    console.log( 'DB CONNECTED!' );
+    httpServer.listen( PORT, () => console.log( `Server is up and runnning on port ${PORT}` ) );
+  } catch ( e ) {
+    console.log( e )
   }
 }
-handleWebSocket(io)
+handleWebSocket( io )
 start()
