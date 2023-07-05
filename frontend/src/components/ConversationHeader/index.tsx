@@ -1,28 +1,22 @@
-import { useEffect, memo } from "react"
+import { memo } from "react"
 import ConnectedUser from "../../interfaces/ConnectedUser"
 import OtherUser from "../OtherUser"
-import { useConversationUsers } from "./ConversationHeaderAPI"
 import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
 import { useNavigate } from 'react-router-dom'
 import styles from './ConversationHeader.module.css'
 import GroupHeader from "../GroupHeader";
+import IOtherUser from '../../interfaces/OtherUser'
 interface Props {
   otherUsersIds:string[] | undefined,
   connectedUsers: ConnectedUser[],
-  groupName:string
+  groupName:string,
+  convUsersData:IOtherUser[],
+  convUsersLoading:boolean
 }
 
 function ConversationHeader({
-  otherUsersIds, connectedUsers, groupName
+  otherUsersIds, connectedUsers, groupName, convUsersData, convUsersLoading
 }: Props ){
-
-  const {
-    convUsersData, convUsersLoading, getConvUsers
-  } = useConversationUsers()
-
-  useEffect( ()=>{
-    getConvUsers( otherUsersIds )
-  }, [otherUsersIds])
 
   const navigate = useNavigate()
 
@@ -44,6 +38,7 @@ function ConversationHeader({
           groupName={groupName}
           isLoading={convUsersLoading}
           participants={convUsersData}
+          connectedUsers={connectedUsers}
         />
         :
         <OtherUser

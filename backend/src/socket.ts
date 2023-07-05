@@ -50,6 +50,7 @@ export default function handleWebSocket( io: Server ){
       if ( disconnectedUser !== undefined ) {
         await updateUserDisconnect( disconnectedUser )
       }
+      console.log( disconnectedUser )
       users = connectedUsers
       io.emit( "connectedUsers", users )
     })

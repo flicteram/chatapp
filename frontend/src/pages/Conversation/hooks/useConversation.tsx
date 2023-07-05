@@ -6,13 +6,14 @@ import { useGetConversation, useSendMessage } from '../ConversationAPI'
 import useUserSelector from '../../../components/User/useUserSelector';
 import { Socket } from 'socket.io-client'
 import { useGotNewMessage, useNewMessageSent } from './useMessages'
+import  useReturnConversationUsers  from './useReturnConversationUsers'
 
 export default function useConversation(
   addLastMessageAndSortConversations: ( sendToId: string, message: SendMessage ) => void,
   socket: {
     current: Socket
   },
-  gotNewMessage:GotNewMessage | null
+  gotNewMessage:GotNewMessage | null,
 ){
   const currentUser = useUserSelector()
   const convId = useParams()
@@ -73,6 +74,9 @@ export default function useConversation(
 
   useNewMessageSent( addNewMessage, handlePendingMessage, sendMessageData )
   useGotNewMessage( addGotNewMessage, gotNewMessage )
+  const {
+    convUsersData, convUsersLoading
+  } = useReturnConversationUsers( otherUsersIds )
 
   return {
     otherUsersIds,
@@ -85,6 +89,8 @@ export default function useConversation(
     isConversationLoading: isLoading,
     getConversation: request,
     conversationData: data,
-    makeMessagesSeen
+    makeMessagesSeen,
+    convUsersData,
+    convUsersLoading
   }
 }

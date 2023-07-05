@@ -7,7 +7,7 @@ import CustomAxiosError from '../../interfaces/CustomAxiosError';
 import GotNewMessage from "../../interfaces/GotNewMeessage";
 import useUserSelector from '../../components/User/useUserSelector';
 import GotSeenMessage from '../../interfaces/GotSeenMessage';
-
+import OtherUser from '../../interfaces/OtherUser';
 function useGetConversation() {
   const [isLoading, setIsLoading] = useState( true );
   const [data, setData] = useState<Conversation | null>( null );
@@ -116,6 +116,35 @@ function useSendMessage() {
     sendMessageData: data,
     sendMessageError: error,
     sendMessageRequest: request
+  }
+}
+
+export function useConversationUsers() {
+  const [isLoading, setIsLoading] = useState( false );
+  const [data, setData] = useState<OtherUser[]>([]);
+  const [error, setError] = useState( '' );
+  const axios = useInterceptor();
+
+  async function request( usersIds: string[] | undefined ) {
+    setIsLoading( true )
+    setError( '' )
+    try {
+      const response = await axios.post( `/users/conversation`, { data: usersIds })
+      setData( response.data )
+    } catch ( e: unknown ) {
+      if ( e instanceof Error ) {
+        setError( e?.message )
+      }
+    } finally {
+      setIsLoading( false )
+    }
+  }
+
+  return {
+    convUsersLoading: isLoading,
+    convUsersData: data,
+    convUsersError: error,
+    getConvUsers: request
   }
 }
 

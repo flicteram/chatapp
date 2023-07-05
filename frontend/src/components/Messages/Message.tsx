@@ -1,13 +1,14 @@
 import useUserSelector from "../User/useUserSelector"
 import styles from './Messages.module.css'
 import SendMessage from '../../interfaces/SendMessage'
-import DoneAllIcon from '@mui/icons-material/DoneAll';
 import { useMemo, useCallback } from 'react'
+import MessageRenderer from "./MessageRenderer"
 
 interface Props{
   message: SendMessage,
   messagePosition: number,
   participantsNumber:number,
+  handleMessageInfo:( message:SendMessage, isSelfMessage:boolean )=>()=>void,
   datesState:{
     [value: string]: number
   }
@@ -17,16 +18,11 @@ export default function Message({
   message,
   messagePosition,
   datesState,
-  participantsNumber
+  participantsNumber,
+  handleMessageInfo
 }: Props ){
   const currentUser = useUserSelector()
-  const handleDisplayTime = useCallback( ( dateMilSeconds: number ) => {
-    const date = new Date( dateMilSeconds )
-    return date.toLocaleTimeString( 'en-GB', {
-      hour: 'numeric',
-      minute: 'numeric'
-    })
-  }, [])
+
   const getDate = useCallback( ( date: number ) => {
     return new Date( date ).toLocaleDateString( 'en-GB' )
   }, [])
@@ -48,35 +44,12 @@ export default function Message({
         {getDate( message.sentAt )}
       </span>
       }
-      <div
-        className={styles.messageContainer}
-        style={!isMessageByCurrentUser?{
-          borderRadius: '10px',
-          borderBottomLeftRadius: '0px'
-        }:{}}
-
-      >
-        {
-          ( participantsNumber>1 && !isMessageByCurrentUser )
-          &&
-        <span className={styles.messageUsername}>{message.sentBy.username}</span>
-        }
-        <div className={styles.messageData}>
-          <p>{message.message} </p>
-          <div>
-            <span>{handleDisplayTime( message.sentAt )}</span>
-            {
-              message.sentBy.username === currentUser.username
-          &&
-          <DoneAllIcon
-            style={{ fontSize: '1rem' }}
-            color={participantsNumber === message.seenBy.length ? "primary" : 'disabled'}
-          />
-            }
-          </div>
-        </div>
-      </div>
-
+      <MessageRenderer
+        message={message}
+        participantsNumber={participantsNumber}
+        handleMessageInfo={handleMessageInfo}
+        isMessageByCurrentUser={isMessageByCurrentUser}
+      />
     </div>
   )
 }

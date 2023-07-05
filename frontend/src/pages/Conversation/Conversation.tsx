@@ -45,7 +45,9 @@ function Conversation() {
     sendMessageLoading,
     conversationData,
     makeMessagesSeen,
-    otherUsersIds
+    otherUsersIds,
+    convUsersData,
+    convUsersLoading
   } = useConversation( addLastMessageAndSortConversations, socket, gotNewMessage )
 
   useEffect( () => {
@@ -71,6 +73,8 @@ function Conversation() {
       style={handleWindowHeight}>
       <ConversationHeader
         groupName={conversationData?.groupName || ""}
+        convUsersData={convUsersData}
+        convUsersLoading={convUsersLoading}
         connectedUsers={connectedUsers}
         otherUsersIds={otherUsersIds}/>
       <div
@@ -101,6 +105,7 @@ function Conversation() {
                 Be the first to send a message
             </span> :
             <Messages
+              convUsersData={convUsersData}
               socket={socket}
               otherUsersIds={otherUsersIds}
               data={conversationData}

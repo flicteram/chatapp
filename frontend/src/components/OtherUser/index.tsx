@@ -6,7 +6,7 @@ import UserAvatar from "../UserAvatar"
 import ConnectedUser from '../../interfaces/ConnectedUser';
 import IOtherUser from '../../interfaces/OtherUser';
 interface Props {
-  connectedUsers: ConnectedUser[],
+  connectedUsers?: ConnectedUser[],
   isUserLoading:boolean,
   otherUserData:IOtherUser
 }
@@ -32,7 +32,7 @@ function OtherUser({
     })}`
   }
 
-  const isOnline = connectedUsers.find( u => u.userId === otherUserData?._id ) !== undefined ?
+  const isOnline = connectedUsers?.find( u => u.userId === otherUserData?._id ) !== undefined ?
     "Active now"
     :
     handleLastSeen( otherUserData?.lastLoggedIn || 0 )

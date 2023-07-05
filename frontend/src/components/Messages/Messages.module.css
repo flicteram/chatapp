@@ -19,9 +19,14 @@
   padding: .3em;
   max-width: 90%;
   margin-top: 0.2em;
-
 }
-.messageData {
+.messageDataRenderer{
+  border-radius: 10px;
+  border-bottom-right-radius: 0px;
+  padding: .5em;
+}
+.messageData,
+.messageDataRenderer {
   display: flex;
   gap: 0 .5em;
   justify-content: space-between;
@@ -30,12 +35,15 @@
   background-color: #DCF8C6;  
 }
 
-.messageData>p {
+.messageData>p,
+.messageDataRenderer>p {
   font-size: .9rem;
   word-break: break-all;
+  text-align: left;
 }
 
-.messageData>div {
+.messageData>div,
+.messageDataRenderer>div {
   display: flex;
   align-items: flex-end;
   align-self: flex-end;
@@ -44,7 +52,8 @@
 
 }
 
-.messageData>div>span{
+.messageData>div>span,
+.messageDataRenderer>div>span{
   font-size: .75rem;
   color: rgb(112, 112, 112);
   padding-top: .5em;
@@ -56,6 +65,13 @@
   color:rgb(0, 0, 133);
 }
 
+.seenByContainer{
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid var(--gray);
+  padding-bottom: .5em
+}
 
 @media(min-width:550px) {
 

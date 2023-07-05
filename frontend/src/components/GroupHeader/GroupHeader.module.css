@@ -1,36 +1,58 @@
 .infoContainer {
   display: flex;
   flex-direction: column;
-  flex: 1;
 }
 
 .infoContainer>span:first-child {
   font-size: 1.1rem;
 }
 
-.infoContainer>span:last-child {
+.infoContainer>button{
   font-size: .85em;
   color: rgb(112, 112, 112);
+}
+.infoContainer>button,
+.infoContainer>span:first-child {
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
-  width: 200px;
+  max-width: 150px;
+  background-color: inherit;
+  border: inherit;
+  text-align: left;
 }
-
+.usersDataContainer{
+  display: grid;
+  gap:.5em;
+  padding: 1em;
+  max-height: 400px;
+}
+.usersDataContainer>h4{
+  text-align: center;
+}
+@media(min-width:320px){
+  .infoContainer>button,
+  .infoContainer>span:first-child{
+    max-width:200px
+  }
+}
 @media(min-width:550px){
-  .infoContainer>span:last-child{
-    width:300px
+  .infoContainer>button,
+  .infoContainer>span:first-child{
+    max-width:300px
   }
 }
 
 @media(min-width:1000px){
-  .infoContainer>span:last-child{
-    width:400px
+  .infoContainer>button,
+  .infoContainer>span:first-child{
+    max-width:400px
   }
 }
 
 @media(min-width:1450px){
-  .infoContainer>div>span:last-child{
-    width:500px;
+  .infoContainer>button,
+  .infoContainer>span:first-child{
+    max-width: 500px;
   }
 }
