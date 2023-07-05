@@ -6,5 +6,6 @@
  - secured routes on the frontend/backend via JWT token
  - user may create account or use an existing one
  - mobile friendly chat app
+ - unlimited group chats
 ### 
 Live: https://chatapp-frontend-ten.vercel.app/
