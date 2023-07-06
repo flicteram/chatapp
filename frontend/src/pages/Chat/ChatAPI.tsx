@@ -54,14 +54,24 @@ function useGetConversations() {
     setData( prevState => prevState.map( conv => {
       if ( conv._id === params.id
         &&
-        !conv.lastMessage.seenBy.includes( currentUser.username )
+        !conv?.lastMessage?.seenByIds?.includes( currentUser._id )
         &&
-        conv.lastMessage.sentBy.username !== currentUser.username ) {
+        conv.lastMessage.sentBy.username !== currentUser.username
+        &&
+        conv.lastMessage.seenByIds
+        &&
+        conv.lastMessage.seenBy
+      ) {
         return {
           ...conv,
           lastMessage: {
             ...conv.lastMessage,
-            seenBy: [...conv.lastMessage.seenBy, currentUser.username]
+            seenByIds: [...conv.lastMessage.seenByIds, currentUser._id ],
+            seenBy: [...conv.lastMessage.seenBy, {
+              username: currentUser.username,
+              _id: currentUser._id,
+              seenAt: Date.now()
+            }]
           }
         }
       }

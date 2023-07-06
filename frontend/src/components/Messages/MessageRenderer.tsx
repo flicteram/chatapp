@@ -54,7 +54,7 @@ export default function MessageRenderer({
             &&
             <DoneAllIcon
               style={{ fontSize: '1rem' }}
-              color={participantsNumber === message.seenBy.length ? "primary" : 'disabled'}
+              color={participantsNumber === message?.seenBy?.length ? "primary" : 'disabled'}
             />
           }
         </div>

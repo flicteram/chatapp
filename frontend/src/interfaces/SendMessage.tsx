@@ -4,7 +4,12 @@ export default interface SendMessage {
     username: string,
     _id: string
   },
-  seenBy:string[]
+  seenByIds?:string[],
+  seenBy?: {
+    username:string,
+    _id:string,
+    seenAt:number
+  }[],
   sentAt: number,
   pending?:boolean
 }

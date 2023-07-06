@@ -1,5 +1,5 @@
 export default interface OtherUser {
-  lastLoggedIn: number,
+  lastLoggedIn?: number,
   username: string,
   _id: string,
   picture?:string,

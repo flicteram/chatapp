@@ -32,8 +32,9 @@ export default function useConversations(
     if (
       hasLastMessageSeen?.lastMessage.sentBy.username !== currentUser.username
       &&
-      !hasLastMessageSeen?.lastMessage.seenBy.includes( currentUser.username )
+      !hasLastMessageSeen?.lastMessage?.seenByIds?.includes( currentUser._id )
     ) {
+      console.log( 'makeseen' )
       handleMakeMessagesSeen()
     }
   }

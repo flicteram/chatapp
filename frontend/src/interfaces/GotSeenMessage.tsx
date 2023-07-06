@@ -1,5 +1,9 @@
 export default interface GotSeenMessage {
-  seenBy: string,
+  seenBy: {
+    username:string,
+    _id:string,
+    seenAt:number
+  },
   convId: string,
-  seenToId: string,
+  seenToIds: string,
 }

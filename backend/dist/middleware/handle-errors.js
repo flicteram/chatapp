@@ -8,6 +8,7 @@ error, _req, res, _next) => {
     if (error.message.includes("undefined")) {
         return res.status(400).json({ message: error.message });
     }
+    console.log(error);
     return res.status(500).json({ message: 'Server Error' });
 };
 export default handleErrors;

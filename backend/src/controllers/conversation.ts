@@ -122,14 +122,27 @@ const seenMessages = async ( req: Request, res: Response ) => {
     "lastMessage.sentBy.username": { $ne: req.currentUser.username }
   }, {
     $addToSet: {
-      "messages.$[element].seenBy": req.currentUser.username,
-      "lastMessage.seenBy": req.currentUser.username
+      "messages.$[element].seenByIds": req.currentUser._id,
+      "messages.$[element].seenBy": {
+        _id: req.currentUser._id,
+        username: req.currentUser.username,
+        seenAt: Date.now()
+      },
+      "lastMessage.seenBy": {
+        _id: req.currentUser._id,
+        username: req.currentUser.username,
+        seenAt: Date.now()
+      },
+      "lastMessage.seenByIds": req.currentUser._id
     }
   }, {
     "arrayFilters": [
-      { "element.sentBy.username": { $ne: req.currentUser.username } },
+      {
+        "element.sentBy.username": { $ne: req.currentUser.username },
+        "element.seenByIds": { $ne: req.currentUser._id }
+      },
     ]
-  })
+  }, )
 
   res.status( StatusCodes.OK ).json({ message: 'You have seen all messages!' })
 }

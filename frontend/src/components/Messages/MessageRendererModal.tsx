@@ -1,7 +1,7 @@
 import DoneAllIcon from '@mui/icons-material/DoneAll';
 import styles from './Messages.module.css'
 import { useCallback } from 'react'
-import { MessageInfo } from '.';
+import { MessageInfo } from './hooks/useMessageInfo';
 
 interface Props{
   message: MessageInfo,
@@ -29,7 +29,7 @@ export default function MessageRenderer({
         <span>{handleDisplayTime( message.sentAt )}</span>
         <DoneAllIcon
           style={{ fontSize: '1rem' }}
-          color={participantsNumber === message.seenBy.length ? "primary" : 'disabled'}
+          color={participantsNumber === ( message.seenBy && message.seenBy.length ) ? "primary" : 'disabled'}
         />
       </div>
     </button>

@@ -60,13 +60,23 @@ function useGetConversation() {
     } : null ) )
   }
 
+  console.log( data )
+
   const makeMessagesSeen = ( seenMessage:GotSeenMessage ) =>{
     setData( prevState => ( prevState ? {
       ...prevState,
       messages: prevState.messages.map( ( message ) => {
-        if ( message.sentBy.username === currentUser.username && !message.seenBy.includes( seenMessage.seenBy ) ) {
+        if ( message.sentBy.username === currentUser.username
+           &&
+           !message?.seenByIds?.includes( seenMessage.seenBy._id )
+           &&
+           message.seenByIds
+           &&
+           message.seenBy
+        ) {
           return {
             ...message,
+            seenByIds: [...message.seenByIds, seenMessage.seenBy._id],
             seenBy: [...message.seenBy, seenMessage.seenBy]
           }
         }

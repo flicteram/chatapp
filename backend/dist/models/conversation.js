@@ -1,7 +1,20 @@
 import { Schema, model } from 'mongoose';
 const conversationSchema = new Schema({
     messages: {
-        type: [Map],
+        type: [{
+                message: String,
+                seenByIds: [String],
+                seenBy: [{
+                        username: String,
+                        seenAt: Number,
+                        _id: String
+                    }],
+                sentAt: Number,
+                sentBy: {
+                    username: String,
+                    _id: String
+                }
+            }],
         default: Array
     },
     participants: {
@@ -9,7 +22,20 @@ const conversationSchema = new Schema({
         required: [true, "No participants sent"],
     },
     lastMessage: {
-        type: Map,
+        type: {
+            message: String,
+            seenByIds: [String],
+            seenBy: [{
+                    username: String,
+                    seenAt: Number,
+                    _id: String
+                }],
+            sentAt: Number,
+            sentBy: {
+                username: String,
+                _id: String
+            }
+        },
         default: {}
     },
     groupName: {

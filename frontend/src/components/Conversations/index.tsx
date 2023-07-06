@@ -108,7 +108,7 @@ function Conversations({
                 className={styles.newMessage}
                 style={( conv.lastMessage.sentBy.username !== currentUser.username )
                   &&
-                  !conv.lastMessage.seenBy.includes( currentUser.username ) ? { display: "unset" } : { display: 'none' }
+                  !conv?.lastMessage?.seenByIds?.includes( currentUser._id ) ? { display: "unset" } : { display: 'none' }
                 }
               />
               }

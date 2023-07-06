@@ -1,7 +1,7 @@
 import useUserSelector from "../User/useUserSelector"
 import styles from './Messages.module.css'
 import SendMessage from '../../interfaces/SendMessage'
-import { useMemo, useCallback } from 'react'
+import { useMemo, useCallback, memo } from 'react'
 import MessageRenderer from "./MessageRenderer"
 
 interface Props{
@@ -14,7 +14,7 @@ interface Props{
   }
 }
 
-export default function Message({
+export default memo( function Message({
   message,
   messagePosition,
   datesState,
@@ -52,4 +52,4 @@ export default function Message({
       />
     </div>
   )
-}
+})

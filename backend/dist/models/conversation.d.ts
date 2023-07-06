@@ -21,12 +21,28 @@
 /// <reference types="mongoose/types/utility" />
 /// <reference types="mongoose/types/validation" />
 /// <reference types="mongoose/types/virtuals" />
+/// <reference types="mongoose" />
 /// <reference types="mongoose/types/inferschematype" />
-import { Types } from 'mongoose';
+interface Message {
+    message: string;
+    seenByIds: string[];
+    seenBy: [
+        {
+            username: string;
+            seenAt: number;
+            _id: string;
+        }
+    ];
+    sentAt: number;
+    sentBy: {
+        username: string;
+        _id: string;
+    };
+}
 interface Conversation {
-    messages: Types.Array<Map<string, string>>;
+    messages: Message[];
     participants: string[];
-    lastMessage: Map<string, string>;
+    lastMessage: Message;
     groupName: string;
 }
 declare const _default: import("mongoose").Model<Conversation, {}, {}, {}, any>;

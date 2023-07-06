@@ -73,6 +73,14 @@
   padding-bottom: .5em
 }
 
+.dialogInfoContainer{
+  display: flex;
+  flex-direction: column;
+  padding: 1em;
+  max-width: 400px;
+  gap: 1em
+}
+
 @media(min-width:550px) {
 
   .messageContainer {

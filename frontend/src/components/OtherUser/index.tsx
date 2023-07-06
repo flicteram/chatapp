@@ -8,22 +8,24 @@ import IOtherUser from '../../interfaces/OtherUser';
 interface Props {
   connectedUsers?: ConnectedUser[],
   isUserLoading:boolean,
-  otherUserData:IOtherUser
+  otherUserData:IOtherUser,
+  seenAt?:number
 }
 
 function OtherUser({
-  connectedUsers, isUserLoading, otherUserData
+  connectedUsers, isUserLoading, otherUserData, seenAt
 }: Props ) {
 
   const handleLastSeen = ( time: number ) => {
     const date = new Date( time )
+    const displayText = seenAt ? "Message seen" : "Last seen"
     if ( new Date( Date.now() ).toDateString() === date.toDateString() ) {
-      return `Last seen today at ${date.toLocaleTimeString( 'en-GB', {
+      return `${displayText} today at ${date.toLocaleTimeString( 'en-GB', {
         hour: 'numeric',
         minute: 'numeric'
       })}`
     }
-    return `Last seen ${date.toLocaleString( 'en-GB', {
+    return `${displayText} ${date.toLocaleString( 'en-GB', {
       hour: 'numeric',
       minute: 'numeric',
       month: '2-digit',
@@ -35,7 +37,7 @@ function OtherUser({
   const isOnline = connectedUsers?.find( u => u.userId === otherUserData?._id ) !== undefined ?
     "Active now"
     :
-    handleLastSeen( otherUserData?.lastLoggedIn || 0 )
+    handleLastSeen( ( otherUserData?.lastLoggedIn || seenAt ) || 0 )
 
   const hasProfilePicture = !!otherUserData?.picture
   const pictureToShow = otherUserData?.picture || otherUserData?.username.slice( 0, 2 ).toUpperCase()

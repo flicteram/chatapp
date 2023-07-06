@@ -1,16 +1,42 @@
-import { Types } from 'mongoose'
 import { Schema, model } from 'mongoose';
 
-interface Conversation {
-  messages: Types.Array<Map<string, string>>,
-  participants: string[],
-  lastMessage: Map<string, string>,
-  groupName:string
+interface Message {
+  message: string,
+  seenByIds: string[],
+  seenBy: [{
+    username: string,
+    seenAt: number,
+    _id: string
+  }],
+  sentAt: number,
+  sentBy: {
+    username: string,
+    _id: string
+  }
 }
 
+interface Conversation {
+  messages: Message[],
+  participants: string[],
+  lastMessage: Message,
+  groupName:string
+}
 const conversationSchema = new Schema<Conversation>({
   messages: {
-    type: [Map],
+    type: [{
+      message: String,
+      seenByIds: [String],
+      seenBy: [{
+        username: String,
+        seenAt: Number,
+        _id: String
+      }],
+      sentAt: Number,
+      sentBy: {
+        username: String,
+        _id: String
+      }
+    }],
     default: Array
   },
   participants: {
@@ -18,7 +44,20 @@ const conversationSchema = new Schema<Conversation>({
     required: [true, "No participants sent"],
   },
   lastMessage: {
-    type: Map,
+    type: {
+      message: String,
+      seenByIds: [String],
+      seenBy: [{
+        username: String,
+        seenAt: Number,
+        _id: String
+      }],
+      sentAt: Number,
+      sentBy: {
+        username: String,
+        _id: String
+      }
+    },
     default: {}
   },
   groupName: {

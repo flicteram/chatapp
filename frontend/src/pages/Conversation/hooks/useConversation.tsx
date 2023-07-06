@@ -52,6 +52,7 @@ export default function useConversation(
         _id: currentUser._id
       },
       seenBy: [],
+      seenByIds: [],
       sentAt: dateNow.getTime()
     }
     handlePendingMessage( newMessage )
