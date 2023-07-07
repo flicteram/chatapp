@@ -5,21 +5,21 @@ import { authUser } from '../../components/User/userSlice'
 import CustomAxiosError from '../../interfaces/CustomAxiosError'
 
 export function useGoogleLoginRequest() {
-  const [isLoading, setIsLoading] = useState(false);
-  const [error, setError] = useState('');
+  const [isLoading, setIsLoading] = useState( false );
+  const [error, setError] = useState( '' );
   const dispatch = useDispatch()
 
-  async function request(googleToken: string) {
-    setIsLoading(true)
-    setError('')
+  async function request( googleToken: string ) {
+    setIsLoading( true )
+    setError( '' )
     try {
-      const response = await axios.post(`/googleAuth`, { data: googleToken })
-      dispatch(authUser(response.data))
-    } catch (e: unknown) {
+      const response = await axios.post( `/googleAuth`, { data: googleToken })
+      dispatch( authUser( response.data ) )
+    } catch ( e: unknown ) {
       const err = e as CustomAxiosError
-      setError(err.response.data.message)
+      setError( err.response.data.message )
     } finally {
-      setIsLoading(false)
+      setIsLoading( false )
     }
   }
 

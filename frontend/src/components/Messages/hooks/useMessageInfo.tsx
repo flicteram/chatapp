@@ -1,7 +1,6 @@
 import { useState } from 'react'
 import SendMessage from '../../../interfaces/SendMessage'
 import IOtherUser from '../../../interfaces/OtherUser'
-import Conversation from '../../../interfaces/Conversation'
 
 type ISeenBy = IOtherUser & {
   seenAt: number
@@ -12,7 +11,6 @@ export interface MessageInfo extends Omit<SendMessage, "seenBy"> {
 }
 
 export default function useMessageInfo(
-  convsData: Conversation | null,
   convUsersData: IOtherUser[]
 ){
   const [messageInfo, setMessageInfo] = useState<MessageInfo>({} as MessageInfo )
@@ -20,7 +18,7 @@ export default function useMessageInfo(
   const toggleDialog = () => setIsDialogOpen( prev=>!prev )
   const handleMessageInfo =  ( messageInfo:SendMessage, isSelfMessage:boolean ) => {
     return () =>{
-      if( convsData?.participants && convsData.participants.length>2 && isSelfMessage ){
+      if( isSelfMessage ){
         const seenByUsers = {
           ...messageInfo,
           seenBy: messageInfo?.seenBy?.reduce( ( acc:ISeenBy[], currentVal:ISeenBy )=>{

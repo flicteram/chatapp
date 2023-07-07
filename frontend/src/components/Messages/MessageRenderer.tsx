@@ -8,7 +8,7 @@ interface Props{
   message: SendMessage,
   participantsNumber:number,
   isMessageByCurrentUser:boolean,
-  handleMessageInfo?:( message:SendMessage, isSelfMessage:boolean )=>()=>void,
+  handleMessageInfo:( message:SendMessage, isSelfMessage:boolean )=>()=>void,
 }
 
 export default function MessageRenderer({
@@ -16,7 +16,7 @@ export default function MessageRenderer({
 }:Props ){
   const currentUser = useUserSelector()
 
-  const styleButton = isMessageByCurrentUser && participantsNumber>1 ?
+  const styleButton = isMessageByCurrentUser ?
     { cursor: 'pointer' }
     :
     { cursor: 'initial' }
@@ -42,9 +42,9 @@ export default function MessageRenderer({
         &&
         <span className={styles.messageUsername}>{message.sentBy.username}</span>
       }
-      <button
+      <div
         style={styleButton}
-        onClick={handleMessageInfo && handleMessageInfo( message, isMessageByCurrentUser )}
+        onClick={handleMessageInfo( message, isMessageByCurrentUser )}
         className={styles.messageData}>
         <p>{message.message} </p>
         <div>
@@ -58,7 +58,7 @@ export default function MessageRenderer({
             />
           }
         </div>
-      </button>
+      </div>
     </div>
   )
 }

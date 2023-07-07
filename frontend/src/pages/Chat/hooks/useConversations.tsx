@@ -17,7 +17,8 @@ export default function useConversations(
     handleAddCreatedConversation,
     handleAddNewConversation,
     addLastMessageAndSortConversations,
-    handleMakeMessagesSeen
+    handleMakeMessagesSeen,
+    handleUpdateLastMessageConversations
   } = useGetConversations()
 
   const handleCreateConv = useCreateConv( handleToggleModal, handleAddCreatedConversation )
@@ -30,11 +31,10 @@ export default function useConversations(
   const handleSeenLastMessage = () => {
     const hasLastMessageSeen = dataConversations.find( conv => conv._id === params.id )
     if (
-      hasLastMessageSeen?.lastMessage.sentBy.username !== currentUser.username
+      hasLastMessageSeen?.lastMessage?.sentBy.username !== currentUser.username
       &&
       !hasLastMessageSeen?.lastMessage?.seenByIds?.includes( currentUser._id )
     ) {
-      console.log( 'makeseen' )
       handleMakeMessagesSeen()
     }
   }
@@ -49,6 +49,7 @@ export default function useConversations(
     handleSeenLastMessage,
     getConversationsError: error,
     getConversationsLoading: isLoading,
-    dataConversations
+    dataConversations,
+    handleUpdateLastMessageConversations
   }
 }

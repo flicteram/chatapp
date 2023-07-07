@@ -1,6 +1,7 @@
 .infoContainer {
   display: flex;
   flex-direction: column;
+  justify-content: center;
 }
 
 .infoContainer>span:first-child {

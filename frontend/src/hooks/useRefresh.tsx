@@ -7,11 +7,11 @@ export default function useRefresh() {
 
   async function getNewToken() {
     try {
-      const response = await customAxios.get('/refresh', { withCredentials: true })
-      dispatch(authUser(response.data))
+      const response = await customAxios.get( '/refresh', { withCredentials: true })
+      dispatch( authUser( response.data ) )
       return response.data.accessToken
-    } catch (e) {
-      dispatch(logoutUser())
+    } catch ( e ) {
+      dispatch( logoutUser() )
       return e
     }
   }

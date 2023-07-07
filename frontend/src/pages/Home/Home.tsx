@@ -16,8 +16,8 @@ function Home() {
             color: "var(--tealGreen)"
           }}/>
         <div className={styles.buttonsContainer}>
-          <button onClick={()=>navigate('/login')}>Login</button>
-          <button onClick={()=>navigate('/register')}>Register</button>
+          <button onClick={()=>navigate( '/login' )}>Login</button>
+          <button onClick={()=>navigate( '/register' )}>Register</button>
         </div>
       </div>
     </Layout>

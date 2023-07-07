@@ -9,11 +9,12 @@ interface Props {
   connectedUsers?: ConnectedUser[],
   isUserLoading:boolean,
   otherUserData:IOtherUser,
-  seenAt?:number
+  seenAt?:number,
+  isSelf?:boolean,
 }
 
 function OtherUser({
-  connectedUsers, isUserLoading, otherUserData, seenAt
+  connectedUsers, isUserLoading, otherUserData, seenAt, isSelf
 }: Props ) {
 
   const handleLastSeen = ( time: number ) => {
@@ -60,7 +61,9 @@ function OtherUser({
               width={100} />
             :
             <span>
-              {isOnline}
+              {isSelf?
+                "(You)":
+                isOnline}
             </span>
         }
       </div>

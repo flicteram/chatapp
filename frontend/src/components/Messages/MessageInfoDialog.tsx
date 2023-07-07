@@ -13,7 +13,6 @@ interface Props{
 export default function MessageInfoDialog({
   toggleDialog, isDialogOpen, participantsNumber, messageInfo
 }:Props ){
-  console.log( messageInfo )
   return (
     <Dialog
       open={isDialogOpen}

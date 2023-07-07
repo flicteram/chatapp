@@ -7,6 +7,7 @@ import Skeleton from '@mui/material/Skeleton'
 import Dialog from '@mui/material/Dialog'
 import OtherUser from '../OtherUser';
 import IConnectedUser from '../../interfaces/ConnectedUser';
+import useUserSelector from '../User/useUserSelector';
 interface Props {
   participants:IOtherUser[],
   isLoading:boolean,
@@ -20,7 +21,13 @@ export default memo( function GroupHeader({
   const toggleDialog = () =>{
     setIsOpen( prev=>!prev )
   }
-  const participantsUsernames = participants.map( p=>p.username ).join( ", " )
+  const currentUser = useUserSelector()
+  const participantsAll = [{
+    username: currentUser.username,
+    _id: currentUser._id,
+    picture: currentUser?.picture
+  }, ...participants]
+  const participantsUsernames = participantsAll.map( p=>p.username===currentUser.username? "You" : p.username ).join( ", " )
 
   return(
     <>
@@ -45,7 +52,7 @@ export default memo( function GroupHeader({
       >
         <div className={styles.usersDataContainer}>
           <h4>{`${groupName}'s participants`}</h4>
-          {participants.map( participant=>(
+          {participantsAll.map( participant=>(
             <div
               style={{
                 display: 'flex',
@@ -56,6 +63,7 @@ export default memo( function GroupHeader({
                 isUserLoading={false}
                 otherUserData={participant}
                 connectedUsers={connectedUsers}
+                isSelf={participant._id === currentUser._id}
               />
             </div>
           ) )}

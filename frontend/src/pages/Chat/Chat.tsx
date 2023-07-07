@@ -15,6 +15,7 @@ import CustomLoader from "../../components/CustomLoader/CustomLoader";
 import UserAvatar from "../../components/UserAvatar";
 import Conversations from "../../components/Conversations";
 import useConversations from "./hooks/useConversations";
+import GotSeenMessage from '../../interfaces/GotSeenMessage'
 const url = process.env.REACT_APP_WS_URL || 'ws://localhost:8080/'
 
 function Chat() {
@@ -29,6 +30,7 @@ function Chat() {
   const [connectedUsers, setConnectedUsers] = useState<ConnectedUser[]>([])
   const [openModal, setOpenModal] = useState( false )
   const [gotNewMessage, setGotNewMessage] = useState<GotNewMessage | null>( null )
+  const [gotSeenMsg, setGotSeenMsg] = useState<GotSeenMessage|null>( null );
   const handleToggleModal = () => setOpenModal( prev=>!prev )
 
   const {
@@ -36,7 +38,8 @@ function Chat() {
     dataConversations,
     getConversationsLoading,
     handleCreateConv,
-    handleSeenLastMessage
+    handleSeenLastMessage,
+    handleUpdateLastMessageConversations
   } = useConversations( gotNewMessage, handleToggleModal )
 
   useEffect( () => {
@@ -52,8 +55,15 @@ function Chat() {
       setGotNewMessage( message )
       addLastMessageAndSortConversations( message.convId, message.newMessage )
     })
+    socket.current.on( 'gotSeenMessages', ( seenMsgData:GotSeenMessage ) => {
+      setGotSeenMsg( seenMsgData )
+      handleUpdateLastMessageConversations( seenMsgData )
+    })
     return () => {
       socket.current.disconnect()
+      socket.current.off( "gotSeenMessages" )
+      socket.current.off( "gotNewMessage" )
+      socket.current.off( "connectedUsers" )
     }
   }, [])
 
@@ -111,6 +121,8 @@ function Chat() {
             gotNewMessage,
             handleSeenLastMessage,
             addLastMessageAndSortConversations,
+            handleUpdateLastMessageConversations,
+            gotSeenMsg,
             connectedUsers,
             handleWindowHeight,
             windowHeight

@@ -60,8 +60,6 @@ function useGetConversation() {
     } : null ) )
   }
 
-  console.log( data )
-
   const makeMessagesSeen = ( seenMessage:GotSeenMessage ) =>{
     setData( prevState => ( prevState ? {
       ...prevState,

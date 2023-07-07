@@ -99,7 +99,8 @@ const getConversationNew = async (req, res) => {
 const seenMessages = async (req, res) => {
     await Conversation.findOneAndUpdate({
         _id: req.params.id,
-        "lastMessage.sentBy.username": { $ne: req.currentUser.username }
+        "lastMessage.sentBy.username": { $ne: req.currentUser.username },
+        "lastMessage.seenByIds": { $ne: req.currentUser._id }
     }, {
         $addToSet: {
             "messages.$[element].seenByIds": req.currentUser._id,
@@ -120,7 +121,7 @@ const seenMessages = async (req, res) => {
             {
                 "element.sentBy.username": { $ne: req.currentUser.username },
                 "element.seenByIds": { $ne: req.currentUser._id }
-            },
+            }
         ]
     });
     res.status(StatusCodes.OK).json({ message: 'You have seen all messages!' });

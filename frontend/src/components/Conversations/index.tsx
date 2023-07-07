@@ -6,6 +6,7 @@ import ConnectedUser from '../../interfaces/ConnectedUser';
 import styles from './index.module.css'
 import MultipleConvs from '../../interfaces/MulltipleConvs';
 import GroupIcon from '@mui/icons-material/Group';
+import DoneAllIcon from '@mui/icons-material/DoneAll';
 
 interface Props{
   dataConversations:MultipleConvs[],
@@ -19,7 +20,8 @@ function Conversations({
   const navigate = useNavigate()
   const currentUser = useUserSelector()
   const params = useParams()
-  const handleDate = useCallback( ( sentAt: number ) => {
+  const handleDate = useCallback( ( sentAt?: number ) => {
+    if( !sentAt ) return ''
     const date = new Date( sentAt )
     const today = new Date()
     if ( date.toDateString() === today.toDateString() ) {
@@ -70,6 +72,10 @@ function Conversations({
       }
       return singleParticipant?.picture
     }
+    const displayUsernameForGroup = conv?.lastMessage?.sentBy?.username === currentUser.username ?
+      `You: `
+      :
+      `${conv?.lastMessage?.sentBy?.username}: `
     conversations.push(
       <button
         className={styles.convContainer}
@@ -95,15 +101,16 @@ function Conversations({
           <div className={styles.convLeft}>
             <div className={styles.convLeftInfo}>
               <h3>{displayName}</h3>
-              {conv?.lastMessage.sentBy &&
+              {conv?.lastMessage?.sentBy &&
                   <span>
+                    {displayUsernameForGroup}
                     {conv.lastMessage.message}
                   </span>
               }
             </div>
             <div className={styles.convRight}>
-              <span>{handleDate( conv.lastMessage.sentAt )}</span>
-              {conv?.lastMessage.message &&
+              <span>{handleDate( conv?.lastMessage?.sentAt )}</span>
+              {conv?.lastMessage?.message &&
               <span
                 className={styles.newMessage}
                 style={( conv.lastMessage.sentBy.username !== currentUser.username )
@@ -112,7 +119,14 @@ function Conversations({
                 }
               />
               }
-
+              { conv?.lastMessage?.sentBy?._id === currentUser._id
+                &&
+                conv.lastMessage.seenByIds?.length === conv.participants.length
+                &&
+                <DoneAllIcon
+                  color='primary'
+                  fontSize='small'/>
+              }
             </div>
           </div>
         </div>

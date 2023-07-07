@@ -5,7 +5,7 @@ interface PropTypes {
   children:JSX.Element
 }
 
-export default function Layout({ children }: PropTypes){
+export default function Layout({ children }: PropTypes ){
   return(
     <div
       style={{

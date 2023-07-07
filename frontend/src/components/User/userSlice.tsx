@@ -13,13 +13,13 @@ export const userSlice = createSlice({
   name: 'user',
   initialState,
   reducers: {
-    authUser: (state, action) => {
+    authUser: ( state, action ) => {
       state.user = action.payload
     },
-    refreshUser: (state, action) => {
+    refreshUser: ( state, action ) => {
       state.user.accessToken = action.payload
     },
-    logoutUser: (state) => {
+    logoutUser: ( state ) => {
       state.user = initialState.user
     }
   }

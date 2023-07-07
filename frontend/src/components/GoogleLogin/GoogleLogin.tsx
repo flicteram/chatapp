@@ -6,7 +6,7 @@ import { useGoogleLoginRequest } from './GoogleLoginAPI';
 export default function GoogleLogin(){
 
   const { loginGoogleRequest } = useGoogleLoginRequest()
-  const handleGoogle = useGoogleLogin({ onSuccess: (res) => loginGoogleRequest(res.access_token) })
+  const handleGoogle = useGoogleLogin({ onSuccess: ( res ) => loginGoogleRequest( res.access_token ) })
 
   const handleGoogleLogin = () => handleGoogle()
 

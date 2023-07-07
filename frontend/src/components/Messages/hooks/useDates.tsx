@@ -1,20 +1,20 @@
 import { useState, useEffect } from 'react'
 import Conversation from '../../../interfaces/Conversation';
 
-export default function useDates(messagesData:Conversation | null){
+export default function useDates( messagesData:Conversation | null ){
   const [datesState, setDatesState] = useState<{
     [value: string]: number
   }>({})
 
-  useEffect(() => {
+  useEffect( () => {
     const dates: {
       [value: string]: number
     } = {}
-    messagesData?.messages.forEach((m, index) => {
-      const date = new Date(m.sentAt).toLocaleDateString('en-GB')
+    messagesData?.messages.forEach( ( m, index ) => {
+      const date = new Date( m.sentAt ).toLocaleDateString( 'en-GB' )
       dates[date] = index
     })
-    setDatesState(dates)
+    setDatesState( dates )
   }, [messagesData?.messages])
 
   return datesState

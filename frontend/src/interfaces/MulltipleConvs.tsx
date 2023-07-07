@@ -2,7 +2,7 @@ import SendMessage from './SendMessage'
 import OtherUser from './OtherUser'
 
 interface MultipleConvs {
-  lastMessage: SendMessage
+  lastMessage?: SendMessage
   messages: SendMessage[],
   participants: OtherUser[],
   _id: string,

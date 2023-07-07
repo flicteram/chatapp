@@ -12,6 +12,8 @@ import styles from './Conversation.module.css'
 import MessageInput from '../../components/MessageInput/MessageInput'
 import useConversation from "./hooks/useConversation";
 import ConversationHeader from "../../components/ConversationHeader";
+import GotSeenMessage from "../../interfaces/GotSeenMessage";
+import { useParams } from 'react-router-dom';
 
 interface OutletContext {
   socket: {
@@ -22,7 +24,8 @@ interface OutletContext {
   handleSeenLastMessage: () => void,
   addLastMessageAndSortConversations: ( sendToId: string, message: SendMessage ) => void,
   handleWindowHeight:{height?:number},
-  windowHeight:number
+  windowHeight:number,
+  gotSeenMsg?:GotSeenMessage
 }
 function Conversation() {
   const {
@@ -32,7 +35,8 @@ function Conversation() {
     addLastMessageAndSortConversations,
     connectedUsers,
     handleWindowHeight,
-    windowHeight
+    windowHeight,
+    gotSeenMsg
   } = useOutletContext<OutletContext>()
   const viewRef = useRef<HTMLDivElement>( null )
   const {
@@ -50,6 +54,8 @@ function Conversation() {
     convUsersLoading
   } = useConversation( addLastMessageAndSortConversations, socket, gotNewMessage )
 
+  const { id: convId } = useParams()
+
   useEffect( () => {
     const timeout = setTimeout( () => {
       viewRef.current?.scrollIntoView({ behavior: 'smooth' })
@@ -58,6 +64,12 @@ function Conversation() {
       clearTimeout( timeout )
     }
   }, [gotNewMessage, sendMessageLoading, windowHeight])
+
+  useEffect( () => {
+    if ( gotSeenMsg && gotSeenMsg?.convId === convId ) {
+      makeMessagesSeen( gotSeenMsg )
+    }
+  }, [gotSeenMsg?.seenBy.seenAt])
 
   const conversationHasMessages = useMemo( ()=>!!conversationData?.messages.length, [conversationData?.messages.length])
 
@@ -110,7 +122,6 @@ function Conversation() {
               otherUsersIds={otherUsersIds}
               data={conversationData}
               gotNewMessage={gotNewMessage}
-              makeMessagesSeen={makeMessagesSeen}
               handleSeenLastMessage={handleSeenLastMessage}
               pendingMessage={pendingMessage}
             />

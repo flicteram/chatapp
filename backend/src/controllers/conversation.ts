@@ -119,7 +119,8 @@ const getConversationNew = async ( req: Request, res: Response ) => {
 const seenMessages = async ( req: Request, res: Response ) => {
   await Conversation.findOneAndUpdate({
     _id: req.params.id,
-    "lastMessage.sentBy.username": { $ne: req.currentUser.username }
+    "lastMessage.sentBy.username": { $ne: req.currentUser.username },
+    "lastMessage.seenByIds": { $ne: req.currentUser._id }
   }, {
     $addToSet: {
       "messages.$[element].seenByIds": req.currentUser._id,
@@ -140,7 +141,7 @@ const seenMessages = async ( req: Request, res: Response ) => {
       {
         "element.sentBy.username": { $ne: req.currentUser.username },
         "element.seenByIds": { $ne: req.currentUser._id }
-      },
+      }
     ]
   }, )
 

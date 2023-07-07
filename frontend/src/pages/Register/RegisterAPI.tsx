@@ -10,22 +10,22 @@ interface UserCredentials {
 }
 
 function useRegister() {
-  const [isLoading, setIsLoading] = useState(false);
-  const [error, setError] = useState('');
+  const [isLoading, setIsLoading] = useState( false );
+  const [error, setError] = useState( '' );
   const dispatch = useDispatch()
 
-  async function request(userCredentials: UserCredentials) {
-    setIsLoading(true)
-    setError('')
+  async function request( userCredentials: UserCredentials ) {
+    setIsLoading( true )
+    setError( '' )
 
     try {
-      const response = await axios.post(`/register`, { data: userCredentials })
-      dispatch(authUser(response.data))
-    } catch (e: unknown) {
+      const response = await axios.post( `/register`, { data: userCredentials })
+      dispatch( authUser( response.data ) )
+    } catch ( e: unknown ) {
       const err = e as CustomAxiosError
-      setError(err.response.data.message)
+      setError( err.response.data.message )
     } finally {
-      setIsLoading(false)
+      setIsLoading( false )
     }
   }
 

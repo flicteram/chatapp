@@ -1,15 +1,14 @@
 import { Socket } from 'socket.io-client'
-import { useEffect, useState } from 'react'
+import { useEffect } from 'react'
 import Conversation from '../../interfaces/Conversation';
 import useUserSelector from '../User/useUserSelector';
 import { useParams } from 'react-router-dom'
 import { useSeenMessage } from './MessagesApi'
 import SendMessage from '../../interfaces/SendMessage'
-import GotNewMessages from '../../interfaces/GotNewMeessage'
+import GotNewMessage from '../../interfaces/GotNewMeessage'
 import PendingMessage from '../PendingMessage';
 import Message from './Message';
 import useDates from './hooks/useDates';
-import GotSeenMessage from '../../interfaces/GotSeenMessage';
 import IOtherUser from '../../interfaces/OtherUser'
 import MessageInfoDialog from './MessageInfoDialog'
 import useMessageInfo from './hooks/useMessageInfo';
@@ -19,11 +18,10 @@ interface Props {
     current: Socket
   }
   data: Conversation | null,
-  gotNewMessage: GotNewMessages,
-  makeMessagesSeen: ( seenMessage:GotSeenMessage )=>void,
   handleSeenLastMessage: () => void,
   pendingMessage: SendMessage | null,
   convUsersData: IOtherUser[],
+  gotNewMessage?: GotNewMessage,
   otherUsersIds?: string[],
 }
 
@@ -34,44 +32,30 @@ export default function Messages(
     handleSeenLastMessage,
     gotNewMessage,
     pendingMessage,
-    makeMessagesSeen,
     otherUsersIds,
-    convUsersData
+    convUsersData,
   }: Props
 ) {
   const currentUser = useUserSelector()
   const { id: convId } = useParams()
-  const [seenMsg, setSeenMsg] = useState( null );
 
   const {
     handleMessageInfo,
     isDialogOpen,
     messageInfo,
     toggleDialog
-  } = useMessageInfo( data, convUsersData )
+  } = useMessageInfo( convUsersData )
 
   const { seenMessageRequest } = useSeenMessage()
   const datesState = useDates( data )
   useEffect( () => {
-    socket.current.on( 'gotSeenMessages', ( seenMsgData ) => {
-      console.log( seenMsgData )
-      if ( seenMsgData.convId === convId ) {
-        setSeenMsg( seenMsgData )
-      }
-    })
-    return () => {
-      socket.current.off( "gotSeenMessages" )
-    }
-  }, [])
-
-  useEffect( () => {
-    if ( seenMsg !== null ) {
-      makeMessagesSeen( seenMsg )
-    }
-  }, [seenMsg])
-
-  useEffect( () => {
-    if ( data?.messages.length ) {
+    if (
+      data?.messages
+       &&
+       data?.lastMessage?.sentBy?._id !== currentUser._id
+       &&
+       !data?.lastMessage?.seenByIds?.includes( currentUser._id )
+    ) {
       seenMessageRequest()
       socket.current.emit( "seenMessages", {
         seenBy: {
@@ -87,8 +71,7 @@ export default function Messages(
     return () => {
       socket.current.off( "seenMessages" )
     }
-  }, [gotNewMessage])
-
+  }, [gotNewMessage?.newMessage?.sentAt, data?.lastMessage?.sentAt])
   return (
     <>
       <MessageInfoDialog

@@ -6,6 +6,7 @@ import SendMessage from '../../interfaces/SendMessage';
 import useUserSelector from '../../components/User/useUserSelector';
 import { useParams } from 'react-router-dom';
 import MultipleConvs from '../../interfaces/MulltipleConvs';
+import GotSeenMessage from '../../interfaces/GotSeenMessage';
 function useGetConversations() {
   const [isLoading, setIsLoading] = useState( true );
   const [data, setData] = useState<MultipleConvs[]>([]);
@@ -50,17 +51,42 @@ function useGetConversations() {
     setData( prevState => ([dataNewConversation, ...prevState]) )
   }
 
+  const handleUpdateLastMessageConversations = ( gotSeenMessage:GotSeenMessage ) =>{
+    setData( prevState=> prevState.map( conv=>{
+      if( conv.participants.length !== conv.lastMessage?.seenByIds?.length
+          &&
+          conv._id === gotSeenMessage.convId
+          &&
+         !conv?.lastMessage?.seenByIds?.includes( gotSeenMessage.seenBy._id )
+          &&
+          conv?.lastMessage?.seenByIds
+          &&
+          conv?.lastMessage?.seenBy
+      ){
+        return {
+          ...conv,
+          lastMessage: {
+            ...conv.lastMessage,
+            seenByIds: [...conv.lastMessage.seenByIds, gotSeenMessage.seenBy._id ],
+            seenBy: [...conv.lastMessage.seenBy, gotSeenMessage.seenBy]
+          }
+        }
+      }
+      return conv
+    }) )
+  }
+
   const handleMakeMessagesSeen = ()=>{
     setData( prevState => prevState.map( conv => {
       if ( conv._id === params.id
         &&
         !conv?.lastMessage?.seenByIds?.includes( currentUser._id )
         &&
-        conv.lastMessage.sentBy.username !== currentUser.username
+        conv?.lastMessage?.sentBy.username !== currentUser.username
         &&
-        conv.lastMessage.seenByIds
+        conv?.lastMessage?.seenByIds
         &&
-        conv.lastMessage.seenBy
+        conv?.lastMessage?.seenBy
       ) {
         return {
           ...conv,
@@ -88,7 +114,8 @@ function useGetConversations() {
     addLastMessageAndSortConversations,
     handleAddNewConversation,
     setAddConversation: setData,
-    handleMakeMessagesSeen
+    handleMakeMessagesSeen,
+    handleUpdateLastMessageConversations
   }
 }
 
