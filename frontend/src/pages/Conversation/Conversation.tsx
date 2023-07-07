@@ -56,14 +56,14 @@ function Conversation() {
 
   const { id: convId } = useParams()
 
-  useEffect( () => {
-    const timeout = setTimeout( () => {
-      viewRef.current?.scrollIntoView({ behavior: 'smooth' })
-    }, 200 )
-    return () => {
-      clearTimeout( timeout )
-    }
-  }, [gotNewMessage, sendMessageLoading, windowHeight])
+  // useEffect( () => {
+  //   const timeout = setTimeout( () => {
+  //     viewRef.current?.scrollIntoView({ behavior: 'smooth' })
+  //   })
+  //   return () => {
+  //     clearTimeout( timeout )
+  //   }
+  // }, [gotNewMessage, sendMessageLoading, windowHeight])
 
   useEffect( () => {
     if ( gotSeenMsg && gotSeenMsg?.convId === convId ) {
