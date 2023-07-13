@@ -51,7 +51,7 @@ const handleGoogleLogin = async ( req: Request, res: Response ) => {
     httpOnly: true,
     maxAge: 24 * 60 * 60 * 1000,
     secure: true,
-    sameSite: 'none',
+    sameSite: 'strict',
   })
   return res.status( StatusCodes.OK ).json({
     username: googleUser.username,

@@ -14,11 +14,11 @@ dotenv.config();
 const PORT = process.env.PORT || 8080;
 const app = express();
 const httpServer = createServer(app);
-const io = new Server(httpServer, { cors: { origin: '*' } });
+const io = new Server(httpServer, { cors: { origin: ["http://localhost:3000", "https://chatapp-frontend-ten.vercel.app"] } });
 // middleware
 app.use(cors({
     credentials: true,
-    origin: true
+    origin: ["http://localhost:3000", "https://chatapp-frontend-ten.vercel.app"]
 }));
 app.use(express.json());
 app.use(cookieParser());
