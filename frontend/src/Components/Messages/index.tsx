@@ -1,12 +1,12 @@
 import { Socket } from 'socket.io-client'
 import { useEffect } from 'react'
 import Conversation from '@Interfaces/Conversation';
-import useUserSelector from '../User/useUserSelector';
+import useUserSelector from 'Components/User/useUserSelector';
 import { useParams } from 'react-router-dom'
 import { useSeenMessage } from './MessagesApi'
 import SendMessage from '@Interfaces/SendMessage'
 import GotNewMessage from '@Interfaces/GotNewMeessage'
-import PendingMessage from '../PendingMessage';
+import PendingMessage from 'Components/PendingMessage';
 import Message from './Message';
 import useDates from './hooks/useDates';
 import IOtherUser from '@Interfaces/OtherUser'

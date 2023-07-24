@@ -5,7 +5,7 @@ import { useGetUsers } from "./UsersModalAPI";
 import OtherUser from '@Interfaces/OtherUser'
 import styles from './UsersModal.module.css'
 import CircularProgress from '@mui/material/CircularProgress'
-import UserAvatar from '../UserAvatar';
+import UserAvatar from 'Components/UserAvatar';
 import MultipleConvs from '@Interfaces/MulltipleConvs';
 import { useNavigate } from 'react-router-dom';
 import Box from '@mui/material/Box'

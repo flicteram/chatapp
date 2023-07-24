@@ -2,7 +2,7 @@ import { memo } from 'react'
 import styles from './OtherUser.module.css'
 import Skeleton from '@mui/material/Skeleton'
 
-import UserAvatar from "../UserAvatar"
+import UserAvatar from "Components/UserAvatar"
 import ConnectedUser from '@Interfaces/ConnectedUser';
 import IOtherUser from '@Interfaces/OtherUser';
 interface Props {

@@ -1,4 +1,4 @@
-import useUserSelector from "../User/useUserSelector";
+import useUserSelector from "Components/User/useUserSelector";
 import { Navigate, Outlet } from 'react-router-dom'
 
 export default function HandlePrivateRoute() {
