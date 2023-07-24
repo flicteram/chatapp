@@ -24,10 +24,10 @@
     "isolatedModules": true,
     "noEmit": true,
     "jsx": "react-jsx",
-    "baseUrl": "src",
+    "baseUrl": "src/",
     "paths": {
       "@Interfaces/*":["interfaces/*"],
     }
   },
-  "include": ["src"]
+  "include": ["src/"]
 }
