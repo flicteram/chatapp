@@ -1,0 +1,14 @@
+.infoContainer {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.infoContainer>span:first-child {
+  font-size: 1.1rem;
+}
+
+.infoContainer>span:last-child {
+  font-size: .85em;
+  color: rgb(112, 112, 112)
+}

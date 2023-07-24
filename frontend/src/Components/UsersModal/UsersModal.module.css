@@ -1,0 +1,36 @@
+.container{
+  padding: 1em;
+  display: flex;
+  flex-direction: column;
+  gap:1em;
+  max-height: 400px;
+}
+.usersContainer {
+  overflow: auto;
+  max-height: 100%;
+  display: grid;
+  gap: 1em;
+}
+
+.user {
+  display: flex;
+  align-items: center;
+  gap: .5em;
+  padding: .5em;
+  background-color: var(--gray);
+  border-radius: 10px;
+  border: 1px solid var(--gray);
+  color: black;
+}
+
+@media(min-width:600px) {
+  .usersContainer {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media(min-width:1100px) {
+  .usersContainer {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
