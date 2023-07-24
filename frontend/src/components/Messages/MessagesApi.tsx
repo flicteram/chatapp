@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import useInterceptor from '../../hooks/useInterceptor';
+import useInterceptor from 'Hooks/useInterceptor';
 import { useParams } from "react-router-dom"
 
 function useSeenMessage() {

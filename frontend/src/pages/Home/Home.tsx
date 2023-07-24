@@ -1,7 +1,7 @@
 import WhatsAppIcon from '@mui/icons-material/WhatsApp';
 import styles from './Home.module.css'
 import { useNavigate } from 'react-router-dom'
-import Layout from "../../components/Layout/Layout";
+import Layout from "Components/Layout";
 
 function Home() {
   const navigate = useNavigate()

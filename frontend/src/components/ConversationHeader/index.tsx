@@ -1,17 +1,17 @@
 import { memo } from "react"
-import ConnectedUser from "../../interfaces/ConnectedUser"
+import ConnectedUser from "@Interfaces/ConnectedUser"
 import OtherUser from "../OtherUser"
 import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
 import { useNavigate } from 'react-router-dom'
 import styles from './ConversationHeader.module.css'
 import GroupHeader from "../GroupHeader";
-import IOtherUser from '../../interfaces/OtherUser'
+import IOtherUser from '@Interfaces/OtherUser'
 interface Props {
-  otherUsersIds:string[] | undefined,
   connectedUsers: ConnectedUser[],
   groupName:string,
   convUsersData:IOtherUser[],
-  convUsersLoading:boolean
+  convUsersLoading:boolean,
+  otherUsersIds?:string[]
 }
 
 function ConversationHeader({

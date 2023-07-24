@@ -1,21 +1,21 @@
-import useLogout from "../../hooks/useLogout";
+import useLogout from "Hooks/useLogout";
 import { memo, useState, useEffect, useRef } from 'react'
-import UsersModal from "../../components/UsersModal/UsersModal";
+import UsersModal from "Components/UsersModal/UsersModal";
 import { Outlet, useParams } from 'react-router-dom'
-import useUserSelector from '../../components/User/useUserSelector'
+import useUserSelector from 'Components/User/useUserSelector'
 import { io } from 'socket.io-client'
-import ConnectedUser from "../../interfaces/ConnectedUser";
-import GotNewMessage from "../../interfaces/GotNewMeessage";
-import useWindowSize from "../../hooks/useWindowSize";
+import ConnectedUser from "@Interfaces/ConnectedUser";
+import GotNewMessage from "@Interfaces/GotNewMeessage";
+import useWindowSize from "Hooks/useWindowSize";
 import styles from './Chat.module.css'
 import MessageIcon from '@mui/icons-material/Message';
 import LogoutIcon from '@mui/icons-material/Logout';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
-import CustomLoader from "../../components/CustomLoader/CustomLoader";
-import UserAvatar from "../../components/UserAvatar";
-import Conversations from "../../components/Conversations";
+import CustomLoader from "Components/CustomLoader/CustomLoader";
+import UserAvatar from "Components/UserAvatar";
+import Conversations from "Components/Conversations";
 import useConversations from "./hooks/useConversations";
-import GotSeenMessage from '../../interfaces/GotSeenMessage'
+import GotSeenMessage from '@Interfaces/GotSeenMessage'
 const url = process.env.REACT_APP_WS_URL || 'ws://localhost:8080/'
 
 function Chat() {

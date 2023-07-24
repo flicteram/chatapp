@@ -1,12 +1,12 @@
 import Home from "./Home/Home";
 import Chat from "./Chat/Chat";
 import { Routes, Route } from 'react-router-dom'
-import HandlePrivateRoute from "../components/HandlePrivateRoute/HandlePrivateRoute";
-import PersistLogin from "../components/HandlePersistLogin/PersistLogin";
+import HandlePrivateRoute from "Components/HandlePrivateRoute/HandlePrivateRoute";
+import PersistLogin from "Components/HandlePersistLogin/PersistLogin";
 import Conversation from "./Conversation/Conversation";
 import Login from './Login/Login'
 import Register from './Register/Register'
-import HandleAuthRoute from "../components/HandleAuthRoute/HandleAuthRoute";
+import HandleAuthRoute from "Components/HandleAuthRoute/HandleAuthRoute";
 function App() {
 
   return (

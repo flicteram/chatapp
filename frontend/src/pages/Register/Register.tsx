@@ -1,14 +1,14 @@
 import Box from '@mui/material/Box'
 import TextField from '@mui/material/TextField'
 import styles from './Register.module.css'
-import hadleHelperText from '../../utils/hadleHelperText'
+import hadleHelperText from 'Utils/hadleHelperText'
 import Button from '@mui/material/Button'
 import { useFormik } from 'formik'
 import { Link } from 'react-router-dom'
-import { useRegister } from './RegisterAPI'
 import { useEffect } from 'react'
-import Layout from '../../components/Layout/Layout'
-import GoogleLogin from "../../components/GoogleLogin/GoogleLogin"
+import Layout from 'Components/Layout/components/Layout'
+import GoogleLogin from "Components/GoogleLogin/GoogleLogin"
+import useAuth from 'Hooks/useAuth'
 
 interface InitialValues {
   username: string,
@@ -43,9 +43,9 @@ const handleValidate = ( values: InitialValues ) => {
 export default function Register() {
 
   const {
-    registerRequest,
-    registerError
-  } = useRegister()
+    authRequest,
+    authError
+  } = useAuth( "/register" )
 
   const formik = useFormik({
     initialValues: {
@@ -54,16 +54,16 @@ export default function Register() {
       confirmPassword: '',
     },
     validate: handleValidate,
-    onSubmit: ( values ) => registerRequest({
+    onSubmit: ( values ) => authRequest({
       username: values.username,
       password: values.password
     })
   })
   useEffect( () => {
-    if ( registerError.toLowerCase().includes( 'username' ) ) {
-      formik.setFieldError( 'username', registerError )
+    if ( authError.toLowerCase().includes( 'username' ) ) {
+      formik.setFieldError( 'username', authError )
     }
-  }, [registerError])
+  }, [authError])
   return (
     <Layout>
       <div className={styles.container}>

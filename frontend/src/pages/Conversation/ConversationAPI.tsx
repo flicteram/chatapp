@@ -1,13 +1,13 @@
 import { useState, useEffect } from 'react';
-import useInterceptor from '../../hooks/useInterceptor';
+import useInterceptor from 'Hooks/useInterceptor';
 import { useParams } from "react-router-dom"
-import Conversation from '../../interfaces/Conversation';
-import SendMessage from "../../interfaces/SendMessage";
-import CustomAxiosError from '../../interfaces/CustomAxiosError';
-import GotNewMessage from "../../interfaces/GotNewMeessage";
-import useUserSelector from '../../components/User/useUserSelector';
-import GotSeenMessage from '../../interfaces/GotSeenMessage';
-import OtherUser from '../../interfaces/OtherUser';
+import Conversation from '@Interfaces/Conversation';
+import SendMessage from "@Interfaces/SendMessage";
+import CustomAxiosError from '@Interfaces/CustomAxiosError';
+import GotNewMessage from "@Interfaces/GotNewMeessage";
+import useUserSelector from 'Components/User/useUserSelector';
+import GotSeenMessage from '@Interfaces/GotSeenMessage';
+import OtherUser from '@Interfaces/OtherUser';
 function useGetConversation() {
   const [isLoading, setIsLoading] = useState( true );
   const [data, setData] = useState<Conversation | null>( null );
@@ -133,7 +133,7 @@ export function useConversationUsers() {
   const [error, setError] = useState( '' );
   const axios = useInterceptor();
 
-  async function request( usersIds: string[] | undefined ) {
+  async function request( usersIds?: string[]) {
     setIsLoading( true )
     setError( '' )
     try {

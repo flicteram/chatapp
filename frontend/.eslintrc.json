@@ -12,6 +12,14 @@
     "plugin:react/recommended",
     "plugin:@typescript-eslint/recommended"
   ],
+  "settings": {
+    "import/resolver": {
+      "node": {
+        "paths": ["src"],
+        "extensions": [".js", ".jsx", ".ts", ".tsx"]
+      }
+    }
+  },
   "rules": {
     "space-in-parens": ["error", "always", { "exceptions": ["empty", "{}", "[]"] }],
     "object-curly-spacing": ["error", "always"],

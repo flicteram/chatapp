@@ -2,11 +2,11 @@ import { memo, useState } from 'react'
 import UserAvatar from "../UserAvatar"
 import GroupIcon from '@mui/icons-material/Group';
 import styles from './GroupHeader.module.css'
-import IOtherUser from '../../interfaces/OtherUser';
+import IOtherUser from '@Interfaces/OtherUser';
 import Skeleton from '@mui/material/Skeleton'
 import Dialog from '@mui/material/Dialog'
 import OtherUser from '../OtherUser';
-import IConnectedUser from '../../interfaces/ConnectedUser';
+import IConnectedUser from '@Interfaces/ConnectedUser';
 import useUserSelector from '../User/useUserSelector';
 interface Props {
   participants:IOtherUser[],

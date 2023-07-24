@@ -1,6 +1,6 @@
 import { useEffect } from 'react'
-import SendMessage from '../../../interfaces/SendMessage'
-import GotNewMessage from "../../../interfaces/GotNewMeessage";
+import SendMessage from '@Interfaces/SendMessage'
+import GotNewMessage from "@Interfaces/GotNewMeessage";
 import { useParams } from 'react-router-dom';
 
 export function useNewMessageSent(

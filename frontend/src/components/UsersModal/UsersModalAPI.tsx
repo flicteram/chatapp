@@ -1,6 +1,6 @@
 import { useState } from 'react'
-import useInterceptor from '../../hooks/useInterceptor'
-import OtherUser from '../../interfaces/OtherUser';
+import useInterceptor from 'Hooks/useInterceptor'
+import OtherUser from '@Interfaces/OtherUser';
 
 export function useGetUsers() {
   const [isLoading, setIsLoading] = useState( true );

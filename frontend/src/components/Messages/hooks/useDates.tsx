@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react'
-import Conversation from '../../../interfaces/Conversation';
+import Conversation from '@Interfaces/Conversation';
 
 export default function useDates( messagesData:Conversation | null ){
   const [datesState, setDatesState] = useState<{

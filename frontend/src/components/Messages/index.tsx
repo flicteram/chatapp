@@ -1,15 +1,15 @@
 import { Socket } from 'socket.io-client'
 import { useEffect } from 'react'
-import Conversation from '../../interfaces/Conversation';
+import Conversation from '@Interfaces/Conversation';
 import useUserSelector from '../User/useUserSelector';
 import { useParams } from 'react-router-dom'
 import { useSeenMessage } from './MessagesApi'
-import SendMessage from '../../interfaces/SendMessage'
-import GotNewMessage from '../../interfaces/GotNewMeessage'
+import SendMessage from '@Interfaces/SendMessage'
+import GotNewMessage from '@Interfaces/GotNewMeessage'
 import PendingMessage from '../PendingMessage';
 import Message from './Message';
 import useDates from './hooks/useDates';
-import IOtherUser from '../../interfaces/OtherUser'
+import IOtherUser from '@Interfaces/OtherUser'
 import MessageInfoDialog from './MessageInfoDialog'
 import useMessageInfo from './hooks/useMessageInfo';
 

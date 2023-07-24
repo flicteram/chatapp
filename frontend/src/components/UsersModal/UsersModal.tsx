@@ -2,16 +2,16 @@ import { memo, useEffect, useState } from 'react'
 import TextField from '@mui/material/TextField'
 import Dialog from '@mui/material/Dialog'
 import { useGetUsers } from "./UsersModalAPI";
-import OtherUser from '../../interfaces/OtherUser'
+import OtherUser from '@Interfaces/OtherUser'
 import styles from './UsersModal.module.css'
 import CircularProgress from '@mui/material/CircularProgress'
 import UserAvatar from '../UserAvatar';
-import MultipleConvs from '../../interfaces/MulltipleConvs';
+import MultipleConvs from '@Interfaces/MulltipleConvs';
 import { useNavigate } from 'react-router-dom';
 import Box from '@mui/material/Box'
 import Button from '@mui/material/Button'
 import { useFormik } from 'formik'
-import handleHelperText from '../../utils/hadleHelperText'
+import handleHelperText from 'Utils/hadleHelperText'
 import { ICreateConversation } from '../../pages/Chat/ChatAPI';
 
 interface Props {

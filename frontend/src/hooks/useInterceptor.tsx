@@ -1,7 +1,7 @@
 import useRefresh from "./useRefresh";
-import { axiosPrivate } from '../utils/axios'
+import { axiosPrivate } from 'Utils/axios'
 import { useEffect } from "react";
-import useUserSelector from "../components/User/useUserSelector";
+import useUserSelector from "Components/User/useUserSelector";
 
 export default function useInterceptor() {
   const refresh = useRefresh();

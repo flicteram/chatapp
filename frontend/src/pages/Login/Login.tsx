@@ -3,52 +3,14 @@ import Box from '@mui/material/Box'
 import Button from '@mui/material/Button'
 import TextField from '@mui/material/TextField'
 import { Link } from 'react-router-dom'
-import { useFormik } from 'formik'
-import hadleHelperText from '../../utils/hadleHelperText'
-import { useLogin } from './LoginAPI'
-import { useEffect } from 'react'
-import Layout from '../../components/Layout/Layout'
-import GoogleLogin from "../../components/GoogleLogin/GoogleLogin"
-interface InitialValues {
-  username: string,
-  password: string,
-}
+import hadleHelperText from 'Utils/hadleHelperText'
+import Layout from 'Components/Layout/components/Layout'
+import GoogleLogin from "Components/GoogleLogin/GoogleLogin"
+import useCustomFormik from './hooks/useCustomFormik'
 
 export default function Login() {
-  const {
-    loginRequest,
-    loginError
-  } = useLogin()
 
-  useEffect( () => {
-    if ( loginError.toLocaleLowerCase().includes( 'user' ) ) {
-      formik.setFieldError( 'username', loginError )
-    }
-    if ( loginError.toLocaleLowerCase().includes( 'password' ) ) {
-      formik.setFieldError( 'password', loginError )
-    }
-  }, [loginError])
-
-  const handleValidate = ( values: InitialValues ) => {
-    const errors = {} as InitialValues
-
-    if ( !values.username ) {
-      errors.username = 'Required'
-    }
-    if ( !values.password ) {
-      errors.password = 'Required'
-    }
-    return errors
-  }
-
-  const formik = useFormik({
-    initialValues: {
-      username: '',
-      password: '',
-    },
-    validate: handleValidate,
-    onSubmit: ( values ) => loginRequest( values )
-  })
+  const formik = useCustomFormik()
   return (
     <Layout>
       <div className={styles.container}>
@@ -78,6 +40,7 @@ export default function Login() {
               error={formik.errors.password !== undefined && formik.touched.password}
             />
             <Button
+              role="button"
               type='submit'
               variant='contained'>
             Login

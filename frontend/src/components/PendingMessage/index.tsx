@@ -1,6 +1,6 @@
 import CircularProgress from '@mui/material/CircularProgress';
 import styles from '../Messages/Messages.module.css'
-import SendMessage from '../../interfaces/SendMessage'
+import SendMessage from '@Interfaces/SendMessage'
 
 interface Props {
   pendingMessage: SendMessage | null

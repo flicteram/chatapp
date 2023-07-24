@@ -1,5 +1,5 @@
-import customAxios from '../utils/axios';
-import { authUser, logoutUser } from '../components/User/userSlice';
+import customAxios from 'Utils/axios';
+import { authUser, logoutUser } from 'Components/User/userSlice';
 import { useDispatch } from 'react-redux'
 
 export default function useRefresh() {

@@ -1,9 +1,9 @@
 import { useEffect, useState, useCallback, useMemo } from 'react'
-import SendMessage from '../../../interfaces/SendMessage'
-import GotNewMessage from "../../../interfaces/GotNewMeessage";
+import SendMessage from '@Interfaces/SendMessage'
+import GotNewMessage from "@Interfaces/GotNewMeessage";
 import { useParams } from 'react-router-dom';
 import { useGetConversation, useSendMessage } from '../ConversationAPI'
-import useUserSelector from '../../../components/User/useUserSelector';
+import useUserSelector from 'Components/User/useUserSelector';
 import { Socket } from 'socket.io-client'
 import { useGotNewMessage, useNewMessageSent } from './useMessages'
 import  useReturnConversationUsers  from './useReturnConversationUsers'

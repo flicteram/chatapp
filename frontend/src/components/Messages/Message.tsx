@@ -1,6 +1,6 @@
 import useUserSelector from "../User/useUserSelector"
 import styles from './Messages.module.css'
-import SendMessage from '../../interfaces/SendMessage'
+import SendMessage from '@Interfaces/SendMessage'
 import { useMemo, useCallback, memo } from 'react'
 import MessageRenderer from "./MessageRenderer"
 

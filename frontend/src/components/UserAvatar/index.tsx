@@ -1,7 +1,6 @@
 import Avatar from '@mui/material/Avatar';
 import { useState, memo } from 'react';
 import Skeleton from '@mui/material/Skeleton'
-import GroupIcon from '@mui/icons-material/Group';
 interface Props {
   hasProfilePicture: boolean,
   isLoading:boolean,
@@ -20,7 +19,7 @@ function UserAvatar({
 }:Props ){
   const [profileImgError, setProfileImgError] = useState( false )
   const shouldUseBackgroundColor = ( !hasProfilePicture && !profileImgError ) ? { backgroundColor: 'var(--tealGreen)' } : {}
-  const handleOnImgError = ()=>setProfileImgError( true )
+  const handleOnImgError = ()=> setProfileImgError( true )
 
   const imgStyle = sx ? sx : {
     width: '45px',
@@ -28,6 +27,7 @@ function UserAvatar({
   }
   if( isLoading ){
     return <Skeleton
+      data-testid="loadingSkeleton"
       variant="circular"
       width={40}
       height={40}/>
@@ -35,11 +35,13 @@ function UserAvatar({
 
   return(
     <Avatar
+      data-testid="avatarTest"
       style={shouldUseBackgroundColor}
       sx={sx}
     >
       {hasProfilePicture && !profileImgError && typeof pictureToShow === 'string'?
         <img
+          data-testid="imgTest"
           onError={handleOnImgError}
           referrerPolicy="no-referrer"
           src={pictureToShow}

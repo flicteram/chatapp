@@ -12,13 +12,14 @@ import { createServer } from 'http';
 import handleWebSocket from './socket.js';
 dotenv.config();
 const PORT = process.env.PORT || 8080;
+const validOrigin = ["http://localhost:3000", "https://chatapp-frontend-ten.vercel.app", "http://localhost"];
 const app = express();
 const httpServer = createServer(app);
-const io = new Server(httpServer, { cors: { origin: ["http://localhost:3000", "https://chatapp-frontend-ten.vercel.app"] } });
+const io = new Server(httpServer, { cors: { origin: validOrigin } });
 // middleware
 app.use(cors({
     credentials: true,
-    origin: ["http://localhost:3000", "https://chatapp-frontend-ten.vercel.app"]
+    origin: validOrigin
 }));
 app.use(express.json());
 app.use(cookieParser());

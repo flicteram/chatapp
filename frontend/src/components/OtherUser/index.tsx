@@ -3,8 +3,8 @@ import styles from './OtherUser.module.css'
 import Skeleton from '@mui/material/Skeleton'
 
 import UserAvatar from "../UserAvatar"
-import ConnectedUser from '../../interfaces/ConnectedUser';
-import IOtherUser from '../../interfaces/OtherUser';
+import ConnectedUser from '@Interfaces/ConnectedUser';
+import IOtherUser from '@Interfaces/OtherUser';
 interface Props {
   connectedUsers?: ConnectedUser[],
   isUserLoading:boolean,

@@ -1,12 +1,12 @@
 import { useState, useCallback } from 'react'
-import useInterceptor from '../../hooks/useInterceptor'
+import useInterceptor from 'Hooks/useInterceptor'
 import { useNavigate } from 'react-router-dom';
-import CustomAxiosError from '../../interfaces/CustomAxiosError';
-import SendMessage from '../../interfaces/SendMessage';
-import useUserSelector from '../../components/User/useUserSelector';
+import CustomAxiosError from '@Interfaces/CustomAxiosError';
+import SendMessage from '@Interfaces/SendMessage';
+import useUserSelector from 'Components/User/useUserSelector';
 import { useParams } from 'react-router-dom';
-import MultipleConvs from '../../interfaces/MulltipleConvs';
-import GotSeenMessage from '../../interfaces/GotSeenMessage';
+import MultipleConvs from '@Interfaces/MulltipleConvs';
+import GotSeenMessage from '@Interfaces/GotSeenMessage';
 function useGetConversations() {
   const [isLoading, setIsLoading] = useState( true );
   const [data, setData] = useState<MultipleConvs[]>([]);

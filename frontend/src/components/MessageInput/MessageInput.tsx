@@ -29,9 +29,11 @@ function MessageInput({
   }, [sendMessageLoading])
   return (
     <form
+      data-testid="formTestId"
       onSubmit={submit}
       className={styles.container}>
       <input
+        data-testid="messageInput"
         disabled={sendMessageLoading}
         ref={inputRef}
         placeholder={placeholder}
@@ -39,6 +41,7 @@ function MessageInput({
         onChange={handleMessageChange} />
       <button
         type='submit'
+        data-testid="sendMessageButton"
         disabled={!message.length}>
         <SendIcon />
       </button>

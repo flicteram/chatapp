@@ -1,5 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit'
-import IUser from '../../interfaces/User'
+import IUser from '@Interfaces/User'
 
 const initialState: IUser = {
   user: {

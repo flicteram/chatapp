@@ -1,6 +1,6 @@
 import DoneAllIcon from '@mui/icons-material/DoneAll';
 import styles from './Messages.module.css'
-import SendMessage from '../../interfaces/SendMessage';
+import SendMessage from '@Interfaces/SendMessage';
 import { useCallback } from 'react'
 import useUserSelector from '../User/useUserSelector';
 

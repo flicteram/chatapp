@@ -1,5 +1,5 @@
-import NavBar from "../NavBar/NavBar"
-import Footer from "../Footer/Footer"
+import NavBar from "./NavBar"
+import Footer from "./Footer"
 
 interface PropTypes {
   children:JSX.Element

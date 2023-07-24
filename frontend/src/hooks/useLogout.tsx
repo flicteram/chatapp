@@ -1,6 +1,6 @@
-import axios from "../utils/axios";
+import axios from "Utils/axios";
 import { useDispatch } from 'react-redux'
-import { logoutUser } from "../components/User/userSlice";
+import { logoutUser } from "Components/User/userSlice";
 
 export default function useLogout() {
   const dispatch = useDispatch()

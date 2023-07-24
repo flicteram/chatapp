@@ -1,8 +1,8 @@
-import useRefresh from "../../hooks/useRefresh";
-import useUserSelector from "../User/useUserSelector";
+import useRefresh from "Hooks/useRefresh";
+import useUserSelector from "Components/User/useUserSelector";
 import { useState, useEffect } from 'react'
 import { Outlet } from 'react-router-dom'
-import CustomLoader from "../CustomLoader/CustomLoader";
+import CustomLoader from "Components/CustomLoader/CustomLoader";
 
 function PersistLogin() {
   const refresh = useRefresh();

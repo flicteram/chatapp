@@ -1,6 +1,6 @@
 const hadleHelperText = (
-  error: string | undefined,
-  touched: boolean | undefined
+  error?: string,
+  touched?: boolean
 ) => {
   if ( error && touched ) {
     return error

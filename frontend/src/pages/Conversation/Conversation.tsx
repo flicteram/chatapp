@@ -1,18 +1,17 @@
 import { useEffect, useRef, memo, useMemo } from "react"
 import { useOutletContext } from "react-router-dom"
-import GotNewMessage from "../../interfaces/GotNewMeessage";
-// import Conv from '../../interfaces/Conversation'
+import GotNewMessage from "@Interfaces/GotNewMeessage";
 import InfiniteScroll from 'react-infinite-scroll-component';
 import { Socket } from 'socket.io-client'
-import Messages from '../../components/Messages'
-import SendMessage from '../../interfaces/SendMessage'
-import ConnectedUser from "../../interfaces/ConnectedUser";
-import CustomLoader from "../../components/CustomLoader/CustomLoader";
+import Messages from 'Components/Messages'
+import SendMessage from '@Interfaces/SendMessage'
+import ConnectedUser from "@Interfaces/ConnectedUser";
+import CustomLoader from "Components/CustomLoader/CustomLoader";
 import styles from './Conversation.module.css'
-import MessageInput from '../../components/MessageInput/MessageInput'
+import MessageInput from 'Components/MessageInput/MessageInput'
 import useConversation from "./hooks/useConversation";
-import ConversationHeader from "../../components/ConversationHeader";
-import GotSeenMessage from "../../interfaces/GotSeenMessage";
+import ConversationHeader from "Components/ConversationHeader";
+import GotSeenMessage from "@Interfaces/GotSeenMessage";
 import { useParams } from 'react-router-dom';
 
 interface OutletContext {

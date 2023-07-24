@@ -1,8 +1,8 @@
 import { useEffect } from 'react'
 import { useGetConversations } from '../ChatAPI'
-import GotNewMessage from "../../../interfaces/GotNewMeessage";
+import GotNewMessage from "@Interfaces/GotNewMeessage";
 import { useParams } from 'react-router-dom'
-import useUserSelector from '../../../components/User/useUserSelector'
+import useUserSelector from 'Components/User/useUserSelector'
 import useGotNewConversation from './useGotNewConversation'
 import useCreateConv from './useCreateConv'
 export default function useConversations(

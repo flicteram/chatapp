@@ -1,7 +1,7 @@
 import { useEffect } from 'react'
 import { useGetConversationNew } from '../ChatAPI'
-import GotNewMessage from "../../../interfaces/GotNewMeessage";
-import MultipleConvs from '../../../interfaces/MulltipleConvs';
+import GotNewMessage from "@Interfaces/GotNewMeessage";
+import MultipleConvs from '@Interfaces/MulltipleConvs';
 
 export default function useGotNewConversation(
   gotNewMessage: GotNewMessage | null,

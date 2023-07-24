@@ -1,10 +1,10 @@
 import { memo, useCallback } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
-import useUserSelector from '../../components/User/useUserSelector'
-import UserAvatar from "../../components/UserAvatar";
-import ConnectedUser from '../../interfaces/ConnectedUser';
+import useUserSelector from 'Components/User/useUserSelector'
+import UserAvatar from "Components/UserAvatar";
+import ConnectedUser from '@Interfaces/ConnectedUser';
 import styles from './index.module.css'
-import MultipleConvs from '../../interfaces/MulltipleConvs';
+import MultipleConvs from '@Interfaces/MulltipleConvs';
 import GroupIcon from '@mui/icons-material/Group';
 import DoneAllIcon from '@mui/icons-material/DoneAll';
 

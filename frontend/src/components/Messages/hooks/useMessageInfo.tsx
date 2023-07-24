@@ -1,6 +1,6 @@
 import { useState } from 'react'
-import SendMessage from '../../../interfaces/SendMessage'
-import IOtherUser from '../../../interfaces/OtherUser'
+import SendMessage from '@Interfaces/SendMessage'
+import IOtherUser from '@Interfaces/OtherUser'
 
 type ISeenBy = IOtherUser & {
   seenAt: number
