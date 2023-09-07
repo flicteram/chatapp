@@ -1,8 +1,9 @@
 import { useState } from 'react';
 import useInterceptor from 'Hooks/useInterceptor';
 import { useParams } from "react-router-dom"
+import CustomAxiosError from '@Interfaces/CustomAxiosError'
 
-function useSeenMessage() {
+export function useSeenMessage() {
   const [isLoading, setIsLoading] = useState( false );
   const [data, setData] = useState<null>( null );
   const [error, setError] = useState( '' );
@@ -18,9 +19,8 @@ function useSeenMessage() {
       const response = await axios.post( `/conversation/seen/${param.id}` )
       setData( response.data )
     } catch ( e: unknown ) {
-      if ( e instanceof Error ) {
-        setError( e?.message )
-      }
+      const err = e as CustomAxiosError
+      if( err?.response?.data?.message ) setError( err.response.data.message )
     } finally {
       setIsLoading( false )
     }
@@ -33,5 +33,3 @@ function useSeenMessage() {
     seenMessageRequest: request
   }
 }
-
-export { useSeenMessage }

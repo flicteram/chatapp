@@ -1,12 +1,12 @@
 import NavBar from "../components/NavBar";
-import Wrapper from "__mocks__/Wrapper";
+import withWrapper from "__mocks__/withWrapper";
 import { render, act } from '@testing-library/react'
 import userEvent from "@testing-library/user-event";
 
-const Component = <Wrapper><NavBar/></Wrapper>
+const Component = withWrapper( NavBar )
 
 test( 'test click button', ()=>{
-  const { getByTestId } = render( Component )
+  const { getByTestId } = render( <Component/> )
 
   const navigateButton = getByTestId( "navigateToLoginButton" )
 

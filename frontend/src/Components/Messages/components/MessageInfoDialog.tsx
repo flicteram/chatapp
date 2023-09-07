@@ -1,14 +1,15 @@
-import OtherUser from '../OtherUser';
+import OtherUser from '../../OtherUser';
 import MessageRendererModal from './MessageRendererModal';
 import DoneAllIcon from '@mui/icons-material/DoneAll';
-import styles from './Messages.module.css'
+import styles from '../Messages.module.css'
 import Dialog from '@mui/material/Dialog';
-import { MessageInfo } from './hooks/useMessageInfo';
+import { MessageInfo } from '../hooks/useMessageInfo';
 interface Props{
   toggleDialog:()=>void,
   isDialogOpen:boolean,
-  participantsNumber:number,
   messageInfo:MessageInfo,
+  participantsNumber?:number,
+
 }
 export default function MessageInfoDialog({
   toggleDialog, isDialogOpen, participantsNumber, messageInfo
@@ -46,7 +47,7 @@ export default function MessageInfoDialog({
             </div>
           ) )
           :
-          <h3>No one saw the message yet</h3>
+          <h4>No one saw the message yet</h4>
         }
       </div>
     </Dialog>

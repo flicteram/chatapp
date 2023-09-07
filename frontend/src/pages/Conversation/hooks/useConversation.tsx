@@ -33,12 +33,12 @@ export default function useConversation(
     sendMessageLoading,
     sendMessageRequest
   } = useSendMessage()
-  const [pendingMessage, setPendingMessage] = useState<SendMessage | null>( null )
+  const [pendingMessage, setPendingMessage] = useState<SendMessage | undefined>()
   const handlePendingMessage = ( message?:SendMessage )=>{
     if( message ){
       setPendingMessage( message )
     }else{
-      setPendingMessage( null )
+      setPendingMessage( undefined )
     }
   }
   const otherUsersIds = useMemo( ()=>data?.participants.filter( ( uId:string ) => uId !== currentUser._id ), [data?._id])

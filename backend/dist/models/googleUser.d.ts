@@ -31,5 +31,5 @@ export interface IUserGoogle {
     conversations: [Map<string, string | string[]>];
     refreshToken?: string;
 }
-declare const _default: import("mongoose").Model<IUserGoogle, {}, {}, {}, Schema<IUserGoogle, import("mongoose").Model<IUserGoogle, any, any, any, any>, {}, {}, {}, {}, "type", IUserGoogle>>;
+declare const _default: import("mongoose").Model<IUserGoogle, {}, {}, {}, Schema<IUserGoogle, import("mongoose").Model<IUserGoogle, any, any, any, any>, {}, {}, {}, {}, import("mongoose").DefaultSchemaOptions, IUserGoogle>>;
 export default _default;

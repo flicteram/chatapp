@@ -24,13 +24,15 @@ function ConversationHeader({
     navigate( '/chat' )
   }
 
-  const isGroupChat = otherUsersIds && otherUsersIds.length>1
+  const isGroupChat = otherUsersIds && otherUsersIds?.length>1
 
   const [otherUserData] = convUsersData
 
   return (
     <div className={styles.container}>
-      <button onClick={handleGoBack}>
+      <button
+        onClick={handleGoBack}
+        data-testid="goBackButton">
         <ArrowBackIosIcon />
       </button>
       {isGroupChat ?

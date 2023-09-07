@@ -1,12 +1,12 @@
 :root {
   --lightGreen: #25D366;
   --tealGreen: #075E54;
-  --gray: #F0F2F5
+  --gray: rgb(240, 242, 245);
 }
 
 button {
   cursor: pointer;
-  color:black;
+  color: black;
 }
 
 * {

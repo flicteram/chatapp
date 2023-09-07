@@ -1,11 +1,11 @@
 import DoneAllIcon from '@mui/icons-material/DoneAll';
-import styles from './Messages.module.css'
+import styles from '../Messages.module.css'
 import { useCallback } from 'react'
-import { MessageInfo } from './hooks/useMessageInfo';
+import { MessageInfo } from '../hooks/useMessageInfo';
 
 interface Props{
   message: MessageInfo,
-  participantsNumber:number,
+  participantsNumber?:number,
 }
 
 export default function MessageRenderer({
@@ -24,7 +24,7 @@ export default function MessageRenderer({
     <button
       style={{ cursor: 'initial' }}
       className={styles.messageDataRenderer}>
-      <p>{message.message} </p>
+      <p>{message.message}</p>
       <div>
         <span>{handleDisplayTime( message.sentAt )}</span>
         <DoneAllIcon

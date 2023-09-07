@@ -1,6 +1,7 @@
-import { useFormik, FormikHelpers } from 'formik'
+import { useFormik } from 'formik'
 import { useEffect } from 'react'
 import useAuth from "Hooks/useAuth"
+import handleFieldError from 'Utils/handleFieldError'
 
 export interface InitialValues {
   username: string,
@@ -14,7 +15,7 @@ export default function useCustomFormik(){
   } = useAuth( "/auth" )
 
   useEffect( () => {
-    handleDisplayError( authError, formik )
+    handleFieldError<InitialValues>( authError, formik, ["username", "password"])
   }, [authError])
 
   const handleValidate = ( values: InitialValues ) => {
@@ -41,11 +42,3 @@ export default function useCustomFormik(){
   return formik
 }
 
-export const handleDisplayError = ( loginError:string, formik: FormikHelpers<InitialValues> ) =>{
-  if ( loginError.toLocaleLowerCase().includes( 'user' ) ) {
-    formik.setFieldError( 'username', loginError )
-  }
-  if ( loginError.toLocaleLowerCase().includes( 'password' ) ) {
-    formik.setFieldError( 'password', loginError )
-  }
-}

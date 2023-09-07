@@ -1,10 +1,15 @@
 import '@testing-library/jest-dom';
 import { renderHook, act } from '@testing-library/react';
-import { handleDisplayError } from '../hooks/useCustomFormik'
+import handleFieldError from 'Utils/handleFieldError';
 import { useFormik } from 'formik';
 
+interface InitialValues{
+  username:string,
+  password:string
+}
 describe( 'test handleDisplayError', ()=>{
   test( "User has error", ()=>{
+    const error =  "Username plm"
     const formik = renderHook( ()=>useFormik({
       initialValues: {
         username: '',
@@ -14,12 +19,13 @@ describe( 'test handleDisplayError', ()=>{
       onSubmit: jest.fn()
     }) )
     act( ()=>{
-      handleDisplayError( "User plm", formik.result.current )
+      handleFieldError<InitialValues>( error, formik.result.current, ["username"])
     })
 
-    expect( formik.result.current.errors.username ).toEqual( 'User plm' )
+    expect( formik.result.current.errors.username ).toEqual( error )
   })
   test( "Password has error", ()=>{
+    const error = "Password plm"
     const formik = renderHook( ()=>useFormik({
       initialValues: {
         username: '',
@@ -29,10 +35,10 @@ describe( 'test handleDisplayError', ()=>{
       onSubmit: jest.fn()
     }) )
     act( ()=>{
-      handleDisplayError( "Password plm", formik.result.current )
+      handleFieldError<InitialValues>( error, formik.result.current, ["password"])
     })
 
-    expect( formik.result.current.errors.password ).toEqual( 'Password plm' )
+    expect( formik.result.current.errors.password ).toEqual( error )
   })
 
 })

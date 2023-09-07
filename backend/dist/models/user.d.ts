@@ -30,5 +30,5 @@ export interface IUser {
     conversations: [Map<string, string | string[]>];
     refreshToken?: string;
 }
-declare const _default: import("mongoose").Model<IUser, {}, {}, {}, Schema<IUser, import("mongoose").Model<IUser, any, any, any, any>, {}, {}, {}, {}, "type", IUser>>;
+declare const _default: import("mongoose").Model<IUser, {}, {}, {}, Schema<IUser, import("mongoose").Model<IUser, any, any, any, any>, {}, {}, {}, {}, import("mongoose").DefaultSchemaOptions, IUser>>;
 export default _default;

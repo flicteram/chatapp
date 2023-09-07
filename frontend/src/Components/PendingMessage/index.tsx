@@ -3,7 +3,7 @@ import styles from '../Messages/Messages.module.css'
 import SendMessage from '@Interfaces/SendMessage'
 
 interface Props {
-  pendingMessage: SendMessage | null
+  pendingMessage?: SendMessage
 }
 
 export default function PendingMessage({ pendingMessage }:Props ){
@@ -19,6 +19,7 @@ export default function PendingMessage({ pendingMessage }:Props ){
           <p>{pendingMessage.message}</p>
           <div>
             <CircularProgress
+              data-testid="loadingPendingMessage"
               disableShrink
               color='primary'
               style={{
@@ -29,7 +30,6 @@ export default function PendingMessage({ pendingMessage }:Props ){
           </div>
         </div>
       </div>
-
     </div>
   )
 }

@@ -1,6 +1,6 @@
 import GoogleIcon from '@mui/icons-material/Google';
 import Button from '@mui/material/Button';
-import { useGoogleLogin,  } from '@react-oauth/google';
+import { useGoogleLogin } from '@react-oauth/google';
 import useAuth from 'Hooks/useAuth';
 
 export default function GoogleLogin(){

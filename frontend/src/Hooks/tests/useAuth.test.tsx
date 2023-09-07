@@ -27,7 +27,7 @@ const userData = {
 
 describe( "test useAuth", ()=>{
 
-  it( "test dispatch was called", ()=>{
+  it( "test dispatch was called", async ()=>{
     const mockStore = configureStore([Thunk]);
     const initialStore = {
       accessToken: '',
@@ -42,8 +42,8 @@ describe( "test useAuth", ()=>{
 
     const { result } = renderHook( ()=> useAuth( "/mockurl" ), { wrapper: wrapper2 })
 
-    act( ()=>{
-      result.current.authRequest({
+    await act( async ()=>{
+      await result.current.authRequest({
         username: 'alextest',
         password: '12345678'
       })
@@ -66,6 +66,23 @@ describe( "test useAuth", ()=>{
 
     await waitFor( ()=>{
       expect( result.current.authError ).toStrictEqual( message )
+    })
+  })
+
+  it( "loading should be false", async()=>{
+    const message = "Oopes someting went wrong!"
+    mockedAxios.post.mockRejectedValueOnce({ response: { data: { message } } })
+    const { result } = renderHook( ()=> useAuth( "/mockurl" ), { wrapper })
+
+    await act( async()=>{
+      await result.current.authRequest({
+        username: 'alextest',
+        password: '12345678'
+      })
+    })
+
+    await waitFor( ()=>{
+      expect( result.current.authLoading ).toEqual( false )
     })
   })
 })

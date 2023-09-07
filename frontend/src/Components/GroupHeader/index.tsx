@@ -40,7 +40,10 @@ export default memo( function GroupHeader({
           {groupName}
         </span>
         {isLoading ?
-          <Skeleton width={100}/>:
+          <Skeleton
+            width={100}
+            data-testid="skeletonGroupTest"/>
+          :
           <button onClick={toggleDialog}>
             {participantsUsernames}
           </button>

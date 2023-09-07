@@ -3,67 +3,13 @@ import TextField from '@mui/material/TextField'
 import styles from './Register.module.css'
 import hadleHelperText from 'Utils/hadleHelperText'
 import Button from '@mui/material/Button'
-import { useFormik } from 'formik'
 import { Link } from 'react-router-dom'
-import { useEffect } from 'react'
 import Layout from 'Components/Layout/components/Layout'
 import GoogleLogin from "Components/GoogleLogin/GoogleLogin"
-import useAuth from 'Hooks/useAuth'
-
-interface InitialValues {
-  username: string,
-  password: string,
-  confirmPassword: string,
-}
-
-const handleValidate = ( values: InitialValues ) => {
-  const errors = {} as InitialValues
-
-  if ( !values.username ) {
-    errors.username = 'Required'
-  } else if ( values.username.length < 6 ) {
-    errors.username = 'Must have at least 6 chars'
-  } else if ( values.username.length > 20 ) {
-    errors.username = 'Username max length 20'
-  }
-  if ( !values.password ) {
-    errors.password = 'Required'
-  } else if ( values.password.length < 6 ) {
-    errors.password = 'Must have at least 6 chars'
-  }
-  if ( !values.confirmPassword ) {
-    errors.confirmPassword = 'Required'
-  }
-  if ( values.password !== values.confirmPassword ) {
-    errors.confirmPassword = 'Passwords does not match'
-  }
-  return errors
-}
+import useFromikRegister from './hooks/useFormikRegister'
 
 export default function Register() {
-
-  const {
-    authRequest,
-    authError
-  } = useAuth( "/register" )
-
-  const formik = useFormik({
-    initialValues: {
-      username: '',
-      password: '',
-      confirmPassword: '',
-    },
-    validate: handleValidate,
-    onSubmit: ( values ) => authRequest({
-      username: values.username,
-      password: values.password
-    })
-  })
-  useEffect( () => {
-    if ( authError.toLowerCase().includes( 'username' ) ) {
-      formik.setFieldError( 'username', authError )
-    }
-  }, [authError])
+  const formik = useFromikRegister()
   return (
     <Layout>
       <div className={styles.container}>

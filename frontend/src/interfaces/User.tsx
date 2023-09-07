@@ -11,5 +11,6 @@ export default interface IUser {
 export interface User {
   accessToken: string,
   username: string,
-  _id: string
+  _id: string,
+  picture?:string
 }

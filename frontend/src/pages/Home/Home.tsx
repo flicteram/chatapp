@@ -6,6 +6,8 @@ import Layout from "Components/Layout";
 function Home() {
   const navigate = useNavigate()
 
+  const handleNavigate = ( route:string ) => ()=> navigate( route )
+
   return (
     <Layout>
       <div className={styles.homeContainer}>
@@ -16,12 +18,28 @@ function Home() {
             color: "var(--tealGreen)"
           }}/>
         <div className={styles.buttonsContainer}>
-          <button onClick={()=>navigate( '/login' )}>Login</button>
-          <button onClick={()=>navigate( '/register' )}>Register</button>
+          {routes.map( ({
+            route, routeName
+          })=>(
+            <button
+              key={route}
+              onClick={handleNavigate( route )}>{routeName}</button>
+          ) )}
         </div>
       </div>
     </Layout>
   )
 }
+
+const routes = [
+  {
+    route: '/login',
+    routeName: "Login"
+  },
+  {
+    route: '/register',
+    routeName: "Register"
+  }
+]
 
 export default Home

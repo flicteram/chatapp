@@ -1,8 +1,7 @@
 import DoneAllIcon from '@mui/icons-material/DoneAll';
-import styles from './Messages.module.css'
+import styles from '../Messages.module.css'
 import SendMessage from '@Interfaces/SendMessage';
 import { useCallback } from 'react'
-import useUserSelector from '../User/useUserSelector';
 
 interface Props{
   message: SendMessage,
@@ -14,7 +13,6 @@ interface Props{
 export default function MessageRenderer({
   isMessageByCurrentUser, message, participantsNumber, handleMessageInfo
 }:Props ){
-  const currentUser = useUserSelector()
 
   const styleButton = isMessageByCurrentUser ?
     { cursor: 'pointer' }
@@ -46,11 +44,11 @@ export default function MessageRenderer({
         style={styleButton}
         onClick={handleMessageInfo( message, isMessageByCurrentUser )}
         className={styles.messageData}>
-        <p>{message.message} </p>
+        <p>{message.message}</p>
         <div>
           <span>{handleDisplayTime( message.sentAt )}</span>
           {
-            message.sentBy.username === currentUser.username
+            isMessageByCurrentUser
             &&
             <DoneAllIcon
               style={{ fontSize: '1rem' }}

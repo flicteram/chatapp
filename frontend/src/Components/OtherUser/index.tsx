@@ -1,14 +1,13 @@
 import { memo } from 'react'
 import styles from './OtherUser.module.css'
 import Skeleton from '@mui/material/Skeleton'
-
 import UserAvatar from "Components/UserAvatar"
 import ConnectedUser from '@Interfaces/ConnectedUser';
 import IOtherUser from '@Interfaces/OtherUser';
 interface Props {
-  connectedUsers?: ConnectedUser[],
   isUserLoading:boolean,
   otherUserData:IOtherUser,
+  connectedUsers?: ConnectedUser[],
   seenAt?:number,
   isSelf?:boolean,
 }
@@ -17,7 +16,10 @@ function OtherUser({
   connectedUsers, isUserLoading, otherUserData, seenAt, isSelf
 }: Props ) {
 
-  const handleLastSeen = ( time: number ) => {
+  const handleLastSeen = ( time?: number ) => {
+    if( !time ){
+      return ''
+    }
     const date = new Date( time )
     const displayText = seenAt ? "Message seen" : "Last seen"
     if ( new Date( Date.now() ).toDateString() === date.toDateString() ) {
@@ -38,7 +40,7 @@ function OtherUser({
   const isOnline = connectedUsers?.find( u => u.userId === otherUserData?._id ) !== undefined ?
     "Active now"
     :
-    handleLastSeen( ( otherUserData?.lastLoggedIn || seenAt ) || 0 )
+    handleLastSeen( otherUserData?.lastLoggedIn || seenAt )
 
   const hasProfilePicture = !!otherUserData?.picture
   const pictureToShow = otherUserData?.picture || otherUserData?.username.slice( 0, 2 ).toUpperCase()
@@ -48,7 +50,7 @@ function OtherUser({
       <UserAvatar
         hasProfilePicture={hasProfilePicture}
         pictureToShow={pictureToShow}
-        isLoading={false}
+        isLoading={isUserLoading}
       />
       <div className={styles.infoContainer}>
         <span>
@@ -57,10 +59,11 @@ function OtherUser({
         {
           isUserLoading ?
             <Skeleton
+              data-testid="otherUserLoadingSkeleton"
               variant='text'
               width={100} />
             :
-            <span>
+            <span data-testid="userStatus">
               {isSelf?
                 "(You)":
                 isOnline}

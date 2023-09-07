@@ -17,7 +17,7 @@ const handleLogin = async ( req: Request, res: Response ) => {
   }
   const currentUser = await User.findOne({ username })
   if ( !currentUser ) {
-    throw new CustomError( "Invalid user!", StatusCodes.NOT_FOUND )
+    throw new CustomError( "Invalid username!", StatusCodes.NOT_FOUND )
   }
   const comparePasswords = await bcrypt.compare( password, currentUser.password )
   if ( comparePasswords ) {
