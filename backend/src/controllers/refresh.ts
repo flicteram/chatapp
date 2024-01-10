@@ -8,9 +8,9 @@ import * as dotenv from 'dotenv'
 
 dotenv.config()
 
-const handleRefresh = async (req: Request, res: Response) => {
-  if (!req?.cookies?.jwt) {
-    throw new CustomError("Unauthorized", StatusCodes.UNAUTHORIZED);
+const handleRefresh = async ( req: Request, res: Response ) => {
+  if ( !req?.cookies?.jwt ) {
+    throw new CustomError( "Unauthorized", StatusCodes.UNAUTHORIZED );
   }
   const refreshToken = req.cookies.jwt
 
@@ -19,14 +19,14 @@ const handleRefresh = async (req: Request, res: Response) => {
     GoogleUser.findOne({ refreshToken })
   ])
   const currentUser = user || googleUser
-  if (!currentUser) {
-    throw new CustomError("Forbidden", StatusCodes.FORBIDDEN);
+  if ( !currentUser ) {
+    throw new CustomError( "Forbidden", StatusCodes.FORBIDDEN );
   }
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  jwt.verify(refreshToken, process.env.SECRET_REFRESH_TOKEN as string, (err: any, decoded: any) => {
-    if (err || decoded.username !== currentUser.username) {
-      throw new CustomError("Forbidden", StatusCodes.FORBIDDEN);
+  jwt.verify( refreshToken, process.env.SECRET_REFRESH_TOKEN as string, ( err: any, decoded: any ) => {
+    if ( err || decoded.username !== currentUser.username ) {
+      throw new CustomError( "Forbidden", StatusCodes.FORBIDDEN );
     }
   })
   // Generate another token
@@ -34,7 +34,7 @@ const handleRefresh = async (req: Request, res: Response) => {
     username: currentUser.username,
     _id: currentUser._id,
   }, process.env.SECRET_ACCESS_TOKEN as string, { expiresIn: '5m' });
-  res.status(StatusCodes.OK).json({
+  res.status( StatusCodes.OK ).json({
     username: currentUser.username,
     _id: currentUser._id,
     picture: googleUser?.picture,

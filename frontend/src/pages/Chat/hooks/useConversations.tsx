@@ -1,4 +1,3 @@
-import { useEffect } from 'react'
 import { useGetConversations } from '../ChatAPI'
 import GotNewMessage from "@Interfaces/GotNewMeessage";
 import { useParams } from 'react-router-dom'
@@ -13,7 +12,6 @@ export default function useConversations(
     dataConversations,
     error,
     isLoading,
-    request,
     handleAddCreatedConversation,
     handleAddNewConversation,
     addLastMessageAndSortConversations,
@@ -38,10 +36,6 @@ export default function useConversations(
       handleMakeMessagesSeen()
     }
   }
-
-  useEffect( ()=>{
-    request()
-  }, [])
 
   return {
     handleCreateConv,

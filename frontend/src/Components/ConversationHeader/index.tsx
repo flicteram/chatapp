@@ -9,7 +9,7 @@ import IOtherUser from '@Interfaces/OtherUser'
 interface Props {
   connectedUsers: ConnectedUser[],
   groupName:string,
-  convUsersData:IOtherUser[],
+  convUsersData:IOtherUser[] | [],
   convUsersLoading:boolean,
   otherUsersIds?:string[]
 }

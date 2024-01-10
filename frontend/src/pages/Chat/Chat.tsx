@@ -30,7 +30,7 @@ function Chat() {
   const [connectedUsers, setConnectedUsers] = useState<ConnectedUser[]>([])
   const [openModal, setOpenModal] = useState( false )
   const [gotNewMessage, setGotNewMessage] = useState<GotNewMessage | null>( null )
-  const [gotSeenMsg, setGotSeenMsg] = useState<GotSeenMessage|null>( null );
+  const [gotSeenMsg, setGotSeenMsg] = useState<GotSeenMessage | null>( null );
   const handleToggleModal = () => setOpenModal( prev=>!prev )
 
   const {
@@ -71,7 +71,7 @@ function Chat() {
 
   const handleWindowHeight = windowWidth > 750 ? {} : { height: windowHeight }
   const handleWindowHeightlow = windowWidth < 750 ? {} : { height: windowHeight }
-  if ( getConversationsLoading ) return <CustomLoader />
+  if ( getConversationsLoading ) return <CustomLoader data-testid="getConvsLoading"/>
 
   return (
     <div

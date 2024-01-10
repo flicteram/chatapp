@@ -1,4 +1,4 @@
-import { useState, useCallback } from 'react'
+import { useState, useCallback, useEffect } from 'react'
 import useInterceptor from 'Hooks/useInterceptor'
 import { useNavigate } from 'react-router-dom';
 import CustomAxiosError from '@Interfaces/CustomAxiosError';
@@ -15,27 +15,32 @@ function useGetConversations() {
   const currentUser = useUserSelector()
   const params = useParams()
 
-  async function request( controller?: AbortController ) {
-    setIsLoading( true )
-    setError( '' )
-    setData([])
-    try {
-      const response = await axios.get( '/conversations', { signal: controller?.signal })
-      setData( response.data )
-    } catch ( e: unknown ) {
-      if ( e instanceof Error ) {
-        setError( e?.message )
+  useEffect( ()=>{
+    ( async function getConversations( controller?: AbortController ) {
+      setIsLoading( true )
+      setError( '' )
+      setData([])
+      try {
+        const response = await axios.get( '/conversations', { signal: controller?.signal })
+        setData( response.data )
+      } catch ( e: unknown ) {
+        if ( e instanceof Error ) {
+          setError( e?.message )
+        }
+      } finally {
+        setIsLoading( false )
       }
-    } finally {
-      setIsLoading( false )
-    }
-  }
+    })()
+  }, [])
 
   const handleAddCreatedConversation = ( convData:MultipleConvs ) => {
     setData( prevState => ([...prevState, convData]) )
   }
 
   const addLastMessageAndSortConversations = useCallback( ( sendToId: string, message: SendMessage ) => {
+    const sortHelper = ( sentAt?:number )=>(
+      sentAt || -Infinity
+    )
     setData( prevState => prevState.map( conv => {
       if ( conv._id === sendToId ) {
         return {
@@ -44,7 +49,7 @@ function useGetConversations() {
         }
       }
       return conv
-    }).sort( ( a, b ) => ( b?.lastMessage?.sentAt || -Infinity ) - ( a?.lastMessage?.sentAt || -Infinity ) ) )
+    }).sort( ( a, b ) =>  sortHelper( b?.lastMessage?.sentAt )  - sortHelper( a?.lastMessage?.sentAt ) ) )
   }, [])
 
   const handleAddNewConversation =( dataNewConversation:MultipleConvs ) =>{
@@ -109,7 +114,6 @@ function useGetConversations() {
     isLoading,
     dataConversations: data,
     error,
-    request,
     handleAddCreatedConversation,
     addLastMessageAndSortConversations,
     handleAddNewConversation,

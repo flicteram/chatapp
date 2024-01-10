@@ -3,6 +3,9 @@ export default {
   testEnvironment: 'jsdom',
   transform: { '^.+\\.ts?$': 'ts-jest', },
   transformIgnorePatterns: ['<rootDir>/node_modules/'],
+  setupFilesAfterEnv: [
+    "<rootDir>/setupTests.ts"
+  ],
   moduleDirectories: [
     "node_modules",
     "src"

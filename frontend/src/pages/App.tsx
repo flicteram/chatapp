@@ -34,9 +34,8 @@ function App() {
             </Route>
           </Route>
         </Route>
-      </Routes >
+      </Routes>
     </div>
-
   );
 }
 

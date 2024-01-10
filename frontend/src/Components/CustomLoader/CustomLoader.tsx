@@ -1,5 +1,5 @@
 import CircularProgress from '@mui/material/CircularProgress'
-export default function CustomLoader() {
+export default function CustomLoader({ ...props }) {
   return (
     <div
       style={{
@@ -11,6 +11,7 @@ export default function CustomLoader() {
         margin: '0 auto',
       }}>
       <CircularProgress
+        {...props}
         style={{ color: 'var(--lightGreen)' }}
         thickness={5} />
     </div>

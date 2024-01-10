@@ -20,11 +20,10 @@ const newConversation = async (req, res) => {
     if (usersIds.length > 1 && !groupName) {
         throw new CustomError("Please provide group name", StatusCodes.BAD_REQUEST);
     }
-    const [normalUsers, googleUsers] = await Promise.all([
+    const allUsers = await Promise.all([
         User.find({ "_id": { "$in": usersIds } }, '-password -refreshToken -conversations'),
         GoogleUser.find({ "_id": { "$in": usersIds } }, '-password -refreshToken -conversations')
-    ]);
-    const allUsers = [...normalUsers, ...googleUsers];
+    ]).then(([normalUsers, googleUsers]) => [...normalUsers, ...googleUsers]);
     if (!allUsers.length) {
         throw new CustomError("Can not create conversation", StatusCodes.BAD_REQUEST);
     }
@@ -37,7 +36,6 @@ const newConversation = async (req, res) => {
         User.findByIdAndUpdate(req.currentUser._id, { $push: { conversations: addConvId(newConv._id.toString(), usersIds) } }),
         GoogleUser.findByIdAndUpdate(req.currentUser._id, { $push: { conversations: addConvId(newConv._id.toString(), usersIds) } })
     ]);
-    // newConv.participants[1].set( "picture", otherUserGoogle?.picture || "" )
     await newConv.save();
     const returnedConv = {
         ...newConv.toObject(),
@@ -65,8 +63,8 @@ const getConversation = async (req, res) => {
                 messages: {
                     $slice: [
                         { $reverseArray: "$messages" },
-                        0,
-                        Number(req.query.messagesCount)
+                        Number(req.query.messagesCount),
+                        20
                     ]
                 },
             }

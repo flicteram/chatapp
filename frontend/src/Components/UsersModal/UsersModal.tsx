@@ -1,7 +1,6 @@
 import { memo, useEffect, useState } from 'react'
 import TextField from '@mui/material/TextField'
 import Dialog from '@mui/material/Dialog'
-import { useGetUsers } from "./UsersModalAPI";
 import OtherUser from '@Interfaces/OtherUser'
 import styles from './UsersModal.module.css'
 import CircularProgress from '@mui/material/CircularProgress'
@@ -13,6 +12,7 @@ import Button from '@mui/material/Button'
 import { useFormik } from 'formik'
 import handleHelperText from 'Utils/hadleHelperText'
 import { ICreateConversation } from '../../pages/Chat/ChatAPI';
+import useAxiosRequest from 'Hooks/useAxiosRequest';
 
 interface Props {
   openModal: boolean,
@@ -33,12 +33,11 @@ function UsersModal({
 }: Props ) {
   const [usersIds, setUsersIds] = useState<string[]>([])
   const [existingConversation, setExistingConversation] = useState<MultipleConvs>({}as MultipleConvs )
-  const {
-    loadingUsers,
-    dataUsers,
-    // errorUsers,
-    requestUsers
-  } = useGetUsers()
+
+  const [dataUsers, loadingUsers] = useAxiosRequest<OtherUser[]>({
+    url: '/users',
+    callOnMount: true,
+  })
 
   const handleOnClickUser = ( user:OtherUser ) =>{
     return () =>{
@@ -83,14 +82,6 @@ function UsersModal({
     }
   }, [usersIds.length])
 
-  useEffect( () => {
-    const controller = new AbortController();
-    requestUsers( controller )
-    return () => {
-      controller.abort()
-    }
-  }, [])
-
   const validate = ( values:InitialValues )=>{
     const errors = {} as InitialValues
     if( usersIds.length>1 && values.groupName.trim().length===0 ){
@@ -112,13 +103,14 @@ function UsersModal({
       onClose={onCloseModal}>
       {loadingUsers ? (
         <CircularProgress
+          data-testid="loadingUsers"
           style={{
             color: 'var(--lightGreen)',
             margin: '2em'
           }}
           thickness={5} />
       ) : (
-        dataUsers.length > 0 ?
+        dataUsers && dataUsers.length > 0 ?
           <Box
             component="form"
             onSubmit={formik.handleSubmit}
@@ -135,7 +127,7 @@ function UsersModal({
               error={formik.errors.groupName !== undefined && formik.touched.groupName}
             />
             <div className={styles.usersContainer}>
-              {dataUsers.map( ( user: OtherUser ) => (
+              {dataUsers?.map( ( user: OtherUser ) => (
                 <button
                   type='button'
                   key={user._id}

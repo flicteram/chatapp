@@ -9,8 +9,8 @@ import Conversation from './components/Conversation';
 import OtherUser from '@Interfaces/OtherUser';
 
 interface Props{
-  dataConversations:MultipleConvs[],
-  connectedUsers:ConnectedUser[]
+  connectedUsers:ConnectedUser[],
+  dataConversations?:MultipleConvs[],
 }
 
 function Conversations({
@@ -51,6 +51,13 @@ function Conversations({
     return singleParticipant?.picture
   }, [])
 
+  if ( !dataConversations || !dataConversations.length ) {
+    return <h3
+      style={{
+        textAlign: 'center',
+        marginTop: "1em"
+      }}>No conversations</h3>
+  }
   const conversations = dataConversations.map( ( conv: MultipleConvs ) => {
     const isGroup = conv.participants.length>1
     const participantsUserNames = conv.participants.map( p=>p.username )
@@ -91,13 +98,7 @@ function Conversations({
       />
     )
   })
-  if ( !dataConversations.length ) {
-    return <h3
-      style={{
-        textAlign: 'center',
-        marginTop: "1em"
-      }}>No conversations</h3>
-  }
+
   return (
     <div className={styles.convsContainer}>
       {conversations}

@@ -6,7 +6,7 @@ import { useGetConversation, useSendMessage } from '../ConversationAPI'
 import useUserSelector from 'Components/User/useUserSelector';
 import { Socket } from 'socket.io-client'
 import { useGotNewMessage, useNewMessageSent } from './useMessages'
-import  useReturnConversationUsers  from './useReturnConversationUsers'
+import { useConversationUsers } from "../ConversationAPI"
 
 export default function useConversation(
   addLastMessageAndSortConversations: ( sendToId: string, message: SendMessage ) => void,
@@ -67,17 +67,14 @@ export default function useConversation(
 
   useEffect( () => {
     const controller = new AbortController()
-    request( controller, 20 )
-    return () => {
-      controller.abort()
-    }
+    request( controller )
   }, [convId.id])
 
   useNewMessageSent( addNewMessage, handlePendingMessage, sendMessageData )
   useGotNewMessage( addGotNewMessage, gotNewMessage )
   const {
     convUsersData, convUsersLoading
-  } = useReturnConversationUsers( otherUsersIds )
+  } = useConversationUsers( otherUsersIds )
 
   return {
     otherUsersIds,

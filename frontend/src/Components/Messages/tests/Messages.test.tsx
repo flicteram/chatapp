@@ -39,6 +39,7 @@ describe( "Test Messages Component", ()=>{
           socket={{ current: client as Socket }}
           convUsersData={mockConvUsersData}
           data={{
+            totalMsgs: 1,
             _id: '1234',
             groupName: "mockName",
             participants: ["1", "2"],
@@ -70,6 +71,7 @@ describe( "Test Messages Component", ()=>{
           socket={{ current: client as Socket }}
           convUsersData={mockConvUsersData}
           data={{
+            totalMsgs: 1,
             _id: '1234',
             groupName: "mockName",
             participants: ["1", "2"],
@@ -100,6 +102,7 @@ describe( "Test Messages Component", ()=>{
           socket={{ current: client as Socket }}
           convUsersData={mockConvUsersData}
           data={{
+            totalMsgs: 1,
             _id: '1234',
             groupName: "mockName",
             participants: ["1", "2"],
@@ -139,6 +142,7 @@ describe( "Test Messages Component", ()=>{
           socket={{ current: client as Socket }}
           convUsersData={mockConvUsersData}
           data={{
+            totalMsgs: 1,
             _id: '1234',
             groupName: "mockName",
             participants: ["1", "2"],
@@ -176,6 +180,7 @@ describe( "Test Messages Component", ()=>{
           socket={{ current: client as Socket }}
           convUsersData={mockConvUsersData}
           data={{
+            totalMsgs: 1,
             _id: '1234',
             groupName: "mockName",
             participants: ["1", "2", "3"],
@@ -206,6 +211,7 @@ describe( "Test Messages Component", ()=>{
           socket={{ current: client as Socket }}
           convUsersData={mockConvUsersData}
           data={{
+            totalMsgs: 1,
             _id: '1234',
             groupName: "mockName",
             participants: ["1", "2"],

@@ -26,8 +26,12 @@
     "jsx": "react-jsx",
     "baseUrl": "src/",
     "paths": {
-      "@Interfaces/*":["interfaces/*"],
+      "@Interfaces/*": [
+        "interfaces/*"
+      ],
     }
   },
-  "include": ["src/"]
+  "include": [
+    "src/"
+  ]
 }

@@ -1,40 +1,124 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useReducer, useRef } from 'react';
 import useInterceptor from 'Hooks/useInterceptor';
 import { useParams } from "react-router-dom"
-import Conversation from '@Interfaces/Conversation';
+import IConv from '@Interfaces/Conversation';
 import SendMessage from "@Interfaces/SendMessage";
 import CustomAxiosError from '@Interfaces/CustomAxiosError';
 import GotNewMessage from "@Interfaces/GotNewMeessage";
 import useUserSelector from 'Components/User/useUserSelector';
 import GotSeenMessage from '@Interfaces/GotSeenMessage';
 import OtherUser from '@Interfaces/OtherUser';
+
+interface ConvsActions{
+  type: "resetInitialState" | "fetchedData" | "addNewMessage" | "gotNewMessage" | "gotSeenMessage"
+  data?: IConv,
+  messageData?:SendMessage,
+  newMessageData?:GotNewMessage,
+  seenMessageData?:GotSeenMessage,
+  currentUserUsername?:string
+}
+
+function conversationReducer( conv:IConv | null, action:ConvsActions ): IConv | null{
+  switch( action.type ){
+    case "resetInitialState":{
+      return null
+    }
+    case "fetchedData":{
+      if( !conv ){
+        return action.data ?? null
+      }
+      if( action?.data?.messages ){
+        return{
+          ...conv,
+          totalMsgs: conv.totalMsgs,
+          messages: [...conv.messages, ...action.data.messages],
+        }
+      }
+      return null
+    }
+    case "addNewMessage":{
+      if( conv && action.messageData ){
+        const { messageData } = action
+        return{
+          ...conv,
+          messages: [messageData, ...conv.messages],
+        }
+      }
+      return null
+    }
+    case "gotNewMessage":{
+      if( conv && action.newMessageData ){
+        const { newMessage } = action.newMessageData
+        return{
+          ...conv,
+          lastMessage: newMessage,
+          messages: [newMessage, ...conv.messages]
+        }
+      }
+      return null
+    }
+    case "gotSeenMessage":{
+      if( conv && action.seenMessageData && action.currentUserUsername ){
+        const { _id: seenById } = action.seenMessageData.seenBy
+        const { seenBy } = action.seenMessageData
+        const currentUserUsername = action.currentUserUsername
+        return {
+          ...conv,
+          messages: conv.messages.map( ( message ) => {
+            if ( message.sentBy.username === currentUserUsername
+               &&
+               !message?.seenByIds?.includes( seenById )
+               &&
+               message.seenByIds
+               &&
+               message.seenBy
+            ) {
+              return {
+                ...message,
+                seenByIds: [...message.seenByIds, seenById],
+                seenBy: [...message.seenBy, seenBy]
+              }
+            }
+            return message
+          })
+        }
+      }
+      return null
+    }
+  }
+}
 function useGetConversation() {
   const [isLoading, setIsLoading] = useState( true );
-  const [data, setData] = useState<Conversation | null>( null );
   const [error, setError] = useState<string | null>( null );
   const [hasMore, setHasMore] = useState( false );
-  const [msgCount, setMsgCount] = useState( 20 )
   const axios = useInterceptor();
   const currentUser = useUserSelector()
-
+  const msgCountRef = useRef( 0 )
+  const [conversation, dispatch] = useReducer(
+    conversationReducer,
+    null
+  );
   const param = useParams();
-
   useEffect( () => {
     setIsLoading( true )
-    setData( null )
+    dispatch({ type: "resetInitialState" })
+    msgCountRef.current = 0
   }, [param.id])
-  async function request( controller?: AbortController, initialCount = 0 ) {
+  async function request( controller?: AbortController ){
     setError( null )
     try {
-      const response = await axios.get( `/conversation/${param.id}?messagesCount=${initialCount || msgCount}`,
+      const response = await axios.get( `/conversation/${param.id}?messagesCount=${msgCountRef.current}`,
         { signal: controller?.signal })
-      if ( response.data.totalMsgs > response.data.messages.length ) {
+      if ( ( response.data.totalMsgs - 20 ) > msgCountRef.current ) {
         setHasMore( true )
       } else {
         setHasMore( false )
       }
-      setMsgCount( response.data.messages.length + 20 )
-      setData( response.data )
+      msgCountRef.current += 20
+      dispatch({
+        type: "fetchedData",
+        data: response.data
+      })
     } catch ( e: unknown ) {
       const err = e as CustomAxiosError
       if( err?.response?.data?.message ){
@@ -46,52 +130,37 @@ function useGetConversation() {
   }
 
   const addNewMessage = ( messageData:SendMessage ) =>{
-    setData( prevState => ( prevState ? {
-      ...prevState,
-      messages: [messageData, ...prevState.messages]
-    } : null ) )
+    msgCountRef.current+=1
+    dispatch({
+      type: "addNewMessage",
+      messageData
+    })
   }
 
-  const addGotNewMessage = ( gotNewMessage:GotNewMessage )=>{
-    setData( prevState => ( prevState ? {
-      ...prevState,
-      lastMessage: gotNewMessage.newMessage,
-      messages: [gotNewMessage.newMessage, ...prevState.messages]
-    } : null ) )
+  const addGotNewMessage = ( newMessageData:GotNewMessage )=>{
+    msgCountRef.current+=1
+    dispatch({
+      type: "gotNewMessage",
+      newMessageData
+    })
   }
 
   const makeMessagesSeen = ( seenMessage:GotSeenMessage ) =>{
-    setData( prevState => ( prevState ? {
-      ...prevState,
-      messages: prevState.messages.map( ( message ) => {
-        if ( message.sentBy.username === currentUser.username
-           &&
-           !message?.seenByIds?.includes( seenMessage.seenBy._id )
-           &&
-           message.seenByIds
-           &&
-           message.seenBy
-        ) {
-          return {
-            ...message,
-            seenByIds: [...message.seenByIds, seenMessage.seenBy._id],
-            seenBy: [...message.seenBy, seenMessage.seenBy]
-          }
-        }
-        return message
-      })
-    } : null ) )
+    dispatch({
+      type: "gotSeenMessage",
+      seenMessageData: seenMessage,
+      currentUserUsername: currentUser.username
+    })
   }
   return {
     hasMore,
     isLoading,
-    data,
+    data: conversation,
     error,
     request,
     addNewMessage,
     addGotNewMessage,
     makeMessagesSeen,
-    setNewMsg: setData,
   }
 }
 
@@ -127,7 +196,7 @@ function useSendMessage() {
   }
 }
 
-export function useConversationUsers() {
+function useConversationUsers( otherUsersIds?:string[]) {
   const [isLoading, setIsLoading] = useState( false );
   const [data, setData] = useState<OtherUser[]>([]);
   const [error, setError] = useState( '' );
@@ -148,6 +217,12 @@ export function useConversationUsers() {
     }
   }
 
+  useEffect( ()=>{
+    if( otherUsersIds&&otherUsersIds.length ){
+      request( otherUsersIds )
+    }
+  }, [otherUsersIds])
+
   return {
     convUsersLoading: isLoading,
     convUsersData: data,
@@ -156,4 +231,6 @@ export function useConversationUsers() {
   }
 }
 
-export { useGetConversation, useSendMessage }
+export {
+  useGetConversation, useSendMessage, useConversationUsers
+}

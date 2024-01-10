@@ -102,7 +102,7 @@ function Conversation() {
           hasMore={hasMoreMessages}
           dataLength={conversationData?.messages.length || 0}
           inverse={true}
-          next={() => getConversation( undefined, 0 )}
+          next={getConversation}
           loader={<p>Loading...</p>}
         >
           <div
