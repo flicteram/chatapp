@@ -1,6 +1,6 @@
 ## Features
  - handeled authentication, keep the user logged in via httponly cookie that contains JWT token
- - facilitate comunication between 2 users in real time
+ - facilitate comunication between 2 or more users in real time
  - real time user status (online/last time online)
  - infinite scroll, so the messages are being fetched as you scroll up, they don't come all at once
  - secured routes on the frontend/backend via JWT token
